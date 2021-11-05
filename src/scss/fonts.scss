@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'MontserratLight';
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.eot');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.eot?#iefix')
+    format('embedded-opentype'); //решает проблему загрузки веб-шрифтов в IE6-IE8;
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.woff') format('woff');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.otf') format('otf');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.svg') format('svg');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MonserratRegular';
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.eot');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.eot?#iefix')
+    format('embedded-opentype'); //решает проблему загрузки веб-шрифтов в IE6-IE8;
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.woff') format('woff');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.otf') format('otf');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.svg') format('svg');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Regular.ttf')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontserratMedium';
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.eot');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.eot?#iefix')
+    format('embedded-opentype'); //решает проблему загрузки веб-шрифтов в IE6-IE8;
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.woff') format('woff');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.otf') format('otf');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.svg') format('svg');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontserratSemiBold';
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.eot');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.eot?#iefix')
+    format('embedded-opentype'); //решает проблему загрузки веб-шрифтов в IE6-IE8;
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.woff') format('woff');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.otf') format('otf');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.svg') format('svg');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-SemiBold.ttf')
+    format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontserratBold';
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.eot');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.eot?#iefix')
+    format('embedded-opentype'); //решает проблему загрузки веб-шрифтов в IE6-IE8;
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.woff') format('woff');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.otf') format('otf');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.svg') format('svg');
+  src: url('~@/assets/fonts/Monserrat/Montserrat-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
