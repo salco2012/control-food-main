@@ -1,0 +1,39 @@
+// color
+$color_1: #252837;
+$color_2: #1f1d2b;
+$color_3: #ea7c69;
+$color_4: #50d1aa;
+$color_5: #9290fe;
+$color_6: #ffb572;
+$color_7: #abbbc2;
+
+$color_8: rgba(146, 144, 254, 0.2);
+$color_9: rgba(107, 226, 190, 0.2);
+$color_10: rgba(255, 181, 114, 0.2);
+$color_11: rgba(234, 124, 105, 0.2);
+
+// Extend / Inheritance
+%title {
+  font-family: 'MontserratSemiBold';
+  font-size: 36px;
+  color: $color_3;
+  font-weight: bold;
+}
+
+%baseButton {
+  font-family: 'MontserratSemiBold';
+  font-size: 18px;
+  min-width: 250px;
+  height: 50px;
+  border: 1px solid $color_3;
+  color: $color_3;
+  background-color: transparent;
+  border-radius: 100px;
+  transition: ease-in 0.5s;
+}
+
+%baseButton:hover,
+%baseButton:focus {
+  color: white;
+  background-color: $color_3;
+}
