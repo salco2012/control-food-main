@@ -12,65 +12,100 @@
           >
         </el-col>
         <el-col class="registration-form__register" :span="16">
-          <h2 class="registration-form__title">Регистрация</h2>
+          <el-form>
+            <h2 class="registration-form__title">Регистрация</h2>
+            <form-wrapper :validator="$v.formRegister">
+              <el-form-item-extended name="name">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-address-card" style="color: white"></i>
+                  <el-input
+                    placeholder="Имя *"
+                    v-model.trim="formRegister.name"
+                    @input="$v.formRegister.name.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-address-card" style="color: white"></i>
-            <el-input placeholder="Имя" v-model.trim="formRegister.name"></el-input>
-          </div>
+              <el-form-item-extended name="email">
+                <div class="wrapper-input">
+                <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                <el-input
+                  placeholder="E-mail адрес *"
+                  type="email"
+                  v-model.trim="formRegister.email"
+                  @input="$v.formRegister.email.$touch()"
+                ></el-input>
+                </div>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
-            <el-input
-              placeholder="E-mail адрес"
-              type="email"
-              v-model.trim="formRegister.email"
-            ></el-input>
-          </div>
+              </el-form-item-extended>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
-            <el-input
-              placeholder="Пароль"
-              type="password"
-              v-model.trim="formRegister.password"
-            ></el-input>
-          </div>
+              <el-form-item-extended name="password">
+                <div class="wrapper-input">
+                   <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                <el-input
+                  placeholder="Пароль *"
+                  type="password"
+                  v-model.trim="formRegister.password"
+                  @input="$v.formRegister.password.$touch()"
+                ></el-input></div>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
-            <el-input
-              placeholder="Повторите пароль"
-              type="password"
-              v-model.trim="formRegister.repeatPassword"
-            ></el-input>
-          </div>
+              </el-form-item-extended>
 
-          <div class="registration-form__gender">
-            <i class="wrapper-input__icon fas fa-venus-mars" style="color: white"></i>
-            <p class="registration-form__gender-text">Пол:</p>
-            <el-radio-group v-model="formRegister.gender">
-              <el-radio label="мужской">мужской</el-radio>
-              <el-radio label="женский">женский</el-radio>
-            </el-radio-group>
-          </div>
+              <el-form-item-extended name="repeatPassword">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <el-input
+                    placeholder="Повторите пароль *"
+                    type="password"
+                    v-model.trim="formRegister.repeatPassword"
+                    @input="$v.formRegister.repeatPassword.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-child" style="color: white"></i>
-            <el-input
-              placeholder="Рост"
-              type="number"
-              v-model.trim="formRegister.height"
-            ></el-input>
-          </div>
+              <el-form-item-extended name="gender">
+                <div class="registration-form__gender">
+                  <i class="wrapper-input__icon fas fa-venus-mars" style="color: white"></i>
+                  <p class="registration-form__gender-text">Пол:</p>
+                  <el-radio-group
+                    v-model="formRegister.gender"
+                    @input="$v.formRegister.gender.$touch()"
+                  >
+                    <el-radio label="мужской">мужской</el-radio>
+                    <el-radio label="женский">женский</el-radio>
+                  </el-radio-group>
+                </div>
+              </el-form-item-extended>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-weight" style="color: white"></i>
-            <el-input placeholder="Вес" type="number" v-model.trim="formRegister.weight"></el-input>
-          </div>
+              <el-form-item-extended name="height">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-child" style="color: white"></i>
+                  <el-input
+                    placeholder="Рост (см.)"
+                    type="number"
+                    v-model.trim="formRegister.height"
+                    @input="$v.formRegister.height.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
 
-          <el-button class="registration-form__submit-btn">Создать аккаунт</el-button>
-          {{ formRegister.imageUrl }}
+              <el-form-item-extended name="weight">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-weight" style="color: white"></i>
+                  <el-input
+                    placeholder="Вес (кг.)"
+                    type="number"
+                    v-model.trim="formRegister.weight"
+                    @input="$v.formRegister.weight.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
+              <el-button class="registration-form__submit-btn"
+              type="submit" :disabled="$v.formRegister.$invalid"
+                >Создать аккаунт</el-button
+              >
+            </form-wrapper>
+          </el-form>
         </el-col>
       </el-col>
     </el-row>
@@ -78,7 +113,14 @@
 </template>
 
 <script>
+import {
+  required, email, sameAs, minLength, between, helpers,
+} from 'vuelidate/lib/validators';
+
+const alphaRus = helpers.regex('alphaRus', /^[А-ЯЁа-яё]+$/);
+
 export default {
+  name: 'RegistrationForm',
   data() {
     return {
       formRegister: {
@@ -91,6 +133,32 @@ export default {
         weight: null,
       },
     };
+  },
+  validations: {
+    formRegister: {
+      name: {
+        required, alphaRus,
+      },
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+      repeatPassword: {
+        required,
+        sameAs: sameAs('password'),
+      },
+
+      height: {
+        between: between(80, 240),
+      },
+      weight: {
+        between: between(30, 300),
+      },
+    },
   },
 };
 </script>
@@ -106,6 +174,11 @@ export default {
 
 .el-radio__input.is-checked + .el-radio__label {
   color: white;
+}
+
+.el-form-item__error {
+  margin-left: 25px;
+  margin-top: -15px;
 }
 
 .registration {
@@ -139,6 +212,7 @@ export default {
     align-items: center;
     color: white;
     font-size: 16px;
+    margin-top: -10px;
     &-text {
       margin-right: 10px;
     }
@@ -196,10 +270,6 @@ export default {
 
 .el-input__inner:focus {
   border-color: $color_3;
-}
-
-.registration-form__gender {
-  margin-bottom: 20px;
 }
 
 .wrapper-input {

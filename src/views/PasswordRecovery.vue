@@ -14,14 +14,26 @@
           >
         </el-col>
         <el-col class="password-recovery__form-right" :span="16">
-          <h2 class="password-recovery__form-right-title">Восстановление пароля</h2>
-
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
-
-            <el-input placeholder="E-mail адрес" type="email" v-model.trim="email"></el-input>
-          </div>
-          <el-button class="password-recovery__form-right-btn">Сбросить пароль</el-button>
+          <el-form>
+            <h2 class="password-recovery__form-right-title">Восстановление пароля</h2>
+            <form-wrapper :validator="$v.passwordRecowery">
+              <el-form-item-extended name="email">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                  <el-input
+                    placeholder="E-mail адрес *"
+                    type="email"
+                    v-model.trim="passwordRecowery.email"
+                    @input="$v.passwordRecowery.email.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
+              <el-button class="password-recovery__form-right-btn" type="submit"
+              :disabled="$v.passwordRecowery.$invalid"
+                >Сбросить пароль</el-button
+              >
+            </form-wrapper>
+          </el-form>
         </el-col>
       </el-col>
     </el-row>
@@ -29,8 +41,24 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators';
+
 export default {
-  email: '',
+  data() {
+    return {
+      passwordRecowery: {
+        email: '',
+      },
+    };
+  },
+  validations: {
+    passwordRecowery: {
+      email: {
+        required,
+        email,
+      },
+    },
+  },
 };
 </script>
 
@@ -80,6 +108,12 @@ export default {
     }
     &-btn {
       @extend %baseButton;
+    }
+    &-btn[disabled] {
+      cursor: not-allowed;
+      background-color: white;
+      color: #888;
+      border: none;
     }
   }
   &-wrapper {

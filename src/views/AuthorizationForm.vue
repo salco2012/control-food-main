@@ -12,27 +12,39 @@
           >
         </el-col>
         <el-col class="authorization-form__auth" :span="16">
-          <h2 class="registration-form__title">Авторизация</h2>
+          <el-form>
+            <h2 class="registration-form__title">Авторизация</h2>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
-            <el-input
-              placeholder="E-mail адрес"
-              type="email"
-              v-model.trim="formAuthorization.email"
-            ></el-input>
-          </div>
+            <form-wrapper :validator="$v.formAuthorization">
+              <el-form-item-extended name="email">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                  <el-input
+                    placeholder="E-mail адрес *"
+                    type="email"
+                    v-model.trim="formAuthorization.email"
+                    @input="$v.formAuthorization.email.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
+              <el-form-item-extended name="password">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <el-input
+                    placeholder="Пароль *"
+                    type="password"
+                    v-model.trim="formAuthorization.password"
+                    @input="$v.formAuthorization.password.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
 
-          <div class="wrapper-input">
-            <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
-            <el-input
-              placeholder="Пароль"
-              type="password"
-              v-model.trim="formAuthorization.password"
-            ></el-input>
-          </div>
-
-          <el-button class="authorization-form__submit-btn">Войти в кабинет</el-button>
+              <el-button
+              :disabled="$v.formAuthorization.$invalid" class="authorization-form__submit-btn"
+              type="submit"
+              >Войти в кабинет</el-button>
+            </form-wrapper>
+          </el-form>
         </el-col>
       </el-col>
     </el-row>
@@ -40,6 +52,10 @@
 </template>
 
 <script>
+import {
+  required, email, minLength,
+} from 'vuelidate/lib/validators';
+
 export default {
   data() {
     return {
@@ -49,9 +65,20 @@ export default {
       },
     };
   },
+  validations: {
+    formAuthorization: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+    },
+  },
 };
 </script>
-
 <style lang="scss" scoped>
 .authorization {
   background-image: url(~@/assets/img/authorization-background.jpg);
@@ -108,6 +135,12 @@ export default {
   &__submit-btn {
     @extend %baseButton;
     margin-top: 20px;
+  }
+    &__submit-btn[disabled] {
+  cursor: not-allowed;
+  background-color: white;
+  color: #888;
+  border: none;
   }
   &__auth {
     margin: 30px 0 30px 0;
