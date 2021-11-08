@@ -39,11 +39,13 @@
                 </div>
               </el-form-item-extended>
             </form-wrapper>
-               <el-button
-              :disabled="$v.formAuthorization.$invalid" class="authorization-form__submit-btn"
+            <el-button
+              :disabled="$v.formAuthorization.$invalid"
+              class="authorization-form__submit-btn"
               type="submit"
               @click.prevent="authorization"
-              >Войти в кабинет</el-button>
+              >Войти в кабинет</el-button
+            >
           </el-form>
         </el-col>
       </el-col>
@@ -52,9 +54,7 @@
 </template>
 
 <script>
-import {
-  required, email, minLength,
-} from 'vuelidate/lib/validators';
+import { required, email, minLength } from 'vuelidate/lib/validators';
 
 export default {
   data() {
@@ -66,11 +66,23 @@ export default {
     };
   },
   methods: {
-    authorization() {
-      this.$store.dispatch('authorization', {
+    async authorization() {
+      await this.$store.dispatch('authorization', {
         email: this.formAuthorization.email,
         password: this.formAuthorization.password,
       });
+      if (this.isAuthenticated) {
+        this.$message({
+          message: 'Успешная авторизация!',
+          type: 'success',
+        });
+        this.$router.push({ name: 'UserProfile' });
+      } else {
+        this.$message({
+          message: 'Некорректные данные :(',
+          type: 'error',
+        });
+      }
     },
   },
   computed: {
@@ -149,11 +161,11 @@ export default {
     @extend %baseButton;
     margin-top: 20px;
   }
-    &__submit-btn[disabled] {
-  cursor: not-allowed;
-  background-color: white;
-  color: #888;
-  border: none;
+  &__submit-btn[disabled] {
+    cursor: not-allowed;
+    background-color: white;
+    color: #888;
+    border: none;
   }
   &__auth {
     margin: 30px 0 30px 0;

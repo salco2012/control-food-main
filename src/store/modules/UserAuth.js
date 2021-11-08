@@ -24,6 +24,9 @@ export default {
         userID: payload,
       };
     },
+    EXIT_USER_PROFILE(state) {
+      state.user = false;
+    },
     SET_ERROR(state, payload) {
       state.error = payload;
     },
@@ -52,13 +55,15 @@ export default {
           payload.password,
         );
         resolve(createUser);
-      }).then((user) => {
-        commit('SET_USER', user.user.uid);
-        commit('CLEAR_ERROR');
-      }).catch((error) => {
-        // обрабатываем ошибку, записываем ее в state.error
-        commit('SET_ERROR', error.code);
-      });
+      })
+        .then((user) => {
+          commit('SET_USER', user.user.uid);
+          commit('CLEAR_ERROR');
+        })
+        .catch((error) => {
+          // обрабатываем ошибку, записываем ее в state.error
+          commit('SET_ERROR', error.code);
+        });
     },
     async authorization({ commit }, payload) {
       try {

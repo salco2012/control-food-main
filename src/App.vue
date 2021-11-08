@@ -1,12 +1,29 @@
 <template>
   <div id="app">
     <el-container>
+    <SideBar  v-if="isAuthenticated"/>
       <el-main>
         <router-view />
       </el-main>
     </el-container>
   </div>
 </template>
+
+<script>
+import SideBar from './components/SideBar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    SideBar,
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.UserAuth.user.isAuthenticated;
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 @import 'src/scss/reset.scss';

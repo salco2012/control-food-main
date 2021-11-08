@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import RegistrationForm from '../views/RegistrationForm.vue';
 import AuthorizationForm from '../views/AuthorizationForm.vue';
 import PasswordRecovery from '../views/PasswordRecovery.vue';
+import UserProfile from '../views/UserProfile.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/password-recovery',
     name: 'PasswordRecovery',
     component: PasswordRecovery,
+  },
+  {
+    path: '/user-profile',
+    name: 'UserProfile',
+    component: UserProfile,
   },
 ];
 

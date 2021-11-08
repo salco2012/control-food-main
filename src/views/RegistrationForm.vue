@@ -14,7 +14,7 @@
         <el-col class="registration-form__register" :span="16">
           <el-form>
             <h2 class="registration-form__title">Регистрация</h2>
-            {{statuseError}}
+            {{ statuseError }}
             <form-wrapper :validator="$v.formRegister">
               <el-form-item-extended name="name">
                 <div class="wrapper-input">
@@ -29,27 +29,26 @@
 
               <el-form-item-extended name="email">
                 <div class="wrapper-input">
-                <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
-                <el-input
-                  placeholder="E-mail адрес *"
-                  type="email"
-                  v-model.trim="formRegister.email"
-                  @input="$v.formRegister.email.$touch()"
-                ></el-input>
+                  <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                  <el-input
+                    placeholder="E-mail адрес *"
+                    type="email"
+                    v-model.trim="formRegister.email"
+                    @input="$v.formRegister.email.$touch()"
+                  ></el-input>
                 </div>
-
               </el-form-item-extended>
 
               <el-form-item-extended name="password">
                 <div class="wrapper-input">
                   <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
-                <el-input
-                  placeholder="Пароль *"
-                  type="password"
-                  v-model.trim="formRegister.password"
-                  @input="$v.formRegister.password.$touch()"
-                ></el-input></div>
-
+                  <el-input
+                    placeholder="Пароль *"
+                    type="password"
+                    v-model.trim="formRegister.password"
+                    @input="$v.formRegister.password.$touch()"
+                  ></el-input>
+                </div>
               </el-form-item-extended>
 
               <el-form-item-extended name="repeatPassword">
@@ -68,9 +67,7 @@
                 <div class="registration-form__gender">
                   <i class="wrapper-input__icon fas fa-venus-mars" style="color: white"></i>
                   <p class="registration-form__gender-text">Пол:</p>
-                  <el-radio-group
-                    v-model="formRegister.gender"
-                  >
+                  <el-radio-group v-model="formRegister.gender">
                     <el-radio label="мужской">мужской</el-radio>
                     <el-radio label="женский">женский</el-radio>
                   </el-radio-group>
@@ -101,12 +98,13 @@
                 </div>
               </el-form-item-extended>
             </form-wrapper>
-               <el-button class="registration-form__submit-btn"
+            <el-button
+              class="registration-form__submit-btn"
               type="submit"
               @click.prevent="registration"
               :disabled="$v.formRegister.$invalid"
-                >Создать аккаунт</el-button
-              >
+              >Создать аккаунт</el-button
+            >
           </el-form>
         </el-col>
       </el-col>
@@ -138,25 +136,30 @@ export default {
   },
   methods: {
     registration() {
-      this.$store.dispatch('registration', {
-        email: this.formRegister.email,
-        password: this.formRegister.password,
-      }).then(() => {
-        if (this.isAuthenticated) {
-          this.$message({
-            message: 'Успешная регистрация, поздравляем!',
-            type: 'success',
-          });
-          setTimeout(() => {
-            this.$router.push({ name: 'AuthorizationForm' });
-          }, 3000);
-        } else {
-          this.$message({
-            message: 'Электронная почта уже используется :(',
-            type: 'error',
-          });
-        }
-      });
+      this.$store
+        .dispatch('registration', {
+          email: this.formRegister.email,
+          password: this.formRegister.password,
+        })
+        .then(() => {
+          if (this.isAuthenticated) {
+            this.$message({
+              message: 'Успешная регистрация, поздравляем!',
+              type: 'success',
+            });
+            this.$store.commit('SET_FORM', this.formRegister);
+          } else {
+            this.$message({
+              message: 'Электронная почта уже используется :(',
+              type: 'error',
+            });
+          }
+        })
+        .then(() => {
+          if (this.isAuthenticated) {
+            this.$router.push({ name: 'UserProfile' });
+          }
+        });
     },
   },
   computed: {
@@ -167,7 +170,8 @@ export default {
   validations: {
     formRegister: {
       name: {
-        required, alphaRus,
+        required,
+        alphaRus,
       },
       email: {
         required,
