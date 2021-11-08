@@ -14,6 +14,7 @@
         <el-col class="registration-form__register" :span="16">
           <el-form>
             <h2 class="registration-form__title">Регистрация</h2>
+            {{statuseError}}
             <form-wrapper :validator="$v.formRegister">
               <el-form-item-extended name="name">
                 <div class="wrapper-input">
@@ -41,7 +42,7 @@
 
               <el-form-item-extended name="password">
                 <div class="wrapper-input">
-                   <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
                 <el-input
                   placeholder="Пароль *"
                   type="password"
@@ -69,7 +70,6 @@
                   <p class="registration-form__gender-text">Пол:</p>
                   <el-radio-group
                     v-model="formRegister.gender"
-                    @input="$v.formRegister.gender.$touch()"
                   >
                     <el-radio label="мужской">мужской</el-radio>
                     <el-radio label="женский">женский</el-radio>
@@ -100,11 +100,13 @@
                   ></el-input>
                 </div>
               </el-form-item-extended>
-              <el-button class="registration-form__submit-btn"
-              type="submit" :disabled="$v.formRegister.$invalid"
+            </form-wrapper>
+               <el-button class="registration-form__submit-btn"
+              type="submit"
+              @click.prevent="registration"
+              :disabled="$v.formRegister.$invalid"
                 >Создать аккаунт</el-button
               >
-            </form-wrapper>
           </el-form>
         </el-col>
       </el-col>
@@ -133,6 +135,34 @@ export default {
         weight: null,
       },
     };
+  },
+  methods: {
+    registration() {
+      this.$store.dispatch('registration', {
+        email: this.formRegister.email,
+        password: this.formRegister.password,
+      }).then(() => {
+        if (this.isAuthenticated) {
+          this.$message({
+            message: 'Успешная регистрация, поздравляем!',
+            type: 'success',
+          });
+          setTimeout(() => {
+            this.$router.push({ name: 'AuthorizationForm' });
+          }, 3000);
+        } else {
+          this.$message({
+            message: 'Электронная почта уже используется :(',
+            type: 'error',
+          });
+        }
+      });
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.UserAuth.user.isAuthenticated;
+    },
   },
   validations: {
     formRegister: {
@@ -178,7 +208,7 @@ export default {
 
 .el-form-item__error {
   margin-left: 25px;
-  margin-top: -15px;
+  margin-top: -10px;
 }
 
 .registration {
@@ -276,7 +306,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   &__icon {
     margin-right: 10px;
   }

@@ -38,12 +38,12 @@
                   ></el-input>
                 </div>
               </el-form-item-extended>
-
-              <el-button
+            </form-wrapper>
+               <el-button
               :disabled="$v.formAuthorization.$invalid" class="authorization-form__submit-btn"
               type="submit"
+              @click.prevent="authorization"
               >Войти в кабинет</el-button>
-            </form-wrapper>
           </el-form>
         </el-col>
       </el-col>
@@ -64,6 +64,19 @@ export default {
         password: null,
       },
     };
+  },
+  methods: {
+    authorization() {
+      this.$store.dispatch('authorization', {
+        email: this.formAuthorization.email,
+        password: this.formAuthorization.password,
+      });
+    },
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.UserAuth.user.isAuthenticated;
+    },
   },
   validations: {
     formAuthorization: {

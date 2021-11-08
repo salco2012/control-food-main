@@ -14,7 +14,7 @@
           >
         </el-col>
         <el-col class="password-recovery__form-right" :span="16">
-          <el-form>
+          <el-form @submit.prevent>
             <h2 class="password-recovery__form-right-title">Восстановление пароля</h2>
             <form-wrapper :validator="$v.passwordRecowery">
               <el-form-item-extended name="email">
@@ -26,13 +26,19 @@
                     v-model.trim="passwordRecowery.email"
                     @input="$v.passwordRecowery.email.$touch()"
                   ></el-input>
+                  <input type="text" hidden style="display: none" />
+                  <!-- формы с одним элементом ввода всегда отправляются,
+                  добавление еще одного ввода (и его скрытие) устаняет этот баг. -->
                 </div>
               </el-form-item-extended>
-              <el-button class="password-recovery__form-right-btn" type="submit"
-              :disabled="$v.passwordRecowery.$invalid"
-                >Сбросить пароль</el-button
-              >
             </form-wrapper>
+            <el-button
+              class="password-recovery__form-right-btn"
+              type="submit"
+              @click.prevent="resetPassword"
+              :disabled="$v.passwordRecowery.$invalid"
+              >Сбросить пароль</el-button
+            >
           </el-form>
         </el-col>
       </el-col>
@@ -50,6 +56,38 @@ export default {
         email: '',
       },
     };
+  },
+  methods: {
+    resetPassword() {
+      this.$store
+        .dispatch('resetPassword', {
+          email: this.passwordRecowery.email,
+        })
+        .then(() => {
+          if (this.statusResetPassword) {
+            this.$message({
+              message: 'Ссылка на восстановление пароля отправленна!',
+              type: 'success',
+            });
+            setTimeout(() => {
+              this.$router.push({ name: 'AuthorizationForm' });
+            }, 3000);
+          } else {
+            this.$message({
+              message: 'Неверный email-адрес',
+              type: 'error',
+            });
+          }
+        });
+    },
+  },
+  computed: {
+    statusResetPassword() {
+      return this.$store.state.UserAuth.resetPassword.successfulResetPassword;
+    },
+    errorMessageResetPassword() {
+      return this.$store.state.UserAuth.resetPassword.errorResetPassword;
+    },
   },
   validations: {
     passwordRecowery: {

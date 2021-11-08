@@ -3,12 +3,17 @@ import Vuelidate from 'vuelidate';
 import VuelidateErrorExtractor, { templates } from 'vuelidate-error-extractor';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import { initializeApp } from 'firebase/app';
+import firebaseConfig from './config/firebase';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import RegistrationForm from './views/RegistrationForm.vue';
 import ElFormItemExtended from './components/ElFormItemExtended.vue';
 import AuthorizationForm from './views/AuthorizationForm.vue';
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
 
 const messages = {
   required: 'Поле {attribute} является обязательным!',
@@ -41,7 +46,7 @@ Vue.component('formWrapper', templates.FormWrapper);
 Vue.use(ElementUI);
 
 new Vue({
-  router,
   store,
+  router,
   render: (h) => h(App),
 }).$mount('#app');
