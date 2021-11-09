@@ -5,6 +5,7 @@ import RegistrationForm from '../views/RegistrationForm.vue';
 import AuthorizationForm from '../views/AuthorizationForm.vue';
 import PasswordRecovery from '../views/PasswordRecovery.vue';
 import UserProfile from '../views/UserProfile.vue';
+import Error404 from '../views/Error404.vue';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/user-profile',
     name: 'UserProfile',
     component: UserProfile,
+  },
+  {
+    path: '*',
+    name: 'Error404',
+    component: Error404,
   },
 ];
 
