@@ -4,7 +4,9 @@
       <el-col class="registration-form" :span="12">
         <el-col class="registration-form__auth-menu" :span="8">
           <h3 class="registration-form__auth-menu-title">Есть аккаунт?</h3>
+
           <p class="registration-form__auth-menu-text">Пройдите авторизацию!</p>
+
           <el-button
             class="registration-form__auth-menu-btc"
             @click="$router.push({ name: 'AuthorizationForm' })"
@@ -14,7 +16,6 @@
         <el-col class="registration-form__register" :span="16">
           <el-form>
             <h2 class="registration-form__title">Регистрация</h2>
-            {{ statuseError }}
             <form-wrapper :validator="$v.formRegister">
               <el-form-item-extended name="name">
                 <div class="wrapper-input">
@@ -147,7 +148,7 @@ export default {
               message: 'Успешная регистрация, поздравляем!',
               type: 'success',
             });
-            this.$store.commit('SET_FORM', this.formRegister);
+            this.$store.dispatch('setForm', this.formRegister);
           } else {
             this.$message({
               message: 'Электронная почта уже используется :(',

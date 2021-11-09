@@ -1,6 +1,7 @@
 export default {
   apiKey: 'AIzaSyAdSDM1K3Z8itHO51w_Z1eppxXuLH12NdQ',
   authDomain: 'food-accouting.firebaseapp.com',
+  databaseURL: 'https://food-accouting-default-rtdb.firebaseio.com',
   projectId: 'food-accouting',
   storageBucket: 'food-accouting.appspot.com',
   messagingSenderId: '961172539247',

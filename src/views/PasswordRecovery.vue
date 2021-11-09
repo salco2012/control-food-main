@@ -26,7 +26,7 @@
                     v-model.trim="passwordRecowery.email"
                     @input="$v.passwordRecowery.email.$touch()"
                   ></el-input>
-                  <input type="text" hidden style="display: none" />
+                  <input type="text" style="display: none" />
                   <!-- формы с одним элементом ввода всегда отправляются,
                   добавление еще одного ввода (и его скрытие) устаняет этот баг. -->
                 </div>
