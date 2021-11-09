@@ -66,23 +66,27 @@ export default {
     };
   },
   methods: {
-    async authorization() {
-      await this.$store.dispatch('authorization', {
-        email: this.formAuthorization.email,
-        password: this.formAuthorization.password,
-      });
-      if (this.isAuthenticated) {
-        this.$message({
-          message: 'Успешная авторизация!',
-          type: 'success',
+    authorization() {
+      this.$store
+        .dispatch('authorization', {
+          email: this.formAuthorization.email,
+          password: this.formAuthorization.password,
+        })
+        .then(() => {
+          if (this.isAuthenticated) {
+            this.$message({
+              message: 'Успешная авторизация!',
+              type: 'success',
+            });
+            this.$store.dispatch('getForm');
+            this.$router.push({ name: 'UserProfile' });
+          } else {
+            this.$message({
+              message: 'Некорректные данные :(',
+              type: 'error',
+            });
+          }
         });
-        this.$router.push({ name: 'UserProfile' });
-      } else {
-        this.$message({
-          message: 'Некорректные данные :(',
-          type: 'error',
-        });
-      }
     },
   },
   computed: {

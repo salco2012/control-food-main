@@ -24,7 +24,7 @@ export default {
         userID: payload,
       };
     },
-    EXIT_USER_PROFILE(state) {
+    CLEAR_USER_UD(state) {
       state.user = false;
     },
     SET_ERROR(state, payload) {

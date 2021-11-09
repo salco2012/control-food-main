@@ -149,6 +149,7 @@ export default {
               type: 'success',
             });
             this.$store.dispatch('setForm', this.formRegister);
+            this.$store.dispatch('getForm');
           } else {
             this.$message({
               message: 'Электронная почта уже используется :(',

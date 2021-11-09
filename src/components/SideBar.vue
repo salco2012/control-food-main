@@ -14,14 +14,16 @@
           alt="avatar"
         />
         <div class="profile-info__user">
-          <h3 class="profile-info__user-name">Имя</h3>
-          <p class="profile-info__user-email">Почта</p>
-          <button class="profile-info__user-exit" @click="exitProfile">
-            Выйти
-            <span style="font-size: 1.3rem">
-              <i class="fa fa-sign-out-alt profile-info__user-exit-icon"></i>
-            </span>
-          </button>
+          <template v-if="infoCurrentUser">
+            <h3 class="profile-info__user-name">{{ infoCurrentUser.name }}</h3>
+            <p class="profile-info__user-email">{{ infoCurrentUser.email }}</p>
+            <button class="profile-info__user-exit" @click="exitProfile">
+              Выйти
+              <span style="font-size: 1.3rem">
+                <i class="fa fa-sign-out-alt profile-info__user-exit-icon"></i>
+              </span>
+            </button>
+          </template>
         </div>
       </div>
       <el-menu-item
@@ -84,14 +86,18 @@ export default {
   methods: {
     exitProfile() {
       this.$router.push({ name: 'Home' });
-      this.$store.commit('EXIT_USER_PROFILE');
+      this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
+      this.$store.commit('CLEAR_INFO_USER'); // Очищаем информацию о пользователе
     },
   },
-  // computed: {
-  //   nameUser() {
-
-  //   }
-  // }
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.UserAuth.user.isAuthenticated;
+    },
+    infoCurrentUser() {
+      return this.$store.state.UserInfoDatabase.infoCurrentUser;
+    },
+  },
 };
 </script>
 
