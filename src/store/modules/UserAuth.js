@@ -83,4 +83,9 @@ export default {
       }
     },
   },
+  getters: {
+    isUserAuthenticated(state) {
+      return state.user.isAuthenticated;
+    },
+  },
 };
