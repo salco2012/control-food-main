@@ -101,10 +101,10 @@
     margin-right: 20px;
     border: none;
     transition: ease-out 0.5s;
-  }
 
-  &__content-btn:hover {
-    background-color: $color_6;
+    &:hover {
+      background-color: $color_6;
+    }
   }
 
   &__content-statistics {

@@ -149,11 +149,12 @@ export default {
     @extend %baseButton;
     color: white;
     border-color: white;
-  }
-  &__btn:focus,
-  &__btn:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.2);
+
+    &:focus,
+    &:hover {
+      color: white;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
   }
 }
 

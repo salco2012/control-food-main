@@ -98,6 +98,23 @@
                   ></el-input>
                 </div>
               </el-form-item-extended>
+
+              <div class="photo-upload">
+                <div class="file-upload-form">
+                  <input
+                    type="file"
+                    @change="previewThumbnail"
+                    name="photo-upload-button"
+                    id="photo-upload-button"
+                    accept="image/*"
+                    class="input-file"
+                  />
+                  <label for="photo-upload-button">Аватарка</label>
+                </div>
+                <div class="image-preview" v-if="formRegister.imageData.length > 0">
+                  <img :src="formRegister.imageData" class="image-preview__img" />
+                </div>
+              </div>
             </form-wrapper>
             <el-button
               class="registration-form__submit-btn"
@@ -132,10 +149,21 @@ export default {
         gender: '',
         height: null,
         weight: null,
+        imageData: '',
       },
     };
   },
   methods: {
+    previewThumbnail: function getPreview(event) {
+      const input = event.target;
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.formRegister.imageData = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
     registration() {
       this.$store
         .dispatch('registration', {
@@ -200,23 +228,6 @@ export default {
 </script>
 
 <style lang="scss">
-.el-radio__input.is-checked .el-radio__inner {
-  border: $color_3;
-  background: $color_3;
-}
-.el-radio__label {
-  color: white;
-}
-
-.el-radio__input.is-checked + .el-radio__label {
-  color: white;
-}
-
-.el-form-item__error {
-  margin-left: 25px;
-  margin-top: -10px;
-}
-
 .registration {
   min-height: 100vh;
   background-image: url(~@/assets/img/register-background.jpg);
@@ -317,4 +328,64 @@ export default {
     margin-right: 10px;
   }
 }
+
+// Стили для аватарки
+.photo-upload {
+  height: auto;
+  margin: 20px 0;
+  position: relative;
+  width: 100%;
+  .input-file {
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 0.1px;
+    z-index: -1;
+
+    &:focus + label {
+      border-color: $color_3;
+    }
+
+    & + label {
+      background: transparent;
+      border: 2px solid rgb(255, 255, 255);
+      border-radius: 50%;
+      color: rgb(255, 255, 255);
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      width: 100px;
+
+      &:hover,
+      &:focus {
+        border-color: $color_6;
+        cursor: pointer;
+      }
+    }
+  }
+  .image-preview {
+        border-radius: 50%;
+        height: 100px;
+        left: 0;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 100px;
+
+        &__img {
+          border: 2px solid $color_3;
+          border-radius: 50%;
+          height: 100px;
+          object-fit: cover;
+          object-position: center;
+          width: 100px;
+        }
+}
+}
+
 </style>
