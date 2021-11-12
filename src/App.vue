@@ -34,6 +34,7 @@ body {
   font-family: 'MonserratRegular';
   font-size: 16px;
   box-sizing: border-box;
+  background-color: $color_1;
 }
 
 .el-main {

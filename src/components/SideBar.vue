@@ -9,10 +9,24 @@
     >
       <div class="profile-info">
         <img
+          v-if="infoCurrentUser.imageData"
           class="profile-info__avatar"
-          src="https://shapka-youtube.ru/wp-content/uploads/2021/02/avatarka-dlya-skaypa-dlya-parney.jpg"
+          :src="infoCurrentUser.imageData"
+          alt=""
+        />
+        <img
+          v-else-if="infoCurrentUser.gender === 'мужской'"
+          class="profile-info__avatar"
+          src="../assets/img/icons/avatar-man.jpg"
           alt="avatar"
         />
+        <img
+          v-else
+          class="profile-info__avatar"
+          src="../assets/img/icons/avatar-woman.jpg"
+          alt="avatar"
+        />
+
         <div class="profile-info__user">
           <template v-if="infoCurrentUser">
             <h3 class="profile-info__user-name">{{ infoCurrentUser.name }}</h3>
