@@ -45,7 +45,6 @@
 <style lang="scss" scoped>
 .home {
   padding: 25px 125px;
-  color: white;
   min-height: 100vh;
   background-color: $color_1;
   display: flex;

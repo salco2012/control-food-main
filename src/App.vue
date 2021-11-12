@@ -35,6 +35,7 @@ body {
   font-size: 16px;
   box-sizing: border-box;
   background-color: $color_1;
+  color: white;
 }
 
 .el-main {

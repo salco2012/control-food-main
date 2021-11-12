@@ -7,6 +7,7 @@ import PasswordRecovery from '../views/PasswordRecovery.vue';
 import UserProfile from '../views/UserProfile.vue';
 import Error404 from '../views/Error404.vue';
 import store from '../store/index';
+import MyGoals from '../views/MyGoals.vue';
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,18 @@ const routes = [
     path: '/user-profile',
     name: 'UserProfile',
     component: UserProfile,
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isUserAuthenticated) {
+        next();
+      } else {
+        next('authorization');
+      }
+    },
+  },
+  {
+    path: '/my-goals',
+    name: 'MyGoals',
+    component: MyGoals,
     beforeEnter: (to, from, next) => {
       if (store.getters.isUserAuthenticated) {
         next();

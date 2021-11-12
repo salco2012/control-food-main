@@ -45,7 +45,7 @@
         v-for="(item, index) in menuItems"
         :key="index"
         :class="{ 'active-item': currentIndex === index }"
-        @click="currentIndex = index"
+        @click="currentIndex = index; $router.push({name: item.routeName})"
       >
         <img
           class="sidebar-menu__icon"
@@ -78,11 +78,13 @@ export default {
           src: 'my-profile.png',
           text: 'Моя анкета',
           alt: 'my-profile',
+          routeName: 'UserProfile',
         },
         {
           src: 'goals.png',
           text: 'Установленные цели',
           alt: 'goals',
+          routeName: 'MyGoals',
         },
         {
           src: 'selected-recipes.png',
@@ -121,7 +123,6 @@ export default {
   flex-wrap: wrap;
   margin: 40px 0 70px 20px;
   font-family: 'MonserratRegular';
-  color: white;
   &__avatar {
     width: 70px;
     height: 70px;

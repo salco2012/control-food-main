@@ -18,7 +18,7 @@
             <form-wrapper :validator="$v.formAuthorization">
               <el-form-item-extended name="email">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-envelope"></i>
                   <el-input
                     placeholder="E-mail адрес *"
                     type="email"
@@ -29,7 +29,7 @@
               </el-form-item-extended>
               <el-form-item-extended name="password">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-key"></i>
                   <el-input
                     placeholder="Пароль *"
                     type="password"
@@ -136,24 +136,20 @@ export default {
   border-radius: 10px 0 0 10px;
   &__title {
     font-family: 'MontserratSemiBold';
-    color: white;
     margin-bottom: 15px;
   }
   &__text {
     font-family: 'MonserratRegular';
-    color: white;
     font-size: 14px;
     margin-bottom: 15px;
   }
   &__btn {
     @extend %baseButton;
-    color: white;
-    border-color: white;
 
     &:focus,
     &:hover {
-      color: white;
       background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid white;
     }
   }
 }

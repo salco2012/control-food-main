@@ -12,6 +12,7 @@ $color_9: rgba(107, 226, 190, 0.2);
 $color_10: rgba(255, 181, 114, 0.2);
 $color_11: rgba(234, 124, 105, 0.2);
 
+
 // Extend / Inheritance
 %title {
   font-family: 'MontserratSemiBold';
@@ -36,4 +37,28 @@ $color_11: rgba(234, 124, 105, 0.2);
     color: white;
     background-color: $color_3;
   }
+}
+
+%minusButton {
+  background-color: $color_3;
+  color: $color_1;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  height: 30px;
+  width: 30px;
+}
+
+%plusButton {
+  background-color: $color_4;
+  color: $color_1;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  height: 30px;
+  width: 30px;
 }

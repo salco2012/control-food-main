@@ -17,7 +17,6 @@
 .error-page {
   background-color: $color_1;
   min-height: 100vh;
-  color: white;
   &__info {
     position: absolute;
     left: 50%;

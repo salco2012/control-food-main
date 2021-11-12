@@ -1,5 +1,5 @@
 <template>
-  <div class="user-profile-wrapper">
+  <div>
     <el-row>
       <el-col :span="20">
         <div class="user-profile">
@@ -53,7 +53,7 @@
                   <p v-if="infoCurrentUser.height" class="card__height-description">
                     {{ infoCurrentUser.height }} <span class="sm">(см.)</span>
                   </p>
-                  <p v-else class="card__height-description">-</p>
+                  <p v-else class="card__height-description" style="margin-right: 10px">-</p>
                   <span class="fas fa-ruler-vertical" style="font-size: 32px"> </span>
                 </div>
                 <div class="btn-group">
@@ -69,8 +69,8 @@
                   <p v-if="infoCurrentUser.weight" class="card__weight-description">
                     {{ infoCurrentUser.weight }} <span class="kg">(кг.)</span>
                   </p>
-                  <p v-else class="card__weight-description">-</p>
-                  <span class="fas fa-weight" style="font-size: 32px"> </span>
+                  <p v-else class="card__weight-description" style="margin-right: 10px">-</p>
+                  <span class="fas fa-weight" style="font-size: 32px"></span>
                 </div>
                 <div class="btn-group">
                   <el-button class="btn-minus" circle>-</el-button>
@@ -100,10 +100,6 @@ export default {
 .user-profile {
   margin-top: 40px;
   margin-left: 40px;
-  &-wrapper {
-    background-color: $color_1;
-    min-height: 100vh;
-  }
   &__title {
     @extend %title;
     color: white;
@@ -113,7 +109,6 @@ export default {
   }
   .card {
     padding: 15px;
-    color: white;
     background: $color_2;
     display: flex;
     flex-direction: column;
@@ -178,26 +173,10 @@ export default {
       align-items: center;
       justify-content: center;
       .btn-minus {
-        background-color: $color_3;
-        color: $color_1;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        height: 30px;
-        width: 30px;
+        @extend %minusButton;
       }
       .btn-plus {
-        background-color: $color_4;
-        color: $color_1;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        height: 30px;
-        width: 30px;
+        @extend %plusButton;
       }
     }
   }

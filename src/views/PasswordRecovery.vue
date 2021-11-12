@@ -117,24 +117,20 @@ export default {
     border-radius: 10px 0 0 10px;
     &-title {
       font-family: 'MontserratSemiBold';
-      color: white;
       margin-bottom: 15px;
     }
     &-text {
       font-family: 'MonserratRegular';
-      color: white;
       font-size: 14px;
       margin-bottom: 15px;
     }
     &-btn {
       @extend %baseButton;
-      color: white;
-      border-color: white;
     }
     &-btn:focus,
     &-btn:hover {
-      color: white;
       background-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid white;
     }
   }
   &__form-right {

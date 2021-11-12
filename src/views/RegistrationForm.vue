@@ -8,7 +8,7 @@
           <p class="registration-form__auth-menu-text">Пройдите авторизацию!</p>
 
           <el-button
-            class="registration-form__auth-menu-btc"
+            class="registration-form__auth-menu-btn"
             @click="$router.push({ name: 'AuthorizationForm' })"
             >Авторизация</el-button
           >
@@ -19,7 +19,7 @@
             <form-wrapper :validator="$v.formRegister">
               <el-form-item-extended name="name">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-address-card" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-address-card"></i>
                   <el-input
                     placeholder="Имя *"
                     v-model.trim="formRegister.name"
@@ -30,7 +30,7 @@
 
               <el-form-item-extended name="email">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-envelope" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-envelope"></i>
                   <el-input
                     placeholder="E-mail адрес *"
                     type="email"
@@ -42,7 +42,7 @@
 
               <el-form-item-extended name="password">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-key"></i>
                   <el-input
                     placeholder="Пароль *"
                     type="password"
@@ -54,7 +54,7 @@
 
               <el-form-item-extended name="repeatPassword">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-key" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-key"></i>
                   <el-input
                     placeholder="Повторите пароль *"
                     type="password"
@@ -66,7 +66,7 @@
 
               <el-form-item-extended name="gender">
                 <div class="registration-form__gender">
-                  <i class="wrapper-input__icon fas fa-venus-mars" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-venus-mars"></i>
                   <p class="registration-form__gender-text">Пол:</p>
                   <el-radio-group v-model="formRegister.gender">
                     <el-radio label="мужской">мужской</el-radio>
@@ -77,7 +77,7 @@
 
               <el-form-item-extended name="height">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-child" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-child"></i>
                   <el-input
                     placeholder="Рост (см.)"
                     type="number"
@@ -89,7 +89,7 @@
 
               <el-form-item-extended name="weight">
                 <div class="wrapper-input">
-                  <i class="wrapper-input__icon fas fa-weight" style="color: white"></i>
+                  <i class="wrapper-input__icon fas fa-weight"></i>
                   <el-input
                     placeholder="Вес (кг.)"
                     type="number"
@@ -257,7 +257,6 @@ export default {
   &__gender {
     display: flex;
     align-items: center;
-    color: white;
     font-size: 16px;
     margin-top: -10px;
     &-text {
@@ -279,23 +278,21 @@ export default {
     border-bottom-left-radius: 10px;
     &-title {
       font-family: 'MontserratSemiBold';
-      color: white;
       margin-bottom: 15px;
     }
     &-text {
       font-family: 'MonserratRegular';
-      color: white;
       font-size: 14px;
       margin-bottom: 15px;
     }
-    &-btc {
+    &-btn {
       @extend %baseButton;
       color: white;
       border: 1px solid white;
       transition: ease-out 0.5s;
     }
-    &-btc:hover,
-    &-btc:focus {
+    &-btn:hover,
+    &-btn:focus {
       color: white;
       background-color: rgba(255, 255, 255, 0.2);
     }
@@ -310,8 +307,8 @@ export default {
   background-color: inherit;
   border: none;
   border-bottom: 1px solid white;
-  border-radius: 0;
   color: white;
+  border-radius: 0;
   font-size: 16px;
 }
 
