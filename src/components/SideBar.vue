@@ -6,13 +6,14 @@
       background-color="#1f1d2b"
       text-color="#fff"
       active-text-color="#fff"
+      v-if="infoCurrentUser"
     >
       <div class="profile-info">
-        <img
+          <img
           v-if="infoCurrentUser.imageData"
           class="profile-info__avatar"
           :src="infoCurrentUser.imageData"
-          alt=""
+          alt="avatar"
         />
         <img
           v-else-if="infoCurrentUser.gender === 'мужской'"
@@ -28,8 +29,22 @@
         />
 
         <div class="profile-info__user">
-          <template v-if="infoCurrentUser">
-            <h3 class="profile-info__user-name">{{ infoCurrentUser.name }}</h3>
+          <template>
+            <h3 v-if="infoCurrentUser.name" class="profile-info__user-name">
+              {{ infoCurrentUser.name }}
+            </h3>
+            <h3
+              v-if="!infoCurrentUser.name && infoCurrentUser.gender === 'мужской'"
+              class="profile-info__user-name"
+            >
+              Неопознанный кот
+            </h3>
+            <h3
+              v-if="!infoCurrentUser.name && infoCurrentUser.gender === 'женский'"
+              class="profile-info__user-name"
+            >
+              Неопознанная кошка
+            </h3>
             <p class="profile-info__user-email">{{ infoCurrentUser.email }}</p>
             <button class="profile-info__user-exit" @click="exitProfile">
               Выйти
@@ -45,7 +60,10 @@
         v-for="(item, index) in menuItems"
         :key="index"
         :class="{ 'active-item': currentIndex === index }"
-        @click="currentIndex = index; $router.push({name: item.routeName})"
+        @click="
+          currentIndex = index;
+          $router.push({ name: item.routeName });
+        "
       >
         <img
           class="sidebar-menu__icon"

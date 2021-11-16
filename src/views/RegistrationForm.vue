@@ -21,7 +21,7 @@
                 <div class="wrapper-input">
                   <i class="wrapper-input__icon fas fa-address-card"></i>
                   <el-input
-                    placeholder="Имя *"
+                    placeholder="Имя"
                     v-model.trim="formRegister.name"
                     @input="$v.formRegister.name.$touch()"
                   ></el-input>
@@ -67,7 +67,7 @@
               <el-form-item-extended name="gender">
                 <div class="registration-form__gender">
                   <i class="wrapper-input__icon fas fa-venus-mars"></i>
-                  <p class="registration-form__gender-text">Пол:</p>
+                  <p class="registration-form__gender-text">Пол * :</p>
                   <el-radio-group v-model="formRegister.gender">
                     <el-radio label="мужской">мужской</el-radio>
                     <el-radio label="женский">женский</el-radio>
@@ -75,11 +75,23 @@
                 </div>
               </el-form-item-extended>
 
+              <el-form-item-extended name="age">
+                <div class="wrapper-input">
+                  <i class="wrapper-input__icon fas fa-heart"></i>
+                  <el-input
+                    placeholder="Возраст (кол-во лет) *"
+                    type="number"
+                    v-model.trim="formRegister.age"
+                    @input="$v.formRegister.age.$touch()"
+                  ></el-input>
+                </div>
+              </el-form-item-extended>
+
               <el-form-item-extended name="height">
                 <div class="wrapper-input">
                   <i class="wrapper-input__icon fas fa-child"></i>
                   <el-input
-                    placeholder="Рост (см.)"
+                    placeholder="Рост (см.) *"
                     type="number"
                     v-model.trim="formRegister.height"
                     @input="$v.formRegister.height.$touch()"
@@ -91,7 +103,7 @@
                 <div class="wrapper-input">
                   <i class="wrapper-input__icon fas fa-weight"></i>
                   <el-input
-                    placeholder="Вес (кг.)"
+                    placeholder="Вес (кг.) *"
                     type="number"
                     v-model.trim="formRegister.weight"
                     @input="$v.formRegister.weight.$touch()"
@@ -123,6 +135,10 @@
               :disabled="$v.formRegister.$invalid"
               >Создать аккаунт</el-button
             >
+            <div class="registration__notification">
+              * - поля являются обязательными и необходимыми для точного расчета дальнейших
+              показателей!
+            </div>
           </el-form>
         </el-col>
       </el-col>
@@ -150,6 +166,7 @@ export default {
         height: null,
         weight: null,
         imageData: '',
+        age: '',
       },
     };
   },
@@ -200,7 +217,6 @@ export default {
   validations: {
     formRegister: {
       name: {
-        required,
         alphaRus,
       },
       email: {
@@ -211,15 +227,23 @@ export default {
         required,
         minLength: minLength(6),
       },
+      gender: {
+        required,
+      },
       repeatPassword: {
         required,
         sameAs: sameAs('password'),
       },
-
+      age: {
+        required,
+        between: between(6, 100),
+      },
       height: {
+        required,
         between: between(80, 240),
       },
       weight: {
+        required,
         between: between(30, 300),
       },
     },
@@ -234,7 +258,6 @@ export default {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-
   &-wrapper {
     display: flex;
     justify-content: center;
@@ -243,6 +266,13 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  &__notification {
+    font-size: 12px;
+    color: $color_3;
+    margin-top: 10px;
+    line-height: 16px;
   }
 }
 
@@ -365,24 +395,23 @@ export default {
     }
   }
   .image-preview {
-        border-radius: 50%;
-        height: 100px;
-        left: 0;
-        pointer-events: none;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 100px;
+    border-radius: 50%;
+    height: 100px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
 
-        &__img {
-          border: 2px solid $color_3;
-          border-radius: 50%;
-          height: 100px;
-          object-fit: cover;
-          object-position: center;
-          width: 100px;
-        }
+    &__img {
+      border: 2px solid $color_3;
+      border-radius: 50%;
+      height: 100px;
+      object-fit: cover;
+      object-position: center;
+      width: 100px;
+    }
+  }
 }
-}
-
 </style>

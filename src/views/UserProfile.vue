@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="infoCurrentUser">
     <el-row>
       <el-col :span="20">
         <div class="user-profile">
@@ -8,26 +8,28 @@
           <el-row :gutter="10">
             <el-col :span="6">
               <div class="card">
-                <img
-                  v-if="infoCurrentUser.imageData"
-                  class="card__avatar"
-                  :src="infoCurrentUser.imageData"
-                  alt=""
-                />
+                <div v-if="infoCurrentUser">
+                  <img
+                    v-if="infoCurrentUser.imageData"
+                    class="card__avatar"
+                    :src="infoCurrentUser.imageData"
+                    alt="avatar"
+                  />
 
-                <img
-                  v-else-if="infoCurrentUser.gender === 'мужской'"
-                  class="card__avatar"
-                  src="../assets/img/icons/avatar-man.jpg"
-                  alt="avatar"
-                />
+                  <img
+                    v-else-if="infoCurrentUser.gender === 'мужской'"
+                    class="card__avatar"
+                    src="../assets/img/icons/avatar-man.jpg"
+                    alt="avatar"
+                  />
 
-                <img
-                  v-else
-                  class="card__avatar"
-                  src="../assets/img/icons/avatar-woman.jpg"
-                  alt="avatar"
-                />
+                  <img
+                    v-else
+                    class="card__avatar"
+                    src="../assets/img/icons/avatar-woman.jpg"
+                    alt="avatar"
+                  />
+                </div>
 
                 <h2 class="card__title">Пол:</h2>
 

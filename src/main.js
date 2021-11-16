@@ -4,6 +4,7 @@ import VuelidateErrorExtractor, { templates } from 'vuelidate-error-extractor';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { initializeApp } from 'firebase/app';
+import locale from 'element-ui/lib/locale/lang/ru-RU'; // установил русский язык для компонентов element
 import firebaseConfig from './config/firebase';
 import 'firebase/database';
 import 'firebase/messaging';
@@ -27,17 +28,19 @@ const messages = {
   alphaRus: 'Допустимы только русские буквы!',
 };
 
+Vue.use(ElementUI, { locale });
 Vue.use(Vuelidate);
 Vue.use(VuelidateErrorExtractor, {
   messages,
   attributes: {
-    name: 'Имя',
-    email: 'E-mail адрес',
-    password: 'Пароль',
-    repeatPassword: 'Повторите пароль',
-    gender: 'Пол:',
-    height: 'Рост',
-    weight: 'Вес',
+    name: '"Имя"',
+    email: '"E-mail адрес"',
+    password: '"Пароль"',
+    repeatPassword: '"Повторите пароль"',
+    gender: '"Пол:"',
+    age: '"возраст"',
+    height: '"рост"',
+    weight: '"вес"',
   },
 });
 
