@@ -1,5 +1,5 @@
 import {
-  getDatabase, ref, set, child, get,
+  getDatabase, ref, set, child, get, update,
 } from 'firebase/database';
 
 // const database = getDatabase();
@@ -21,6 +21,11 @@ export default {
       const db = getDatabase();
       const uidUser = rootState.UserAuth.user.userID;
       set(ref(db, `usersUID/${uidUser}`), payload);
+    },
+    setUserСalories({ rootState }, payload) {
+      const db = getDatabase();
+      const uidUser = rootState.UserAuth.user.userID;
+      update(ref(db, `usersUID/${uidUser}/userСalories`), payload);
     },
     getForm({ commit, rootState }) {
       const dbRef = ref(getDatabase());

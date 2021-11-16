@@ -264,7 +264,10 @@
                         <el-button
                           class="card__save-date"
                           style="padding-left: 0"
-                          @click="changedСountingInput = false"
+                          @click="
+                            setUserСalories();
+                            changedСountingInput = false;
+                          "
                           >Сохранить<i class="fas fa-save ml10"></i
                         ></el-button>
                       </div>
@@ -301,7 +304,7 @@
               </p>
               <p v-else>
                 Осталось сжечь:
-               {{ caloriesLeftToBurn }} калл.
+                {{ caloriesLeftToBurn }} калл.
               </p>
             </div>
             <el-progress
@@ -353,6 +356,27 @@ export default {
     };
   },
   methods: {
+    // Отправляем данные о пользовательских каллориях в базу данных.
+    setUserСalories() {
+      let normСalories = null;
+      if (this.infoCurrentUser.gender === 'мужской') {
+        normСalories = this.normСaloriesMan;
+      } else {
+        normСalories = this.normСaloriesWoman;
+      }
+      const currentData = this.currentData.toLocaleDateString().replaceAll('.', '-');
+      // Получаем разницу между значениями.
+      const differencePerDay = (this.caloriesPerDay - normСalories);
+
+      const dataInfoUser = {
+        [currentData]: {
+          normСalories,
+          caloriesEatenPerDay: this.caloriesPerDay,
+          differencePerDay,
+        },
+      };
+      this.$store.dispatch('setUserСalories', dataInfoUser);
+    },
     // функция отвечает за уменьшение кол-ва сбрасываемых килограмм.
     numKgReduceMinus() {
       if (this.numKgReduce > 0) {
@@ -414,9 +438,9 @@ export default {
     // Получаем процент съеденных каллорий от нормы в день.
     percentageСalories() {
       if (this.infoCurrentUser.gender === 'мужской') {
-        return ((this.caloriesPerDay / this.normСaloriesMan) * 100).toFixed(1);
+        return +((this.caloriesPerDay / this.normСaloriesMan) * 100).toFixed(1);
       }
-      return ((this.caloriesPerDay / this.normСaloriesWoman) * 100).toFixed(1);
+      return +((this.caloriesPerDay / this.normСaloriesWoman) * 100).toFixed(1);
     },
     // Рассчитываем идеальный вес для мужчин
     idealWeightMan() {
