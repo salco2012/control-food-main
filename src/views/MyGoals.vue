@@ -175,7 +175,7 @@
           <div class="card">
             <h3 class="card__title">Текущая дата:</h3>
             <div class="card__flex-block">
-              <p class="card__result36">{{ currentData.toISOString().slice(0, 10) }}</p>
+              <p class="card__result36">{{ currentData.toLocaleString().slice(0, 10) }}</p>
               <span class="fas fa-calendar-alt ml10" style="font-size: 32px"> </span>
             </div>
           </div>
@@ -187,7 +187,7 @@
             <div class="card__flex-block" style="flex-wrap: wrap">
               <template v-if="finishData">
                 <p class="card__result36">
-                  {{ finishData.toISOString().slice(0, 10) }}
+                  {{ finishData.toLocaleString().slice(0, 10) }}
                 </p>
                 <span class="fas fa-flag-checkered ml10" style="font-size: 32px"></span>
                 <el-button
@@ -200,6 +200,7 @@
                   id="datepicker"
                   v-if="IsVisibilityDatePicker"
                   v-model="finishData"
+                  format="dd-MM-yyyy"
                   :picker-options="datePickerOptions"
                   type="date"
                   placeholder="Выбор даты"
@@ -347,7 +348,7 @@ export default {
       hintForIdealWeight: 'Рассчет произведен по формуле Брокка',
       currentData: new Date(),
       finishData: '',
-      numKgReduce: 0,
+      numKgReduce: 0, // кол-во кг которые нужно сбросить либо набрать.
       IsVisibilityDatePicker: false,
       caloriesPerDay: 1900, // съеденые каллории за сутки
       changedСountingInput: false /* флаг который отвечает
@@ -423,6 +424,26 @@ export default {
         this.numKgReduce += 1;
       }
     },
+  },
+  watch: {
+    finishData() {
+      localStorage.setItem('finishData', this.finishData);
+    },
+    // кол-во кг которые нужно сбросить либо набрать.
+    numKgReduce() {
+      localStorage.setItem('numKgReduce', this.numKgReduce);
+    },
+  },
+  created() {
+    const responseFinishData = localStorage.getItem('finishData');
+    if (responseFinishData && responseFinishData !== 'null') {
+      this.finishData = new Date(responseFinishData);
+    }
+
+    const responseNumKgReduce = localStorage.getItem('numKgReduce');
+    if (responseNumKgReduce && responseNumKgReduce !== 'null') {
+      this.numKgReduce = +responseNumKgReduce;
+    }
   },
   computed: {
     // Рассчитываем кол-во каллорий, который осталось сжечь.
