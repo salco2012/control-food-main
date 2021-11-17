@@ -2,7 +2,7 @@
   <div class="my-goals">
     <el-col :span="20">
       <h1 class="my-goals__title">Мои цели</h1>
-      <hr class="my-goals__hr" />
+      <hr/>
       <el-row :gutter="10">
         <el-col :span="12">
           <div class="card">
@@ -444,6 +444,8 @@ export default {
     if (responseNumKgReduce && responseNumKgReduce !== 'null') {
       this.numKgReduce = +responseNumKgReduce;
     }
+
+    console.log(this.currentData);
   },
   computed: {
     // Рассчитываем кол-во каллорий, который осталось сжечь.
@@ -558,7 +560,7 @@ export default {
     reduceСaloriesDay() {
       if (this.daysToTarget) {
         const result = Math.round(this.numCaloriesReduce / this.daysToTarget);
-        if (result < 2000) {
+        if (result < 1500) {
           return result;
         }
         // eslint-disable-next-line no-alert
@@ -615,9 +617,6 @@ export default {
   &__title {
     @extend %title;
     color: white;
-  }
-  &__hr {
-    border: 1px solid #393c49;
   }
   .card {
     background-color: $color_2;

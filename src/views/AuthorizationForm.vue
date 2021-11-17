@@ -13,7 +13,7 @@
         </el-col>
         <el-col class="authorization-form__auth" :span="16">
           <el-form>
-            <h2 class="registration-form__title">Авторизация</h2>
+            <h2 class="authorization-form__title">Авторизация</h2>
 
             <form-wrapper :validator="$v.formAuthorization">
               <el-form-item-extended name="email">
@@ -124,53 +124,56 @@ export default {
     top: 50%;
     transform: translate(-50%, -50%);
   }
-}
+  .recover-password {
+    background-color: $color_2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px 0 0 10px;
+    &__title {
+      font-family: 'MontserratSemiBold';
+      margin-bottom: 15px;
+    }
+    &__text {
+      font-family: 'MonserratRegular';
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    &__btn {
+      @extend %baseButton;
 
-.recover-password {
-  background-color: $color_2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px 0 0 10px;
-  &__title {
-    font-family: 'MontserratSemiBold';
-    margin-bottom: 15px;
-  }
-  &__text {
-    font-family: 'MonserratRegular';
-    font-size: 14px;
-    margin-bottom: 15px;
-  }
-  &__btn {
-    @extend %baseButton;
-
-    &:focus,
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid white;
+      &:focus,
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid white;
+      }
     }
   }
-}
 
-.authorization-form {
-  background: rgba(31, 29, 43, 0.5);
-  backdrop-filter: blur(5px);
-  border-radius: 10px;
-  &__submit-btn {
-    @extend %baseButton;
-    margin-top: 20px;
-  }
-  &__submit-btn[disabled] {
-    cursor: not-allowed;
-    background-color: white;
-    color: #888;
-    border: none;
-  }
-  &__auth {
-    margin: 30px 0 30px 0;
-    padding: 0 25px;
+  .authorization-form {
+    background: rgba(31, 29, 43, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    &__title {
+      @extend %title;
+      margin-bottom: 50px;
+    }
+    &__submit-btn {
+      @extend %baseButton;
+      margin-top: 20px;
+    }
+    &__submit-btn[disabled] {
+      cursor: not-allowed;
+      background-color: white;
+      color: #888;
+      border: none;
+    }
+    &__auth {
+      margin: 30px 0 30px 0;
+      padding: 0 25px;
+    }
   }
 }
 </style>

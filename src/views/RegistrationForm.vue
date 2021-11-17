@@ -251,7 +251,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .registration {
   min-height: 100vh;
   background-image: url(~@/assets/img/register-background.jpg);
@@ -333,29 +333,6 @@ export default {
   }
 }
 
-.el-input__inner {
-  background-color: inherit;
-  border: none;
-  border-bottom: 1px solid white;
-  color: white;
-  border-radius: 0;
-  font-size: 16px;
-}
-
-.el-input__inner:focus {
-  border-color: $color_3;
-}
-
-.wrapper-input {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  &__icon {
-    margin-right: 10px;
-  }
-}
-
 // Стили для аватарки
 .photo-upload {
   height: auto;
@@ -413,5 +390,54 @@ export default {
       width: 100px;
     }
   }
+}
+
+.wrapper-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  &__icon {
+    margin-right: 10px;
+  }
+}
+
+.el-input__inner {
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  border-radius: 0;
+  font-size: 16px;
+}
+
+.el-input__inner:focus {
+  border-color: $color_3;
+}
+</style>
+
+// Переопределяем стили библиотеки element.io
+<style lang="scss">
+.wrapper-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  &__icon {
+    margin-right: 10px;
+  }
+}
+
+.el-input__inner {
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  border-radius: 0;
+  font-size: 16px;
+}
+
+.el-input__inner:focus {
+  border-color: $color_3;
 }
 </style>

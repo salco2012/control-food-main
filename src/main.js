@@ -5,6 +5,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { initializeApp } from 'firebase/app';
 import locale from 'element-ui/lib/locale/lang/ru-RU'; // установил русский язык для компонентов element
+import VuePageTransition from 'vue-page-transition';
 import firebaseConfig from './config/firebase';
 import 'firebase/database';
 import 'firebase/messaging';
@@ -28,6 +29,7 @@ const messages = {
   alphaRus: 'Допустимы только русские буквы!',
 };
 
+Vue.use(VuePageTransition);
 Vue.use(ElementUI, { locale });
 Vue.use(Vuelidate);
 Vue.use(VuelidateErrorExtractor, {

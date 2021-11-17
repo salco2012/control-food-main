@@ -110,9 +110,10 @@ export default {
           alt: 'selected-recipes',
         },
         {
-          src: 'photo.png',
-          text: 'Личные фотографии',
-          alt: 'photo',
+          src: 'user-rating.png',
+          text: 'Рейтинг пользователей',
+          alt: 'user-rating',
+          routeName: 'UserRating',
         },
       ],
     };

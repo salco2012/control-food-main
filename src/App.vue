@@ -3,7 +3,9 @@
     <el-container>
     <SideBar  v-if="isAuthenticated"/>
       <el-main>
+        <vue-page-transition name="fade-in-down">
         <router-view />
+        </vue-page-transition>
       </el-main>
     </el-container>
   </div>
@@ -38,7 +40,21 @@ body {
   color: white;
 }
 
+hr{
+  border: 1px solid #393c49;
+}
+
 .el-main {
   padding: 0;
 }
+
+// Анимация
+.overlay-top,  .overlay-right   {
+    background: $color_3 !important;
+}
+
+ .overlay-left,  .overlay-bottom {
+   background: $color_4 !important;
+ }
+
 </style>

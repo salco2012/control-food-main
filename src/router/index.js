@@ -6,8 +6,10 @@ import AuthorizationForm from '../views/AuthorizationForm.vue';
 import PasswordRecovery from '../views/PasswordRecovery.vue';
 import UserProfile from '../views/UserProfile.vue';
 import Error404 from '../views/Error404.vue';
-import store from '../store/index';
 import MyGoals from '../views/MyGoals.vue';
+import UserRating from '../views/UserRating.vue';
+
+import store from '../store/index';
 
 Vue.use(VueRouter);
 
@@ -16,21 +18,37 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { transition: 'fade-in-right' },
   },
   {
     path: '/registration',
     name: 'RegistrationForm',
     component: RegistrationForm,
+    meta: { transition: 'fade-in-right' },
   },
   {
     path: '/authorization',
     name: 'AuthorizationForm',
     component: AuthorizationForm,
+    meta: { transition: 'fade-in-right' },
   },
   {
     path: '/password-recovery',
     name: 'PasswordRecovery',
     component: PasswordRecovery,
+    meta: { transition: 'fade-in-right' },
+  },
+  {
+    path: '/user-rating',
+    name: 'UserRating',
+    component: UserRating,
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isUserAuthenticated) {
+        next();
+      } else {
+        next('authorization');
+      }
+    },
   },
   {
     path: '/user-profile',
