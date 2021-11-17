@@ -2,7 +2,7 @@
   <div class="my-goals">
     <el-col :span="20">
       <h1 class="my-goals__title">Мои цели</h1>
-      <hr/>
+      <hr />
       <el-row :gutter="10">
         <el-col :span="12">
           <div class="card">
@@ -350,7 +350,7 @@ export default {
       finishData: '',
       numKgReduce: 0, // кол-во кг которые нужно сбросить либо набрать.
       IsVisibilityDatePicker: false,
-      caloriesPerDay: 1900, // съеденые каллории за сутки
+      caloriesPerDay: 0, // съеденые каллории за сутки
       changedСountingInput: false /* флаг который отвечает
       за изменение значения и отображения кнопки "Сохранить значение"
       либо "Изменить значение` */,
@@ -367,7 +367,7 @@ export default {
       }
       const currentData = this.currentData.toLocaleDateString().replaceAll('.', '-');
       // Получаем разницу между значениями.
-      const differencePerDay = (this.caloriesPerDay - normСalories);
+      const differencePerDay = this.caloriesPerDay - normСalories;
 
       const dataInfoUser = {
         [currentData]: {
@@ -433,8 +433,15 @@ export default {
     numKgReduce() {
       localStorage.setItem('numKgReduce', this.numKgReduce);
     },
+    caloriesPerDay() {
+      localStorage.setItem('caloriesPerDay', this.caloriesPerDay);
+    },
   },
   created() {
+    /* Диспатчим getForm, для получения и перезаписи
+      информацию по каллориям, подтягиваю обновленную
+      информацию с dataBase Realtime */
+    this.$store.dispatch('getForm');
     const responseFinishData = localStorage.getItem('finishData');
     if (responseFinishData && responseFinishData !== 'null') {
       this.finishData = new Date(responseFinishData);
@@ -445,7 +452,27 @@ export default {
       this.numKgReduce = +responseNumKgReduce;
     }
 
-    console.log(this.currentData);
+    const responseCaloriesPerDay = localStorage.getItem('caloriesPerDay');
+    if (responseCaloriesPerDay && responseCaloriesPerDay !== 'null') {
+      this.caloriesPerDay = +responseCaloriesPerDay;
+    }
+
+    const mix = this.infoCurrentUser.userСalories;
+
+    /* Получаем ключ последней даты записанной в бд, и переворачиваем его,
+    для того чтобы корректно распарсить. */
+    const lastRecordedDate = Object.keys(mix)[Object.keys(mix).length - 1].split('-').reverse().join('-');
+    const lastDateMilliseconds = Date.parse(lastRecordedDate);
+
+    // Получаю текущую дату в нужно формате для дельнейшего парсинга.
+    const currentData = new Date().toLocaleString().slice(0, 10).split('.')
+      .reverse()
+      .join('.');
+    const currentDataMseconds = Date.parse(currentData);
+
+    if (currentDataMseconds > lastDateMilliseconds) {
+      this.caloriesPerDay = 0;
+    }
   },
   computed: {
     // Рассчитываем кол-во каллорий, который осталось сжечь.

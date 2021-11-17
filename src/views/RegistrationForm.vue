@@ -323,14 +323,20 @@ export default {
     }
     &-btn:hover,
     &-btn:focus {
-      color: white;
-      background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid white;
     }
   }
   &__submit-btn {
     @extend %baseButton;
     margin-top: 10px;
   }
+  &__submit-btn[disabled] {
+      cursor: not-allowed;
+      background-color: white;
+      color: #888;
+      border: none;
+    }
 }
 
 // Стили для аватарки
