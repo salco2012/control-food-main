@@ -8,16 +8,22 @@
         <el-col :span="12"
           ><el-button
             class="user-rating__tabs"
-            :class="{ tabsActive: tabsActive === 'excess' }"
-            @click="isExcessWeight = true; tabsActive = 'excess'"
+            :class="{ btnActive: tabsActive === 'excess' }"
+            @click="
+              isExcessWeight = true;
+              tabsActive = 'excess';
+            "
             >Сбрасывают вес</el-button
           ></el-col
         >
         <el-col :span="12"
           ><el-button
             class="user-rating__tabs"
-            :class="{ tabsActive: tabsActive === 'deficit' }"
-            @click="isExcessWeight = false; tabsActive = 'deficit'"
+            :class="{ btnActive: tabsActive === 'deficit' }"
+            @click="
+              isExcessWeight = false;
+              tabsActive = 'deficit';
+            "
             >Набирают вес</el-button
           ></el-col
         >
@@ -56,7 +62,7 @@
               <p v-else>Неопознанная кошка</p>
             </template>
           </el-table-column>
-          <el-table-column label="Возраст">
+          <el-table-column prop="age" label="Возраст" sortable>
             <template slot-scope="scope">
               <p>{{ scope.row.age }}</p>
             </template>
@@ -66,10 +72,14 @@
               {{ scope.row.email.replace(/.{3}/, '***') }}
             </template>
           </el-table-column>
-          <el-table-column prop="sumCalories" label="Потеряно (кал.)"></el-table-column>
-          <el-table-column label="Потеряно (кг.)">
+          <el-table-column prop="sumCalories" label="Потеряно (кал.)" sortable>
             <template slot-scope="scope">
-              <b>{{ scope.row.sumKg }}</b>
+              {{ `${scope.row.sumCalories} кал.` }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="sumKg" label="Потеряно (кг.)" sortable>
+            <template slot-scope="scope">
+              <b> {{ `${scope.row.sumKg} кг.` }}</b>
             </template>
           </el-table-column>
         </el-table>
@@ -108,7 +118,7 @@
               <p v-else>Неопознанная кошка</p>
             </template>
           </el-table-column>
-          <el-table-column label="Возраст">
+          <el-table-column prop="age" label="Возраст" sortable>
             <template slot-scope="scope">
               <p>{{ scope.row.age }}</p>
             </template>
@@ -118,10 +128,14 @@
               {{ scope.row.email.replace(/.{3}/, '***') }}
             </template>
           </el-table-column>
-          <el-table-column prop="sumCalories" label="Набрано (кал.)"></el-table-column>
-          <el-table-column prop="sumKg" label="Набрано (кг.)">
+          <el-table-column prop="sumCalories" label="Набрано (кал.)" sortable>
             <template slot-scope="scope">
-              <b>{{ scope.row.sumKg }}</b>
+              {{ `${scope.row.sumCalories} кал.` }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="sumKg" label="Набрано (кг.)" sortable>
+            <template slot-scope="scope">
+              <b> {{ `${scope.row.sumKg} кг.` }}</b>
             </template>
           </el-table-column>
         </el-table>
@@ -141,7 +155,7 @@ export default {
       tableDeficitWeight: [],
       // Флаг отвечает какой список отображаем.
       isExcessWeight: true,
-      tabsActive: null,
+      tabsActive: 'excess',
     };
   },
   computed: {
@@ -156,15 +170,15 @@ export default {
       for (let i = 0; i < this.tableExcessWeight.length; i += 1) {
         const userСalories = Object.values(this.tableExcessWeight[i].userСalories);
         const sumCalories = userСalories.reduce((total, obj) => total + obj.differencePerDay, 0);
-        this.tableExcessWeight[i].sumCalories = `${Math.abs(sumCalories)} кал.`;
-        this.tableExcessWeight[i].sumKg = `${Math.abs(sumCalories / 7700).toFixed(2)} кг.`;
+        this.tableExcessWeight[i].sumCalories = Math.abs(sumCalories);
+        this.tableExcessWeight[i].sumKg = +Math.abs(sumCalories / 7700).toFixed(2);
       }
 
       for (let i = 0; i < this.tableDeficitWeight.length; i += 1) {
         const userСalories = Object.values(this.tableDeficitWeight[i].userСalories);
         const sumCalories = userСalories.reduce((total, obj) => total + obj.differencePerDay, 0);
-        this.tableDeficitWeight[i].sumCalories = `${Math.abs(sumCalories)} кал.`;
-        this.tableDeficitWeight[i].sumKg = `${Math.abs(sumCalories / 7700).toFixed(2)} кг.`;
+        this.tableDeficitWeight[i].sumCalories = Math.abs(sumCalories);
+        this.tableDeficitWeight[i].sumKg = +Math.abs(sumCalories / 7700).toFixed(2);
       }
     },
     // Распределяем пользователей на категории (с лишним весом и дефицитом веса)
@@ -205,6 +219,11 @@ export default {
     this.spreadOverTables();
     this.totalCaloriesBurned();
   },
+  mounted() {
+    // Сортируем массивы по значению sumKg
+    this.tableExcessWeight = this.tableExcessWeight.sort((a, b) => (a.sumKg < b.sumKg ? 1 : -1));
+    this.tableDeficitWeight = this.tableDeficitWeight.sort((a, b) => (a.sumKg < b.sumKg ? 1 : -1));
+  },
 };
 </script>
 
@@ -232,7 +251,7 @@ export default {
       background: $color_4;
     }
   }
-  .tabsActive {
+  .btnActive {
     background: $color_4;
   }
 }
@@ -254,5 +273,21 @@ tr.table-header > th {
   color: $color_2;
   font-family: 'MontserratRegular';
   font-size: 16px;
+}
+
+.el-table .sort-caret.descending {
+  border-top-color: $color_2;
+}
+
+.el-table .sort-caret.ascending {
+  border-bottom-color: $color_2;
+}
+
+.el-table .ascending .sort-caret.ascending {
+  border-bottom-color: $color_4;
+}
+
+.el-table .descending .sort-caret.descending {
+  border-top-color: $color_4;
 }
 </style>

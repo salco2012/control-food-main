@@ -87,6 +87,8 @@ export default {
           src: 'search-recipes.png',
           text: 'Поиск рецептов',
           alt: 'search-recipes',
+          routeName: 'SearchRecipes',
+
         },
         {
           src: 'news.png',
