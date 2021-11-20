@@ -1,12 +1,13 @@
 <template>
-  <el-col :span="4">
+  <el-col :span="4"
+   v-if="infoCurrentUser && isAuthenticated"
+  >
     <el-menu
       default-active="1"
       class="sidebar-menu"
       background-color="#1f1d2b"
       text-color="#fff"
       active-text-color="#fff"
-      v-if="infoCurrentUser"
     >
       <div class="profile-info">
           <img
@@ -141,10 +142,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: 40px 0 70px 20px;
-  font-family: 'MonserratRegular';
+  font-family: 'MontserratRegular';
   &__avatar {
     width: 70px;
     height: 70px;
+    object-fit:cover;
     border: 2px solid $color_3;
     border-radius: 50%;
   }

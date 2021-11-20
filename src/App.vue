@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-    <SideBar  v-if="isAuthenticated"/>
+    <SideBar/>
       <el-main>
         <vue-page-transition name="fade-in-down">
         <router-view />
@@ -19,11 +19,6 @@ export default {
   components: {
     SideBar,
   },
-  computed: {
-    isAuthenticated() {
-      return this.$store.state.UserAuth.user.isAuthenticated;
-    },
-  },
 };
 </script>
 
@@ -33,7 +28,7 @@ export default {
 body {
   padding: 0;
   margin: 0;
-  font-family: 'MonserratRegular';
+  font-family: 'MontserratRegular';
   font-size: 16px;
   box-sizing: border-box;
   background-color: $color_1;

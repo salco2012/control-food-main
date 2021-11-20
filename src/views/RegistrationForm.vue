@@ -311,7 +311,7 @@ export default {
       margin-bottom: 15px;
     }
     &-text {
-      font-family: 'MonserratRegular';
+  font-family: 'MontserratRegular';
       font-size: 14px;
       margin-bottom: 15px;
     }

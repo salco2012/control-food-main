@@ -120,6 +120,7 @@ export default {
     &__avatar {
       width: 75px;
       height: 75px;
+      object-fit:cover;
       border-radius: 50%;
       border: 2px solid $color_3;
       margin-bottom: 10px;

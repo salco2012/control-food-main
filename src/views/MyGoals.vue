@@ -369,11 +369,21 @@ export default {
       // Получаем разницу между значениями.
       const differencePerDay = this.caloriesPerDay - normСalories;
 
+      let weightStatus;
+      if (this.excessWeightWoman < 0) {
+        weightStatus = 'deficitWeight';
+      } else if (this.excessWeightWoman === 0) {
+        weightStatus = 'idealWeight';
+      } else {
+        weightStatus = 'excessWeight';
+      }
+
       const dataInfoUser = {
         [currentData]: {
           normСalories,
           caloriesEatenPerDay: this.caloriesPerDay,
           differencePerDay,
+          weightUserStatus: weightStatus,
         },
       };
       this.$store.dispatch('setUserСalories', dataInfoUser);
