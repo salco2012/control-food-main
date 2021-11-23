@@ -1,7 +1,5 @@
 <template>
-  <el-col :span="4"
-   v-if="infoCurrentUser && isAuthenticated"
-  >
+  <el-col :span="4" v-if="infoCurrentUser && isAuthenticated">
     <el-menu
       default-active="1"
       class="sidebar-menu"
@@ -10,7 +8,7 @@
       active-text-color="#fff"
     >
       <div class="profile-info">
-          <img
+        <img
           v-if="infoCurrentUser.imageData"
           class="profile-info__avatar"
           :src="infoCurrentUser.imageData"
@@ -111,6 +109,7 @@ export default {
           src: 'selected-recipes.png',
           text: 'Избранные рецепты',
           alt: 'selected-recipes',
+          routeName: 'SelectedRecipes',
         },
         {
           src: 'user-rating.png',
@@ -148,7 +147,7 @@ export default {
   &__avatar {
     width: 70px;
     height: 70px;
-    object-fit:cover;
+    object-fit: cover;
     border: 2px solid $color_3;
     border-radius: 50%;
   }

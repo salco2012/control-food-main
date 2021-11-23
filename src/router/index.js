@@ -9,6 +9,7 @@ import Error404 from '../views/Error404.vue';
 import MyGoals from '../views/MyGoals.vue';
 import UserRating from '../views/UserRating.vue';
 import SearchRecipes from '../views/SearchRecipes.vue';
+import SelectedRecipes from '../views/SelectedRecipes.vue';
 
 import store from '../store/index';
 
@@ -79,6 +80,18 @@ const routes = [
     path: '/search-recipes',
     name: 'SearchRecipes',
     component: SearchRecipes,
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isUserAuthenticated) {
+        next();
+      } else {
+        next('authorization');
+      }
+    },
+  },
+  {
+    path: '/selected-recipes',
+    name: 'SelectedRecipes',
+    component: SelectedRecipes,
     beforeEnter: (to, from, next) => {
       if (store.getters.isUserAuthenticated) {
         next();
