@@ -6,7 +6,7 @@
       <p class="error-page__description">
         К сожалению, страница, которую Вы запрашиваете, не существует…
       </p>
-      <el-button class="error-page__btn" @click="$router.push({ name: 'Home' })"
+      <el-button class="error-page__btn" @click="$router.push({ name: 'Home' }).catch(()=>{})"
         >На главную</el-button
       >
     </div>

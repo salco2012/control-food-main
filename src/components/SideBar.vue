@@ -61,7 +61,7 @@
         :class="{ 'active-item': currentIndex === index }"
         @click="
           currentIndex = index;
-          $router.push({ name: item.routeName });
+          $router.push({ name: item.routeName }).catch(()=>{});
         "
       >
         <img
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     exitProfile() {
-      this.$router.push({ name: 'Home' });
+      this.$router.push({ name: 'Home' }).catch(() => {});
       this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
       this.$store.commit('CLEAR_INFO_USER'); // Очищаем информацию о пользователе
     },

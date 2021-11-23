@@ -14,10 +14,14 @@
         <br />А, так же сможете ввести детальный учет по съеденным каллориям.
       </p>
       <div class="home__content-buttons">
-        <el-button class="home__content-btn" @click="$router.push({ name: 'RegistrationForm' })"
+        <el-button
+          class="home__content-btn"
+          @click="$router.push({ name: 'RegistrationForm' }).catch(() => {})"
           >Регистрация</el-button
         >
-        <el-button class="home__content-btn" @click="$router.push({ name: 'AuthorizationForm' })"
+        <el-button
+          class="home__content-btn"
+          @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
           >Авторизация</el-button
         >
       </div>

@@ -7,7 +7,7 @@
           <p class="recover-password__text">Установите новый!</p>
           <el-button
             class="recover-password__btn"
-            @click="$router.push({ name: 'PasswordRecovery' })"
+            @click="$router.push({ name: 'PasswordRecovery' }).catch(()=>{})"
             >Восстановить пароль</el-button
           >
         </el-col>
@@ -79,7 +79,7 @@ export default {
               type: 'success',
             });
             this.$store.dispatch('getForm');
-            this.$router.push({ name: 'UserProfile' });
+            this.$router.push({ name: 'UserProfile' }).catch(() => {});
           } else {
             this.$message({
               message: 'Некорректные данные :(',

@@ -9,7 +9,7 @@
 
           <el-button
             class="registration-form__auth-menu-btn"
-            @click="$router.push({ name: 'AuthorizationForm' })"
+            @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
             >Авторизация</el-button
           >
         </el-col>
@@ -204,7 +204,7 @@ export default {
         })
         .then(() => {
           if (this.isAuthenticated) {
-            this.$router.push({ name: 'UserProfile' });
+            this.$router.push({ name: 'UserProfile' }).catch(() => {});
           }
         });
     },

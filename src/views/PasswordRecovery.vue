@@ -9,7 +9,7 @@
 
           <el-button
             class="password-recovery__form-left-btn"
-            @click="$router.push({ name: 'AuthorizationForm' })"
+            @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
             >Авторизация</el-button
           >
         </el-col>
@@ -70,7 +70,8 @@ export default {
               type: 'success',
             });
             setTimeout(() => {
-              this.$router.push({ name: 'AuthorizationForm' });
+              this.$router.push({ name: 'AuthorizationForm' })
+                .catch(() => {});
             }, 3000);
           } else {
             this.$message({
@@ -120,7 +121,7 @@ export default {
       margin-bottom: 15px;
     }
     &-text {
-  font-family: 'MontserratRegular';
+      font-family: 'MontserratRegular';
       font-size: 14px;
       margin-bottom: 15px;
     }

@@ -11,6 +11,7 @@
             <div class="recipe-card__title-wrapper">
               <h1 class="recipe-card__title">{{ item.recipe.label }}</h1>
             </div>
+
             <div class="recipe-card__description">
               <div class="recipe-card__ingredients">
                 <el-collapse accordion v-model="autoСlose">
@@ -39,12 +40,12 @@
                   </el-collapse-item>
 
                   <el-collapse-item title="Калорийность" :name="item.recipe.calories">
-                    <p class="recipe-card__calories">{{ Math.round(item.recipe.calories) }} кал.</p>
+                    <p class="recipe-card__calories">{{ Math.round(item.recipe.calories) }} cal.</p>
                   </el-collapse-item>
 
                   <el-collapse-item title="Предостережения" :name="item.recipe.cautions.index">
                     <el-tag type="warning" v-if="!item.recipe.cautions.length">
-                      {{ 'Предостережений нет' }}
+                      {{ 'No caveats' }}
                     </el-tag>
                     <div v-else>
                       <el-tag
@@ -58,7 +59,7 @@
                   </el-collapse-item>
 
                   <el-collapse-item title="Тип кухни" :name="item.recipe.cuisineType.index">
-                    <el-tag v-if="!item.recipe.cuisineType.length"> {{ 'Нет информации' }}</el-tag>
+                    <el-tag v-if="!item.recipe.cuisineType.length"> {{ 'No information' }}</el-tag>
                     <div v-else>
                       <el-tag v-for="cuisine in item.recipe.cuisineType" :key="cuisine.id">
                         {{ cuisine }}</el-tag
@@ -75,7 +76,7 @@
                   </div>
                   <div v-else>
                     <el-collapse-item title="Тип блюда" :name="Math.random()">
-                      <el-tag> {{ 'Данных нет' }}</el-tag>
+                      <el-tag> {{ 'No data' }}</el-tag>
                     </el-collapse-item>
                   </div>
 
@@ -94,7 +95,7 @@
                   </el-collapse-item>
 
                   <el-collapse-item title="Тип еды" :name="item.recipe.mealType.index">
-                    <el-tag v-if="!item.recipe.mealType.length"> {{ 'Нет информации' }}</el-tag>
+                    <el-tag v-if="!item.recipe.mealType.length"> {{ 'No information' }}</el-tag>
                     <div v-else>
                       <el-tag v-for="meal in item.recipe.mealType" :key="meal.id">
                         {{ meal }}</el-tag
@@ -119,6 +120,7 @@
                 >Перейти к рецепту</el-link
               >
             </div>
+
           </div>
         </el-col>
       </el-row>
@@ -143,12 +145,8 @@ export default {
       linkToNext: '',
       page: 1,
       pageSize: 20,
-      selectedRecipes: [],
       autoСlose: [],
     };
-  },
-  updated() {
-    console.log(this.selectedRecipes);
   },
   created() {
     this.getRecept();
@@ -158,17 +156,17 @@ export default {
       this.autoСlose = [];
     },
     isItemAdded(item) {
-      const isItemAdded = this.selectedRecipes.includes(item);
+      const isItemAdded = this.$store.getters.selectedRecipes.includes(item);
       return !!isItemAdded;
     },
     toggleSelectedRecipes(item) {
       const isItemAdded = this.isItemAdded(item);
       if (!isItemAdded) {
-        this.selectedRecipes.push(item);
+        this.$store.commit('SET_SELECTED_RECIPES', item);
         return false;
       }
-      const index = this.selectedRecipes.indexOf(item);
-      this.selectedRecipes.splice(index, 1);
+      const index = this.$store.getters.selectedRecipes.indexOf(item);
+      this.$store.commit('DELETE_SELECTED_RECIPES', index);
       return true;
     },
     async getRecept() {
