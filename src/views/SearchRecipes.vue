@@ -12,11 +12,12 @@
         </el-col>
       </el-row>
       <el-row :gutter="10">
-        <el-col :span="6" v-for="(item, index) in receptAll" :key="index">
+        <el-col :span="6" v-for="(item, index) in pagedRecept()" :key="index">
           <div class="recipe-card">
-            <img class="recipe-card__img" :src="item.image" />
+            <img v-if="item.recipe.image" class="recipe-card__img" :src="item.recipe.image" />
+            <img v-else src="../assets/img/No_image_available.png" class="recipe-card__img" />
             <div class="recipe-card__title-wrapper">
-              <h1 class="recipe-card__title">{{ item.label }}</h1>
+              <h1 class="recipe-card__title">{{ item.recipe.label }}</h1>
             </div>
             <div class="recipe-card__description">
               <div class="recipe-card__ingredients">
@@ -24,32 +25,39 @@
                   <el-collapse-item title="Ингредиенты" :name="index">
                     <div
                       class="recipe-card__ingredients-item"
-                      v-for="(ingredientLine, ingredientIndex) in item.ingredientLines"
+                      v-for="(ingredientLine, ingredientIndex) in item.recipe.ingredientLines"
                       :key="ingredientIndex"
                     >
-                      <img
-                        class="recipe-card__ingredients-logo"
-                        :src="item.ingredients[ingredientIndex].image"
-                      />
+                      <div v-if="item.recipe.ingredients[ingredientIndex]">
+                        <img
+                          v-if="item.recipe.ingredients[ingredientIndex].image"
+                          class="recipe-card__ingredients-logo"
+                          :src="item.recipe.ingredients[ingredientIndex].image"
+                        />
+                        <img
+                          v-else
+                          src="../assets/img/No_image_available.png"
+                          class="recipe-card__ingredients-logo"
+                        />
+                      </div>
                       <span class="recipe-card__ingredients-text">
                         {{ ingredientLine }}
                       </span>
                     </div>
                   </el-collapse-item>
 
-                  <el-collapse-item title="Характеристики" :name="item.calories">
-                    <p>{{ Math.round(item.calories) }} кал.</p>
-                    <p>Описание</p>
+                  <el-collapse-item title="Калорийность" :name="item.recipe.calories">
+                    <p class="recipe-card__calories">{{ Math.round(item.recipe.calories) }} кал.</p>
                   </el-collapse-item>
 
-                  <el-collapse-item title="Предостережения" :name="item.cautions.index">
-                    <el-tag type="warning" v-if="!item.cautions.length">
+                  <el-collapse-item title="Предостережения" :name="item.recipe.cautions.index">
+                    <el-tag type="warning" v-if="!item.recipe.cautions.length">
                       {{ 'Предостережений нет' }}
                     </el-tag>
                     <div v-else>
                       <el-tag
                         type="warning"
-                        v-for="(caution, cautionIndex) in item.cautions"
+                        v-for="(caution, cautionIndex) in item.recipe.cautions"
                         :key="cautionIndex"
                         style="margin-right: 10px"
                         >{{ caution }}</el-tag
@@ -57,48 +65,69 @@
                     </div>
                   </el-collapse-item>
 
-                  <el-collapse-item title="Тип кухни" :name="item.cuisineType.index">
-                    <el-tag v-if="!item.cuisineType.length"> {{ 'Нет информации' }}</el-tag>
+                  <el-collapse-item title="Тип кухни" :name="item.recipe.cuisineType.index">
+                    <el-tag v-if="!item.recipe.cuisineType.length"> {{ 'Нет информации' }}</el-tag>
                     <div v-else>
-                      <el-tag v-for="cuisine in item.cuisineType" :key="cuisine.id">
+                      <el-tag v-for="cuisine in item.recipe.cuisineType" :key="cuisine.id">
                         {{ cuisine }}</el-tag
                       >
                     </div>
                   </el-collapse-item>
 
-                  <div v-if="item.dishType">
-                  <el-collapse-item title="Тип блюда" :name="item.dishType.index">
-                     <el-tag v-for="dish in item.dishType" :key="dish.id"> {{ dish }}</el-tag>
-                  </el-collapse-item>
+                  <div v-if="item.recipe.dishType">
+                    <el-collapse-item title="Тип блюда" :name="item.recipe.dishType.index">
+                      <el-tag v-for="dish in item.recipe.dishType" :key="dish.id">
+                        {{ dish }}</el-tag
+                      >
+                    </el-collapse-item>
+                  </div>
+                  <div v-else>
+                    <el-collapse-item title="Тип блюда" :name="Math.random()">
+                      <el-tag> {{ 'Данных нет' }}</el-tag>
+                    </el-collapse-item>
                   </div>
 
-                  <el-collapse-item title="Этикетки здоровья" :name="item.healthLabels.index">
+                  <el-collapse-item
+                    title="Этикетки здоровья"
+                    :name="item.recipe.healthLabels.index"
+                  >
                     <el-tag
                       type="success"
                       style="margin-right: 10px; margin-bottom: 10px"
-                      v-for="healthLabel in item.healthLabels"
+                      v-for="healthLabel in item.recipe.healthLabels"
                       :key="healthLabel.id"
                     >
                       {{ healthLabel }}</el-tag
                     >
                   </el-collapse-item>
 
-                  <el-collapse-item title="Тип еды" :name="item.mealType.index">
-                  <el-tag v-if="!item.mealType.length"> {{ 'Нет информации' }}</el-tag>
-                  <div v-else>
-                    <el-tag v-for="meal in item.mealType" :key="meal.id"> {{ meal }}</el-tag>
-                  </div>
+                  <el-collapse-item title="Тип еды" :name="item.recipe.mealType.index">
+                    <el-tag v-if="!item.recipe.mealType.length"> {{ 'Нет информации' }}</el-tag>
+                    <div v-else>
+                      <el-tag v-for="meal in item.recipe.mealType" :key="meal.id">
+                        {{ meal }}</el-tag
+                      >
+                    </div>
                   </el-collapse-item>
                 </el-collapse>
               </div>
 
-              <p class="search-recipes__source">Источник: {{ `«${item.source}»` }}</p>
-              <el-link class="search-recipes__to-recipe"
-              :href="item.url" target="_blank">Перейти к рецепту</el-link>
+              <p class="search-recipes__source">Источник: {{ `«${item.recipe.source}»` }}</p>
+              <el-link class="search-recipes__to-recipe" :href="item.recipe.url" target="_blank"
+                >Перейти к рецепту</el-link
+              >
             </div>
           </div>
         </el-col>
       </el-row>
+      <el-pagination
+        v-if="receptAll.length"
+        background
+        layout="prev, pager, next"
+        :total="receptAll.length + 20"
+        :page-size="pageSize"
+        @current-change="setPage"
+      ></el-pagination>
     </el-col>
   </div>
 </template>
@@ -109,19 +138,50 @@ export default {
     return {
       searchRecipes: null,
       receptAll: [],
+      linkToNext: '',
+      page: 1,
+      pageSize: 20,
     };
   },
-  async created() {
-    const recept = await fetch(
-      'https://api.edamam.com/api/recipes/v2?type=public&q=%20hen&app_id=52d453a9&app_key=%20ca99304a9de5bc6c29f01da311d0ba25',
-    );
-    const { hits } = await recept.json();
-    for (let i = 0; i < hits.length; i += 1) {
-      this.receptAll.push(hits[i].recipe);
-    }
+  created() {
+    this.getRecept();
   },
-  mounted() {
-    console.log(this.receptAll);
+  methods: {
+    async getRecept() {
+      try {
+        const recept = await fetch(
+          'https://api.edamam.com/api/recipes/v2?type=public&q=%20hen&app_id=52d453a9&app_key=%20ca99304a9de5bc6c29f01da311d0ba25',
+        );
+        const result = await recept.json();
+        this.receptAll.push(...result.hits);
+        // eslint-disable-next-line no-underscore-dangle
+        this.linkToNext = result._links.next.href;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async setPage(val) {
+      await this.addNewRecept();
+      this.page = val;
+    },
+    pagedRecept() {
+      return this.receptAll.slice(
+        this.pageSize * this.page - this.pageSize,
+        this.pageSize * this.page,
+      );
+    },
+    async addNewRecept() {
+      try {
+        // eslint-disable-next-line no-underscore-dangle
+        const recept = await fetch(this.linkToNext);
+        const result = await recept.json();
+        this.receptAll.push(...result.hits);
+        // eslint-disable-next-line no-underscore-dangle
+        this.linkToNext = result._links.next.href;
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>
@@ -176,27 +236,29 @@ export default {
     &__description {
       padding: 10px;
     }
+
+    &__calories {
+      color: white;
+    }
   }
 
   .el-row {
     margin-bottom: 10px;
   }
 
-  &__source{
+  &__source {
     color: $color_7;
     font-size: 14px;
     margin: 10px 0;
   }
 
-  &__to-recipe{
-  @extend %baseButton;
-  font-size: 18px;
-  min-width: 250px;
-  height: 40px;
-  display: flex;
-  align-items: center;
+  &__to-recipe {
+    @extend %baseButton;
+    font-size: 18px;
+    min-width: 250px;
+    height: 40px;
+    display: flex;
   }
-
 }
 </style>
 
@@ -214,11 +276,35 @@ export default {
   color: white;
 }
 
-.el-collapse-item__content{
+.recipe-card__description {
+  padding-top: 0 !important;
+}
+
+.el-collapse-item__content {
   padding-bottom: 15px;
 }
 
+.el-collapse {
+  border-top: none;
+}
+
 .el-link.is-underline:hover:after {
-border: none;
+  border: none;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: $color_3;
+}
+
+.el-pagination.is-background .el-pager li,
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .btn-next {
+  border-radius: 10px;
+  transition: 0.5s ease;
+}
+
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  background-color: $color_3;
+  color: white;
 }
 </style>
