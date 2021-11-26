@@ -8,6 +8,8 @@ export default {
   state: {
     infoCurrentUser: null,
     listAllUsers: null,
+    // Избранные рецепты с бд
+    selectRecipes: [],
   },
   mutations: {
     CLEAR_INFO_USER(state) {
@@ -22,6 +24,18 @@ export default {
     CLEAR_ALL_USERS(state) {
       state.listAllUsers = null;
     },
+    SET_SELECT_RECIPES(state, payload) {
+      state.selectRecipes = payload;
+    },
+    PUSH_SELECT_RECIPES(state, payload) {
+      state.selectRecipes.push(payload);
+    },
+    DELETE_SELECT_RECIPES(state, index) {
+      state.selectRecipes.splice(index, 1);
+    },
+    CLEAR_SELECT_RECIPES(state) {
+      state.selectRecipes = [];
+    },
   },
   actions: {
     setForm({ rootState }, payload) {
@@ -34,10 +48,17 @@ export default {
       const uidUser = rootState.UserAuth.user.userID;
       update(ref(db, `usersUID/${uidUser}/userСalories`), payload);
     },
-    getForm({ commit, rootState }) {
-      const dbRef = ref(getDatabase());
+    setSelectedRecipes({ rootState }, payload) {
+      const db = getDatabase();
       const uidUser = rootState.UserAuth.user.userID;
-      get(child(dbRef, `usersUID/${uidUser}`))
+      set(ref(db, `usersUID/${uidUser}/selectedRecipes`), payload);
+    },
+    getForm({ commit, rootState }) {
+      return new Promise((resolve) => {
+        const dbRef = ref(getDatabase());
+        const uidUser = rootState.UserAuth.user.userID;
+        resolve(get(child(dbRef, `usersUID/${uidUser}`)));
+      })
         .then((snapshot) => {
           if (snapshot.exists()) {
             commit('SET_INFO_CURRENT_USER', snapshot.val());
@@ -50,15 +71,23 @@ export default {
         });
     },
     getListAllUsers({ commit }) {
-      const dbRef = ref(getDatabase());
-      get(child(dbRef, 'usersUID')).then((snapshot) => {
-        if (snapshot.exists()) {
-          commit('SET_ALL_USERS', snapshot.val());
-        } else {
-          console.error('Данные не доступны');
-        }
-      });
+      return new Promise((resolve) => {
+        const dbRef = ref(getDatabase());
+        resolve(get(child(dbRef, 'usersUID')));
+      })
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            commit('SET_ALL_USERS', snapshot.val());
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
-  getters: {},
+  getters: {
+    selectRecipes(state) {
+      return state.selectRecipes;
+    },
+  },
 };

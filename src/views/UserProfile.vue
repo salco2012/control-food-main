@@ -80,6 +80,22 @@
                 </div>
               </div>
             </el-col>
+                        <el-col :span="6">
+              <div class="card">
+                <h2 class="card__title">Текущий вес:</h2>
+                <div class="card__weight">
+                  <p v-if="infoCurrentUser.weight" class="card__weight-description">
+                    {{ infoCurrentUser.weight }} <span class="kg">(кг.)</span>
+                  </p>
+                  <p v-else class="card__weight-description" style="margin-right: 10px">-</p>
+                  <span class="fas fa-weight" style="font-size: 32px"></span>
+                </div>
+                <div class="btn-group">
+                  <el-button class="btn-minus" circle>-</el-button>
+                  <el-button class="btn-plus" circle>+</el-button>
+                </div>
+              </div>
+            </el-col>
           </el-row>
         </div>
       </el-col>

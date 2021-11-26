@@ -125,6 +125,7 @@ export default {
       this.$router.push({ name: 'Home' }).catch(() => {});
       this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
       this.$store.commit('CLEAR_INFO_USER'); // Очищаем информацию о пользователе
+      this.$store.commit('CLEAR_SELECT_RECIPES'); // Очищаем рецепты в сторе.
     },
   },
   computed: {
@@ -181,7 +182,8 @@ export default {
 
 .sidebar-menu {
   min-height: 100vh;
-  overflow: hidden;
+  position: sticky;
+  top: 0;
   &__icon {
     width: 50px;
     height: 50px;

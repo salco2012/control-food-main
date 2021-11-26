@@ -1,5 +1,5 @@
 <template>
-  <div class="search-recipes">
+  <div class="search-recipes" v-if="receptAll.length">
     <el-col :span="20">
       <h1 class="search-recipes__title">Поиск рецептов</h1>
       <hr />
@@ -9,7 +9,7 @@
             <img v-if="item.recipe.image" class="recipe-card__img" :src="item.recipe.image" />
             <img v-else src="../assets/img/No_image_available.png" class="recipe-card__img" />
             <div class="recipe-card__title-wrapper">
-              <h1 class="recipe-card__title">{{ item.recipe.label }}</h1>
+              <h1 class="recipe-card__title">{{ upgradeTitle(item.recipe.label) }}</h1>
             </div>
 
             <div class="recipe-card__description">
@@ -105,7 +105,7 @@
                 </el-collapse>
               </div>
 
-              <div class="favorites" @click="toggleSelectedRecipes(item)">
+              <div class="favorites" @click="toggleSelectedRecipes(item, index)">
                 <i
                   class="fas fa-star favorites__icon"
                   :class="{ isFavorites: isItemAdded(item) }"
@@ -120,7 +120,6 @@
                 >Перейти к рецепту</el-link
               >
             </div>
-
           </div>
         </el-col>
       </el-row>
@@ -150,24 +149,63 @@ export default {
   },
   created() {
     this.getRecept();
+    this.getUserRecipes();
+  },
+  computed: {
+    infoCurrentUser() {
+      return this.$store.state.UserInfoDatabase.infoCurrentUser;
+    },
   },
   methods: {
+    // Метод для обрезки длинных строк
+    upgradeTitle(str) {
+      return str.length > 48 ? `${str.slice(0, 47)}…` : str;
+    },
+    getUserRecipes() {
+      this.$store
+        .dispatch('getForm')
+        .then(() => {
+          // Проверяем на наличие поля selectedRecipes в бд.
+          if (this.infoCurrentUser.selectedRecipes) {
+            // Если поле есть, парсим его и преобразуем в массив значений.
+            const result = Object.values(JSON.parse(this.infoCurrentUser.selectedRecipes));
+            // Если значение в массиве есть, записываем его в getUserRecipes
+            if (result.length) {
+              this.$store.commit('SET_SELECT_RECIPES', result);
+            }
+          }
+        })
+        .catch((error) => console.error(error));
+    },
     nullifyАutoСlose() {
       this.autoСlose = [];
     },
     isItemAdded(item) {
-      const isItemAdded = this.$store.getters.selectedRecipes.includes(item);
-      return !!isItemAdded;
+      return this.$store.getters.selectRecipes.some((elem) => elem.url === item.recipe.url);
     },
     toggleSelectedRecipes(item) {
-      const isItemAdded = this.isItemAdded(item);
-      if (!isItemAdded) {
-        this.$store.commit('SET_SELECTED_RECIPES', item);
-        return false;
+      const result = this.isItemAdded(item);
+      console.log(result);
+      if (result) {
+        // Получаем индекс элемента который нужно удалить
+        const deleteIndex = this.$store.getters.selectRecipes.findIndex(
+          (el) => el.url === item.recipe.url,
+        );
+        // Удаляем кликнутый элемент из массива
+        this.$store.commit('DELETE_SELECT_RECIPES', deleteIndex);
+        // После удаления, перезаписываем в бд. обновленные данные.
+        this.$store.dispatch(
+          'setSelectedRecipes',
+          JSON.stringify(this.$store.getters.selectRecipes),
+        );
+      } else {
+        this.$store.commit('PUSH_SELECT_RECIPES', item.recipe);
+        this.$store.dispatch(
+          'setSelectedRecipes',
+          JSON.stringify(this.$store.getters.selectRecipes),
+        );
       }
-      const index = this.$store.getters.selectedRecipes.indexOf(item);
-      this.$store.commit('DELETE_SELECTED_RECIPES', index);
-      return true;
+      return result;
     },
     async getRecept() {
       try {

@@ -255,6 +255,7 @@
                     <p v-if="changedСountingInput === false" class="mr10">
                       {{ caloriesPerDay }} (ккал.)
                     </p>
+
                     <div class="card__flex-block">
                       <!-- Отображаю блок с возможность
                       ввода нового значения при условии,
@@ -350,26 +351,63 @@ export default {
       finishData: '',
       numKgReduce: 0, // кол-во кг которые нужно сбросить либо набрать.
       IsVisibilityDatePicker: false,
-      caloriesPerDay: 0, // съеденые каллории за сутки
+      caloriesPerDay: 0, // употребленные калории за сутки
       changedСountingInput: false /* флаг который отвечает
       за изменение значения и отображения кнопки "Сохранить значение"
       либо "Изменить значение` */,
     };
   },
   methods: {
-    // Отправляем данные о пользовательских каллориях в базу данных.
+    calorieRenewal() {
+      // объект с ключами всех дат по записям пользователя
+      const keysDates = this.infoCurrentUser.userСalories;
+
+      /* Получаем ключ последней даты записанной в бд, и переворачиваем его,
+    для того чтобы корректно распарсить. */
+      const lastRecordedDate = Object.keys(keysDates)[Object.keys(keysDates).length - 1].split('-')
+        .reverse()
+        .join('-');
+
+      // Возвращаю кол-во миллисекунд последней даты в бд
+      const lastDateMseconds = Date.parse(lastRecordedDate);
+
+      // Получаю текущую дату в нужно формате для дельнейшего парсинга.
+      const currentData = new Date().toLocaleString().slice(0, 10).split('.')
+        .reverse()
+        .join('.');
+
+      // Возвращаю кол-во миллисекунд текущей даты
+      const currentDataMseconds = Date.parse(currentData);
+
+      // Если текущая дата больше последней, обнуляем счетчик кал.
+      if (currentDataMseconds > lastDateMseconds) {
+        this.caloriesPerDay = 0;
+      } else {
+        // В противном случае записываем значение из бд
+        this.caloriesPerDay = this.infoCurrentUser.userСalories[
+          Object.keys(keysDates)[Object.keys(keysDates).length - 1]]
+          .caloriesEatenPerDay;
+      }
+    },
+    // Метод отправки инф. о пользовательских калориях в базу данных.
     setUserСalories() {
       let normСalories = null;
+
+      // В зависимости от пола, записываем норму калорий в переменную normСalories
       if (this.infoCurrentUser.gender === 'мужской') {
         normСalories = this.normСaloriesMan;
       } else {
         normСalories = this.normСaloriesWoman;
       }
+
+      // Получаем текущую дату в нужном формате
       const currentData = this.currentData.toLocaleDateString().replaceAll('.', '-');
-      // Получаем разницу между значениями.
+
+      // Получаем разницу между употребленными кал. и нормой
       const differencePerDay = this.caloriesPerDay - normСalories;
 
       let weightStatus;
+      // В зависимости от условия записываем весовой статус пользователя.
       if (this.excessWeightWoman < 0) {
         weightStatus = 'deficitWeight';
       } else if (this.excessWeightWoman === 0) {
@@ -378,6 +416,7 @@ export default {
         weightStatus = 'excessWeight';
       }
 
+      // объект с инф. о пользователе
       const dataInfoUser = {
         [currentData]: {
           normСalories,
@@ -386,9 +425,12 @@ export default {
           weightUserStatus: weightStatus,
         },
       };
+
+      // Добавляем объект с инф. в базу данных
       this.$store.dispatch('setUserСalories', dataInfoUser);
     },
-    // функция отвечает за уменьшение кол-ва сбрасываемых килограмм.
+
+    // отвечает за уменьшение кол-ва сбрасываемых килограмм
     numKgReduceMinus() {
       if (this.numKgReduce > 0) {
         this.numKgReduce -= 1;
@@ -404,7 +446,7 @@ export default {
         });
       }
     },
-    // функция отвечает за увеличение кол-ва сбрасываемых килограмм.
+    // отвечает за увеличение кол-ва сбрасываемых килограмм
     numKgReducePlus() {
       if (this.resultWeight <= 40 && !this.weightDeviationisNormal) {
         this.$message({
@@ -439,19 +481,16 @@ export default {
     finishData() {
       localStorage.setItem('finishData', this.finishData);
     },
-    // кол-во кг которые нужно сбросить либо набрать.
+    // Записываем кол-во кг которые нужно сбросить либо набрать в localStorage
     numKgReduce() {
       localStorage.setItem('numKgReduce', this.numKgReduce);
-    },
-    caloriesPerDay() {
-      localStorage.setItem('caloriesPerDay', this.caloriesPerDay);
     },
   },
   created() {
     /* Диспатчим getForm, для получения и перезаписи
       информацию по каллориям, подтягиваю обновленную
       информацию с dataBase Realtime */
-    this.$store.dispatch('getForm');
+    this.$store.dispatch('getForm').then(() => this.calorieRenewal());
     const responseFinishData = localStorage.getItem('finishData');
     if (responseFinishData && responseFinishData !== 'null') {
       this.finishData = new Date(responseFinishData);
@@ -460,28 +499,6 @@ export default {
     const responseNumKgReduce = localStorage.getItem('numKgReduce');
     if (responseNumKgReduce && responseNumKgReduce !== 'null') {
       this.numKgReduce = +responseNumKgReduce;
-    }
-
-    const responseCaloriesPerDay = localStorage.getItem('caloriesPerDay');
-    if (responseCaloriesPerDay && responseCaloriesPerDay !== 'null') {
-      this.caloriesPerDay = +responseCaloriesPerDay;
-    }
-
-    const mix = this.infoCurrentUser.userСalories;
-
-    /* Получаем ключ последней даты записанной в бд, и переворачиваем его,
-    для того чтобы корректно распарсить. */
-    const lastRecordedDate = Object.keys(mix)[Object.keys(mix).length - 1].split('-').reverse().join('-');
-    const lastDateMilliseconds = Date.parse(lastRecordedDate);
-
-    // Получаю текущую дату в нужно формате для дельнейшего парсинга.
-    const currentData = new Date().toLocaleString().slice(0, 10).split('.')
-      .reverse()
-      .join('.');
-    const currentDataMseconds = Date.parse(currentData);
-
-    if (currentDataMseconds > lastDateMilliseconds) {
-      this.caloriesPerDay = 0;
     }
   },
   computed: {
