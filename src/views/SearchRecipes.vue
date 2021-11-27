@@ -209,7 +209,6 @@ export default {
     },
     toggleSelectedRecipes(item) {
       const result = this.isItemAdded(item);
-      console.log(result);
       if (result) {
         // Получаем индекс элемента который нужно удалить
         const deleteIndex = this.$store.getters.selectRecipes.findIndex(

@@ -1,325 +1,353 @@
 <template>
-    <el-col class="my-goals" :span="20" v-loading.fullscreen="isLoading" element-loading-text="Загрузка..."
-   element-loading-background="rgba(0, 0, 0, 0.8)">
-      <h1 class="my-goals__title">Мои цели</h1>
-      <hr />
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div class="card">
-            <template v-if="infoCurrentUser.gender === 'мужской'">
-              <h3 class="card__title">
-                <span style="text-decoration: underline" :title="hintForIdealWeight"
-                  >Идеальный вес</span
-                >
-                для мужчины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
-              </h3>
-              <p class="card__result36">{{ idealWeightMan }}<span class="fz16"> (кг.)</span></p>
-            </template>
+  <el-col
+    class="my-goals"
+    :span="20"
+    v-loading.fullscreen="isLoading"
+    element-loading-text="Загрузка..."
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
+    <h1 class="my-goals__title">Мои цели</h1>
+    <hr />
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <div class="card">
+          <template v-if="infoCurrentUser.gender === 'мужской'">
+            <h3 class="card__title">
+              <span style="text-decoration: underline" :title="hintForIdealWeight"
+                >Идеальный вес</span
+              >
+              для мужчины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
+            </h3>
+            <p class="card__result36">{{ idealWeightMan }}<span class="fz16"> (кг.)</span></p>
+          </template>
 
-            <template v-if="infoCurrentUser.gender === 'женский'">
-              <h3 class="card__title">
-                <span style="text-decoration: underline" :title="hintForIdealWeight"
-                  >Идеальный вес</span
-                >
-                для женщины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
-              </h3>
-              <p class="card__result36" style="fontsize: 36px">
-                {{ idealWeightWoman }}<span class="fz16"> (кг.)</span>
+          <template v-if="infoCurrentUser.gender === 'женский'">
+            <h3 class="card__title">
+              <span style="text-decoration: underline" :title="hintForIdealWeight"
+                >Идеальный вес</span
+              >
+              для женщины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
+            </h3>
+            <p class="card__result36" style="fontsize: 36px">
+              {{ idealWeightWoman }}<span class="fz16"> (кг.)</span>
+            </p>
+          </template>
+        </div>
+      </el-col>
+
+      <el-col :span="12">
+        <div
+          class="card"
+          :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
+        >
+          <template v-if="infoCurrentUser.gender === 'мужской'">
+            <template v-if="excessWeightMan > 0">
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">Вам желательно сбросить:</h3>
+              <p class="card__result36" :title="hintForIdealWeight">
+                {{ excessWeightMan }} <span class="fz16"> (кг.)</span>
               </p>
             </template>
-          </div>
-        </el-col>
-
-        <el-col :span="12">
-          <div
-            class="card"
-            :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
-          >
-            <template v-if="infoCurrentUser.gender === 'мужской'">
-              <template v-if="excessWeightMan > 0">
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">Вам желательно сбросить:</h3>
-                <p class="card__result36" :title="hintForIdealWeight">
-                  {{ excessWeightMan }} <span class="fz16"> (кг.)</span>
-                </p>
-              </template>
-              <template v-else-if="excessWeightMan < 0">
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">
-                  Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
-                  <span class="fz16"> (кг.)</span>
-                </h3>
-              </template>
-              <template v-else>
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">У вас нет лишнего веса!</h3>
-              </template>
+            <template v-else-if="excessWeightMan < 0">
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">
+                Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
+                <span class="fz16"> (кг.)</span>
+              </h3>
             </template>
-
-            <template v-if="infoCurrentUser.gender === 'женский'">
-              <template v-if="excessWeightWoman > 0">
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">Вам желательно сбросить:</h3>
-                <p class="card__result36" style="font-size: 36px" :title="hintForIdealWeight">
-                  {{ excessWeightWoman }}<span class="fz16"> (кг.)</span>
-                </p>
-              </template>
-              <template v-else-if="excessWeightWoman < 0">
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">
-                  Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
-                  <span class="fz16"> (кг.)</span>
-                </h3>
-              </template>
-              <template v-else>
-                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-                <h3 class="card__title">У вас нет лишнего веса!</h3>
-              </template>
+            <template v-else>
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">У вас нет лишнего веса!</h3>
             </template>
-          </div>
-        </el-col>
-      </el-row>
+          </template>
 
-      <el-row :gutter="10">
-        <el-col :span="6">
-          <div class="card card-orange">
-            <!--Если у пользователя дифицит каллорий, отображаем вариант с набором каллорий -->
-            <h3 class="card__title" v-if="weightDeviationisNormal">Хочу набрать:</h3>
-            <h3 class="card__title" v-else>Хочу cбросить:</h3>
-            <div>
-              <div class="card__flex-block">
-                <span class="fas fa-weight mr10" style="font-size: 24px"></span>
-                <p class="card__result24">{{ numKgReduce }} <span class="mr10 fz16">(кг.)</span></p>
-                <el-button class="btn-minus" circle @click="numKgReduceMinus">-</el-button>
-                <el-button class="btn-plus" circle @click="numKgReducePlus">+</el-button>
-              </div>
-              <div class="card__flex-block" style="justify-content: start">
-                <span class="fas fa-fire mr10" style="font-size: 24px"></span>
-                <p class="card__result24">
-                  {{ numCaloriesReduce }} <span class="fz16">(ккал.)</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div
-            v-if="daysToTarget"
-            class="card card-red"
-            :class="{ 'card-green': comparisonFutureWeightIdeal }"
-          >
-            <h3 class="card__title">{{ `Вес через ${daysToTarget} ${declinationDays}` }}:</h3>
+          <template v-if="infoCurrentUser.gender === 'женский'">
+            <template v-if="excessWeightWoman > 0">
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">Вам желательно сбросить:</h3>
+              <p class="card__result36" style="font-size: 36px" :title="hintForIdealWeight">
+                {{ excessWeightWoman }}<span class="fz16"> (кг.)</span>
+              </p>
+            </template>
+            <template v-else-if="excessWeightWoman < 0">
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">
+                Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
+                <span class="fz16"> (кг.)</span>
+              </h3>
+            </template>
+            <template v-else>
+              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+              <h3 class="card__title">У вас нет лишнего веса!</h3>
+            </template>
+          </template>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="10">
+      <el-col :span="6">
+        <div class="card card-orange">
+          <!--Если у пользователя дифицит каллорий, отображаем вариант с набором каллорий -->
+          <h3 class="card__title" v-if="weightDeviationisNormal">Хочу набрать:</h3>
+          <h3 class="card__title" v-else>Хочу cбросить:</h3>
+          <div>
             <div class="card__flex-block">
               <span class="fas fa-weight mr10" style="font-size: 24px"></span>
-              <p class="card__result24">{{ resultWeight }} <span class="fz16">(кг.)</span></p>
+              <p class="card__result24">{{ numKgReduce }} <span class="mr10 fz16">(кг.)</span></p>
+              <el-button class="btn-minus" circle @click="numKgReduceMinus">-</el-button>
+              <el-button class="btn-plus" circle @click="numKgReducePlus">+</el-button>
             </div>
-          </div>
-          <div
-            v-else
-            class="card"
-            :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
-          >
-            <h3 class="card__title">Текущий вес:</h3>
-            <div class="card__flex-block">
-              <span class="fas fa-weight mr10" style="font-size: 24px"></span>
+            <div class="card__flex-block" style="justify-content: start">
+              <span class="fas fa-fire mr10" style="font-size: 24px"></span>
               <p class="card__result24">
-                {{ infoCurrentUser.weight }} <span class="fz16">(кг.)</span>
+                {{ numCaloriesReduce }} <span class="fz16">(ккал.)</span>
               </p>
             </div>
           </div>
-        </el-col>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div
+          v-if="daysToTarget"
+          class="card card-red"
+          :class="{ 'card-green': comparisonFutureWeightIdeal }"
+        >
+          <h3 class="card__title">{{ `Вес через ${daysToTarget} ${declinationDays}` }}:</h3>
+          <div class="card__flex-block">
+            <span class="fas fa-weight mr10" style="font-size: 24px"></span>
+            <p class="card__result24">{{ resultWeight }} <span class="fz16">(кг.)</span></p>
+          </div>
+        </div>
+        <div
+          v-else
+          class="card"
+          :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
+        >
+          <h3 class="card__title">Текущий вес:</h3>
+          <div class="card__flex-block">
+            <span class="fas fa-weight mr10" style="font-size: 24px"></span>
+            <p class="card__result24">{{ currentWeight }} <span class="fz16">(кг.)</span></p>
+          </div>
+        </div>
+      </el-col>
 
-        <el-col :span="12">
-          <div class="card">
-            <h3 class="card__title">До завершения цели {{ declinationRemainder }}:</h3>
-            <div class="card__flex-block" v-if="daysToTarget">
-              <span class="fas fa-bullseye mr10" style="font-size: 32px"></span>
-              <p class="card__result36">
-                {{ daysToTarget }} <span class="fz16">{{ declinationDays }}</span>
-              </p>
-            </div>
-            <p v-else>
-              Для произведения расчета,
-              <span class="card-warning">необходимо установить дату окончания диеты.</span>
+      <el-col :span="12">
+        <div class="card">
+          <h3 class="card__title">До завершения цели {{ declinationRemainder }}:</h3>
+          <div class="card__flex-block" v-if="daysToTarget">
+            <span class="fas fa-bullseye mr10" style="font-size: 32px"></span>
+            <p class="card__result36">
+              {{ daysToTarget }} <span class="fz16">{{ declinationDays }}</span>
             </p>
           </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div class="card card-purple">
-            <h3 class="card__title" v-if="weightDeviationisNormal">
-              Необходим
-              <span :title="hintForUserSurplus" style="text-decoration: underline"
-                >профицит каллорий:</span
-              >
-            </h3>
-            <h3 class="card__title" v-else>
-              Необходим
-              <span :title="hintForUserDeficit" style="text-decoration: underline"
-                >дефицит каллорий:</span
-              >
-            </h3>
-            <div class="card__flex-block">
-              <template v-if="daysToTarget">
-                <span class="fas fa-fire mr10" style="font-size: 32px"> </span>
-                <p class="card__result36">
-                  {{ reduceСaloriesDay }} <span class="fz16">(в сутки)</span>
-                </p>
-              </template>
-              <p v-else>Для произведения расчета, необходимо установить дату окончания диеты.</p>
-            </div>
-          </div>
-        </el-col>
-
-        <el-col :span="6">
-          <div class="card">
-            <h3 class="card__title">Текущая дата:</h3>
-            <div class="card__flex-block">
-              <p class="card__result36">{{ currentData.toLocaleString().slice(0, 10) }}</p>
-              <span class="fas fa-calendar-alt ml10" style="font-size: 32px"> </span>
-            </div>
-          </div>
-        </el-col>
-
-        <el-col :span="6">
-          <div class="card">
-            <h3 class="card__title">Окончание диеты:</h3>
-            <div class="card__flex-block" style="flex-wrap: wrap">
-              <template v-if="finishData">
-                <p class="card__result36">
-                  {{ finishData.toLocaleString().slice(0, 10) }}
-                </p>
-                <span class="fas fa-flag-checkered ml10" style="font-size: 32px"></span>
-                <el-button
-                  v-if="!IsVisibilityDatePicker"
-                  class="card__change-date"
-                  @click="IsVisibilityDatePicker = true"
-                  ><i class="fas fa-pencil-alt mr10"></i>Поменять дату</el-button
-                >
-                <el-date-picker
-                  id="datepicker"
-                  v-if="IsVisibilityDatePicker"
-                  v-model="finishData"
-                  format="dd-MM-yyyy"
-                  :picker-options="datePickerOptions"
-                  type="date"
-                  placeholder="Выбор даты"
-                >
-                </el-date-picker>
-                <el-button
-                  v-if="IsVisibilityDatePicker"
-                  class="card__save-date"
-                  @click="IsVisibilityDatePicker = false"
-                  >Сохранить<i class="fas fa-save ml10"></i
-                ></el-button>
-              </template>
-              <div v-else class="card__flex-block mb10">
-                <p class="mr10 card-warning">Нужно установить</p>
-                <span class="fas fa-hand-pointer card__cursor-icon" style="font-size: 32px"></span>
-              </div>
-            </div>
-            <el-date-picker
-              id="datepicker"
-              v-if="!finishData"
-              v-model="finishData"
-              :picker-options="datePickerOptions"
-              type="date"
-              placeholder="Выбор даты"
+          <p v-else>
+            Для произведения расчета,
+            <span class="card-warning">необходимо установить дату окончания диеты.</span>
+          </p>
+        </div>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <div class="card card-purple">
+          <h3 class="card__title" v-if="weightDeviationisNormal">
+            Необходим
+            <span :title="hintForUserSurplus" style="text-decoration: underline"
+              >профицит каллорий:</span
             >
-            </el-date-picker>
+          </h3>
+          <h3 class="card__title" v-else>
+            Необходим
+            <span :title="hintForUserDeficit" style="text-decoration: underline"
+              >дефицит каллорий:</span
+            >
+          </h3>
+          <div class="card__flex-block">
+            <template v-if="daysToTarget">
+              <span class="fas fa-fire mr10" style="font-size: 32px"> </span>
+              <p class="card__result36">
+                {{ reduceСaloriesDay }} <span class="fz16">(в сутки)</span>
+              </p>
+            </template>
+            <p v-else>Для произведения расчета, необходимо установить дату окончания диеты.</p>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+      </el-col>
 
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div
-            class="card card__flex-block"
-            style="justify-content: space-around; align-items: flex-start; min-height: 235px"
+      <el-col :span="6">
+        <div class="card">
+          <h3 class="card__title">Текущая дата:</h3>
+          <div class="card__flex-block">
+            <p class="card__result36">{{ currentData.toLocaleString().slice(0, 10) }}</p>
+            <span class="fas fa-calendar-alt ml10" style="font-size: 32px"> </span>
+          </div>
+        </div>
+      </el-col>
+
+      <el-col :span="6">
+        <div class="card">
+          <h3 class="card__title">Окончание диеты:</h3>
+          <div class="card__flex-block" style="flex-wrap: wrap">
+            <template v-if="finishData">
+              <p class="card__result36">
+                {{ finishData.toLocaleString().slice(0, 10) }}
+              </p>
+              <span class="fas fa-flag-checkered ml10" style="font-size: 32px"></span>
+              <el-button
+                v-if="!IsVisibilityDatePicker"
+                class="card__change-date"
+                @click="IsVisibilityDatePicker = true"
+                ><i class="fas fa-pencil-alt mr10"></i>Поменять дату</el-button
+              >
+              <el-date-picker
+                id="datepicker"
+                v-if="IsVisibilityDatePicker"
+                v-model="finishData"
+                format="dd-MM-yyyy"
+                :picker-options="datePickerOptions"
+                type="date"
+                placeholder="Выбор даты"
+              >
+              </el-date-picker>
+              <el-button
+                v-if="IsVisibilityDatePicker"
+                class="card__save-date"
+                @click="IsVisibilityDatePicker = false"
+                >Сохранить<i class="fas fa-save ml10"></i
+              ></el-button>
+            </template>
+            <div v-else class="card__flex-block mb10">
+              <p class="mr10 card-warning">Нужно установить</p>
+              <span class="fas fa-hand-pointer card__cursor-icon" style="font-size: 32px"></span>
+            </div>
+          </div>
+          <el-date-picker
+            id="datepicker"
+            v-if="!finishData"
+            v-model="finishData"
+            :picker-options="datePickerOptions"
+            type="date"
+            placeholder="Выбор даты"
           >
-            <img src="../assets/img/duet.png" alt="girl" width="250px" />
-            <div>
-              <h3 class="card__title">Учет каллорий за сутки:</h3>
-              <hr />
-              <div>
-                <div class="card__flex-block" style="flex-direction: column">
-                  <div class="mb10">
-                    <p style="margin-bottom: 5px">Норма ккал. за день</p>
-                    <p v-if="infoCurrentUser.gender === 'мужской'">{{ normСaloriesMan }} (ккал.)</p>
-                    <p v-if="infoCurrentUser.gender === 'женский'">
-                      {{ normСaloriesWoman }} (ккал.)
-                    </p>
-                  </div>
-                  <p style="margin-bottom: 5px">Калорий съедено</p>
-                  <div class="card__flex-block mb10">
-                    <p v-if="changedСountingInput === false" class="mr10">
-                      {{ caloriesPerDay }} (ккал.)
-                    </p>
+          </el-date-picker>
+        </div>
+      </el-col>
+    </el-row>
 
-                    <div class="card__flex-block">
-                      <!-- Отображаю блок с возможность
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <div
+          class="card card__flex-block"
+          style="justify-content: space-around; align-items: flex-start; min-height: 235px"
+        >
+          <img src="../assets/img/duet.png" alt="girl" width="250px" />
+          <div>
+            <h3 class="card__title">Учет каллорий за сутки:</h3>
+            <hr />
+            <div>
+              <div class="card__flex-block" style="flex-direction: column">
+                <div class="mb10">
+                  <p style="margin-bottom: 5px">Норма ккал. за день</p>
+                  <p v-if="infoCurrentUser.gender === 'мужской'">{{ normСaloriesMan }} (ккал.)</p>
+                  <p v-if="infoCurrentUser.gender === 'женский'">{{ normСaloriesWoman }} (ккал.)</p>
+                </div>
+                <p style="margin-bottom: 5px">Калорий съедено</p>
+                <div class="card__flex-block mb10">
+                  <p v-if="changedСountingInput === false" class="mr10">
+                    {{ caloriesPerDay }} (ккал.)
+                  </p>
+
+                  <div class="card__flex-block">
+                    <!-- Отображаю блок с возможность
                       ввода нового значения при условии,
                       если пользователь нажал на
                       "изменить значение" флаг меняется на true -->
-                      <div v-if="changedСountingInput === true">
-                        <el-input class="ccalorieСountingInput" v-model="caloriesPerDay"></el-input>
-                        <el-button
-                          class="card__save-date"
-                          style="padding-left: 0"
-                          @click="
-                            setUserСalories();
-                            changedСountingInput = false;
-                          "
-                          >Сохранить<i class="fas fa-save ml10"></i
-                        ></el-button>
-                      </div>
-                      <div v-else>
-                        <el-button
-                          class="card__change-date"
-                          style="padding-left: 0"
-                          @click="changedСountingInput = true"
-                          ><i class="fas fa-pencil-alt mr10"></i>Изменить значение</el-button
-                        >
-                      </div>
+                    <div v-if="changedСountingInput === true">
+                      <el-input class="ccalorieСountingInput" v-model="caloriesPerDay"></el-input>
+                      <el-button
+                        class="card__save-date"
+                        style="padding-left: 0"
+                        @click="
+                          setUserСalories();
+                          changedСountingInput = false;
+                        "
+                        >Сохранить<i class="fas fa-save ml10"></i
+                      ></el-button>
+                    </div>
+                    <div v-else>
+                      <el-button
+                        class="card__change-date"
+                        style="padding-left: 0"
+                        @click="changedСountingInput = true"
+                        ><i class="fas fa-pencil-alt mr10"></i>Изменить значение</el-button
+                      >
                     </div>
                   </div>
                 </div>
               </div>
-              <el-progress
-                :text-inside="true"
-                :stroke-width="26"
-                :percentage="percentageСalories"
-              ></el-progress>
-            </div>
-          </div>
-        </el-col>
-
-        <el-col :span="12">
-          <div class="card total-burned" style="min-height: 235px">
-            <div>
-              <h3 class="card__title">Всего сожжено каллорий:</h3>
-              <hr />
-              <p class="mb10">1400 калл. из 5600 калл.</p>
-              <p v-if="!caloriesLeftToBurn">
-                Осталось сжечь:
-                <span class="card-warning"> задайте параметры.</span>
-              </p>
-              <p v-else>
-                Осталось сжечь:
-                {{ caloriesLeftToBurn }} калл.
-              </p>
             </div>
             <el-progress
-              type="dashboard"
-              :stroke-width="10"
-              :percentage="95"
-              :color="progressСolors"
+              :text-inside="true"
+              :stroke-width="26"
+              :percentage="percentageСalories"
             ></el-progress>
           </div>
-        </el-col>
-      </el-row>
-    </el-col>
+        </div>
+      </el-col>
+
+      <el-col :span="12">
+        <div class="card total-burned" style="min-height: 235px" v-if="!weightDeviationisNormal">
+          <div>
+            <h3 class="card__title">Всего сожжено каллорий:</h3>
+            <hr />
+            <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
+            <p v-if="!caloriesLeftToBurn">
+              Осталось сжечь:
+              <span class="card-warning"> задайте параметры.</span>
+            </p>
+            <p v-else-if="caloriesLeftToBurn < 0">
+              <span class="card-goal-achieved"> Цель достигнута!</span>
+            </p>
+            <p v-else>
+              Осталось сжечь:
+              {{ caloriesLeftToBurn }} калл.
+            </p>
+          </div>
+          <el-progress
+            type="dashboard"
+            :stroke-width="10"
+            :percentage="userProgress"
+            :color="progressСolors"
+          ></el-progress>
+        </div>
+                <div class="card total-burned" style="min-height: 235px" v-else>
+          <div>
+            <h3 class="card__title">Всего набрано каллорий:</h3>
+            <hr />
+            <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
+            <p v-if="!caloriesLeftToBurn">
+              Осталось сжечь:
+              <span class="card-warning"> задайте параметры.</span>
+            </p>
+            <p v-else-if="caloriesLeftToBurn < 0">
+              <span class="card-goal-achieved"> Цель достигнута!</span>
+            </p>
+            <p v-else>
+              Осталось набрать:
+              {{ caloriesLeftToBurn }} калл.
+            </p>
+          </div>
+          <el-progress
+            type="dashboard"
+            :stroke-width="10"
+            :percentage="userProgress"
+            :color="progressСolors"
+          ></el-progress>
+        </div>
+      </el-col>
+    </el-row>
+  </el-col>
 </template>
 
 <script>
@@ -353,9 +381,9 @@ export default {
       numKgReduce: 0, // кол-во кг которые нужно сбросить либо набрать.
       IsVisibilityDatePicker: false,
       caloriesPerDay: 0, // употребленные калории за сутки
-      changedСountingInput: false, /* флаг который отвечает
+      changedСountingInput: false /* флаг который отвечает
       за изменение значения и отображения кнопки "Сохранить значение"
-      либо "Изменить значение` */
+      либо "Изменить значение` */,
     };
   },
   methods: {
@@ -363,31 +391,33 @@ export default {
       // объект с ключами всех дат по записям пользователя
       const keysDates = this.infoCurrentUser.userСalories;
 
-      /* Получаем ключ последней даты записанной в бд, и переворачиваем его,
+      if (keysDates) {
+        /* Получаем ключ последней даты записанной в бд, и переворачиваем его,
     для того чтобы корректно распарсить. */
-      const lastRecordedDate = Object.keys(keysDates)[Object.keys(keysDates).length - 1].split('-')
-        .reverse()
-        .join('-');
+        const lastRecordedDate = Object.keys(keysDates)[Object.keys(keysDates).length - 1].split('-')
+          .reverse()
+          .join('-');
 
-      // Возвращаю кол-во миллисекунд последней даты в бд
-      const lastDateMseconds = Date.parse(lastRecordedDate);
+        // Возвращаю кол-во миллисекунд последней даты в бд
+        const lastDateMseconds = Date.parse(lastRecordedDate);
 
-      // Получаю текущую дату в нужно формате для дельнейшего парсинга.
-      const currentData = new Date().toLocaleString().slice(0, 10).split('.')
-        .reverse()
-        .join('.');
+        // Получаю текущую дату в нужно формате для дельнейшего парсинга.
+        const currentData = new Date().toLocaleString().slice(0, 10).split('.')
+          .reverse()
+          .join('.');
 
-      // Возвращаю кол-во миллисекунд текущей даты
-      const currentDataMseconds = Date.parse(currentData);
+        // Возвращаю кол-во миллисекунд текущей даты
+        const currentDataMseconds = Date.parse(currentData);
 
-      // Если текущая дата больше последней, обнуляем счетчик кал.
-      if (currentDataMseconds > lastDateMseconds) {
-        this.caloriesPerDay = 0;
-      } else {
-        // В противном случае записываем значение из бд
-        this.caloriesPerDay = this.infoCurrentUser.userСalories[
-          Object.keys(keysDates)[Object.keys(keysDates).length - 1]]
-          .caloriesEatenPerDay;
+        // Если текущая дата больше последней, обнуляем счетчик кал.
+        if (currentDataMseconds > lastDateMseconds) {
+          this.caloriesPerDay = 0;
+        } else {
+          // В противном случае записываем значение из бд
+          this.caloriesPerDay = this.infoCurrentUser.userСalories[
+            Object.keys(keysDates)[Object.keys(keysDates).length - 1]
+          ].caloriesEatenPerDay;
+        }
       }
     },
     // Метод отправки инф. о пользовательских калориях в базу данных.
@@ -491,10 +521,16 @@ export default {
     /* Диспатчим getForm, для получения и перезаписи
       информацию по калориям, подтягиваю обновленную
       информацию с dataBase Realtime */
-    this.$store.dispatch('getForm').then(() => {
-      this.calorieRenewal();
-      this.isLoading = false;
-    });
+    this.$store
+      .dispatch('getForm')
+      .then(() => {
+        this.calorieRenewal();
+        this.isLoading = false;
+      })
+      .catch((error) => {
+        console.error(error);
+        this.isLoading = false;
+      });
     const responseFinishData = localStorage.getItem('finishData');
     if (responseFinishData && responseFinishData !== 'null') {
       this.finishData = new Date(responseFinishData);
@@ -506,15 +542,47 @@ export default {
     }
   },
   computed: {
+    // Актуальный текущий вес, с учетом сброшенных каллорий
+    currentWeight() {
+      const userWeight = this.infoCurrentUser.weight;
+      const result = userWeight - (this.caloriesBurned / 7700).toFixed(1);
+      return result;
+    },
+    // Отвечает за индикацию прогресса
+    userProgress() {
+      const persent = Math.floor(
+        ((this.numCaloriesReduce - this.caloriesLeftToBurn) / this.numCaloriesReduce) * 100,
+      );
+      if (persent > 100) {
+        return 100;
+      }
+      if (Number.isNaN(Number(persent))) {
+        return 0;
+      }
+      return persent;
+    },
     // Рассчитываем кол-во каллорий, который осталось сжечь.
     caloriesLeftToBurn() {
       return this.numCaloriesReduce
         ? this.numCaloriesReduce - this.caloriesBurned
         : this.numCaloriesReduce;
     },
-    // Рассчитываем сожженые калории
+    // Рассчитываем сожженные калории
     caloriesBurned() {
-      return 300; // пока возвращаем условно 300. Потом перепишем.
+      if (this.infoCurrentUser.userСalories) {
+        // Записываю объект с userСalories в переменную
+        const userСalories = this.infoCurrentUser.userСalories;
+        // Преобразую в массив значений.
+        const arrUserСalories = Object.values(userСalories);
+
+        // Прохожусь циклом и сохраняю разницу в калориях за каждый день
+        let sum = 0;
+        for (let i = 0; i < arrUserСalories.length; i += 1) {
+          sum += arrUserСalories[i].differencePerDay;
+        }
+        return Math.abs(sum);
+      }
+      return 0;
     },
     // Получаем процент съеденных каллорий от нормы в день.
     percentageСalories() {
@@ -533,16 +601,16 @@ export default {
     },
     // Рассчитываем лишний вес для мужчины
     excessWeightMan() {
-      return Math.round(this.infoCurrentUser.weight - this.idealWeightMan);
+      return Math.round(this.currentWeight - this.idealWeightMan);
     },
     // Рассчитываем лишний вес для женщины
     excessWeightWoman() {
-      return Math.round(this.infoCurrentUser.weight - this.idealWeightWoman);
+      return Math.round(this.currentWeight - this.idealWeightWoman);
     },
     // Расчитываем ИМТ (индекс массы тела)
     IMTvalue() {
       const heightMeter = this.infoCurrentUser.height / 100;
-      const IMT = (this.infoCurrentUser.weight / (heightMeter * heightMeter)).toFixed(1);
+      const IMT = (this.currentWeight / (heightMeter * heightMeter)).toFixed(1);
       if (IMT < 18.49) {
         return `${IMT} (дефицит массы тела)`;
         // eslint-disable-next-line no-else-return
@@ -607,8 +675,8 @@ export default {
     // Вес который будет по окончанию диеты.
     resultWeight() {
       return !this.weightDeviationisNormal // проверяем если не имеет дефицита
-        ? this.infoCurrentUser.weight - this.numKgReduce // высчитываем кг.
-        : +this.infoCurrentUser.weight + this.numKgReduce; // в противном случае, прибавляем кг.
+        ? this.currentWeight - this.numKgReduce // высчитываем кг.
+        : +this.currentWeight + this.numKgReduce; // в противном случае, прибавляем кг.
     },
     // Получаем регистрационную информацию о пользователе.
     infoCurrentUser() {
@@ -634,7 +702,7 @@ export default {
     normСaloriesMan() {
       return Math.round(
         (66.5
-          + 13.75 * this.infoCurrentUser.weight
+          + 13.75 * this.currentWeight
           + 5.003 * this.infoCurrentUser.height
           - 6.775 * this.infoCurrentUser.age)
           * 1.15,
@@ -644,7 +712,7 @@ export default {
     normСaloriesWoman() {
       return Math.round(
         (665.1
-          + 9.563 * this.infoCurrentUser.weight
+          + 9.563 * this.currentWeight
           + 1.85 * this.infoCurrentUser.height
           - 6.775 * this.infoCurrentUser.age)
           * 1.15,
@@ -660,9 +728,9 @@ export default {
     // Проверяем пол пользователя и является ли его вес меньше идеального.
     weightDeviationisNormal() {
       if (this.infoCurrentUser.gender === 'мужской') {
-        return this.infoCurrentUser.weight < this.idealWeightMan;
+        return this.currentWeight < this.idealWeightMan;
       }
-      return this.infoCurrentUser.weight < this.idealWeightWoman;
+      return this.currentWeight < this.idealWeightWoman;
     },
   },
 };
@@ -746,6 +814,12 @@ export default {
       background: transparent;
       border: none;
       color: $color_4;
+    }
+
+    &-goal-achieved {
+      color: $color_4;
+      font-size: 16px;
+      font-weight: bold;
     }
 
     .ccalorieСountingInput {
