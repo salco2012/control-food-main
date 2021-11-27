@@ -4,7 +4,6 @@ import Home from '../views/Home.vue';
 import RegistrationForm from '../views/RegistrationForm.vue';
 import AuthorizationForm from '../views/AuthorizationForm.vue';
 import PasswordRecovery from '../views/PasswordRecovery.vue';
-import UserProfile from '../views/UserProfile.vue';
 import Error404 from '../views/Error404.vue';
 import MyGoals from '../views/MyGoals.vue';
 import UserRating from '../views/UserRating.vue';
@@ -44,18 +43,6 @@ const routes = [
     path: '/user-rating',
     name: 'UserRating',
     component: UserRating,
-    beforeEnter: (to, from, next) => {
-      if (store.getters.isUserAuthenticated) {
-        next();
-      } else {
-        next('authorization');
-      }
-    },
-  },
-  {
-    path: '/user-profile',
-    name: 'UserProfile',
-    component: UserProfile,
     beforeEnter: (to, from, next) => {
       if (store.getters.isUserAuthenticated) {
         next();

@@ -1,6 +1,6 @@
 <template>
-  <div class="my-goals">
-    <el-col :span="20">
+    <el-col class="my-goals" :span="20" v-loading.fullscreen="isLoading" element-loading-text="Загрузка..."
+   element-loading-background="rgba(0, 0, 0, 0.8)">
       <h1 class="my-goals__title">Мои цели</h1>
       <hr />
       <el-row :gutter="10">
@@ -79,6 +79,7 @@
           </div>
         </el-col>
       </el-row>
+
       <el-row :gutter="10">
         <el-col :span="6">
           <div class="card card-orange">
@@ -319,7 +320,6 @@
         </el-col>
       </el-row>
     </el-col>
-  </div>
 </template>
 
 <script>
@@ -349,12 +349,13 @@ export default {
       hintForIdealWeight: 'Рассчет произведен по формуле Брокка',
       currentData: new Date(),
       finishData: '',
+      isLoading: true, // статус загрузки loading
       numKgReduce: 0, // кол-во кг которые нужно сбросить либо набрать.
       IsVisibilityDatePicker: false,
       caloriesPerDay: 0, // употребленные калории за сутки
-      changedСountingInput: false /* флаг который отвечает
+      changedСountingInput: false, /* флаг который отвечает
       за изменение значения и отображения кнопки "Сохранить значение"
-      либо "Изменить значение` */,
+      либо "Изменить значение` */
     };
   },
   methods: {
@@ -488,9 +489,12 @@ export default {
   },
   created() {
     /* Диспатчим getForm, для получения и перезаписи
-      информацию по каллориям, подтягиваю обновленную
+      информацию по калориям, подтягиваю обновленную
       информацию с dataBase Realtime */
-    this.$store.dispatch('getForm').then(() => this.calorieRenewal());
+    this.$store.dispatch('getForm').then(() => {
+      this.calorieRenewal();
+      this.isLoading = false;
+    });
     const responseFinishData = localStorage.getItem('finishData');
     if (responseFinishData && responseFinishData !== 'null') {
       this.finishData = new Date(responseFinishData);
@@ -666,8 +670,7 @@ export default {
 
 <style lang="scss" scoped>
 .my-goals {
-  margin-top: 40px;
-  margin-left: 40px;
+  margin: 40px 0 40px 40px;
   &__title {
     @extend %title;
     color: white;

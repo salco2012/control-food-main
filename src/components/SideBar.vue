@@ -82,28 +82,17 @@ export default {
       currentIndex: null,
       menuItems: [
         {
+          src: 'goals.png',
+          text: 'Установленные цели',
+          alt: 'goals',
+          routeName: 'MyGoals',
+        },
+        {
           src: 'search-recipes.png',
           text: 'Поиск рецептов',
           alt: 'search-recipes',
           routeName: 'SearchRecipes',
 
-        },
-        {
-          src: 'news.png',
-          text: 'Интересные новости',
-          alt: 'news',
-        },
-        {
-          src: 'my-profile.png',
-          text: 'Моя анкета',
-          alt: 'my-profile',
-          routeName: 'UserProfile',
-        },
-        {
-          src: 'goals.png',
-          text: 'Установленные цели',
-          alt: 'goals',
-          routeName: 'MyGoals',
         },
         {
           src: 'selected-recipes.png',
