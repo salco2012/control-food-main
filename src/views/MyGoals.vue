@@ -5,6 +5,7 @@
     v-loading.fullscreen="isLoading"
     element-loading-text="Загрузка..."
     element-loading-background="rgba(0, 0, 0, 0.8)"
+    v-if="infoCurrentUser"
   >
     <h1 class="my-goals__title">Мои цели</h1>
     <hr />
@@ -587,9 +588,17 @@ export default {
     // Получаем процент съеденных каллорий от нормы в день.
     percentageСalories() {
       if (this.infoCurrentUser.gender === 'мужской') {
-        return +((this.caloriesPerDay / this.normСaloriesMan) * 100).toFixed(1);
+        const resultMan = +((this.caloriesPerDay / this.normСaloriesMan) * 100).toFixed(1);
+        if (resultMan > 100) {
+          return 100;
+        }
+        return resultMan;
       }
-      return +((this.caloriesPerDay / this.normСaloriesWoman) * 100).toFixed(1);
+      const resultWoman = +((this.caloriesPerDay / this.normСaloriesWoman) * 100).toFixed(1);
+      if (resultWoman > 100) {
+        return 100;
+      }
+      return resultWoman;
     },
     // Рассчитываем идеальный вес для мужчин
     idealWeightMan() {
@@ -865,5 +874,10 @@ export default {
 <style lang="scss">
 .el-progress-bar__inner {
   background-color: $color_5;
+}
+
+.el-progress-bar__innerText{
+  color: $color_1;
+  font-weight: bold;
 }
 </style>

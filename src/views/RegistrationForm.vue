@@ -204,7 +204,7 @@ export default {
         })
         .then(() => {
           if (this.isAuthenticated) {
-            this.$router.push({ name: 'UserProfile' }).catch(() => {});
+            this.$router.push({ name: 'MyGoals' }).catch(() => {});
           }
         });
     },

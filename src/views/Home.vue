@@ -46,6 +46,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  created() {
+    this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
+  },
+};
+</script>
+
 <style lang="scss" scoped>
 .home {
   padding: 25px 125px;

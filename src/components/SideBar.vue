@@ -79,7 +79,7 @@
 export default {
   data() {
     return {
-      currentIndex: null,
+      currentIndex: 0,
       menuItems: [
         {
           src: 'goals.png',
@@ -115,6 +115,7 @@ export default {
       this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
       this.$store.commit('CLEAR_INFO_USER'); // Очищаем информацию о пользователе
       this.$store.commit('CLEAR_SELECT_RECIPES'); // Очищаем рецепты в сторе.
+      this.currentIndex = 0;
     },
   },
   computed: {

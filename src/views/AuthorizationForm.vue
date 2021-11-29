@@ -78,8 +78,8 @@ export default {
               message: 'Успешная авторизация!',
               type: 'success',
             });
-            this.$store.dispatch('getForm');
-            this.$router.push({ name: 'UserProfile' }).catch(() => {});
+            // this.$store.dispatch('getForm');
+            this.$router.push({ name: 'MyGoals' }).catch(() => {});
           } else {
             this.$message({
               message: 'Некорректные данные :(',
