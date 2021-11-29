@@ -1,9 +1,28 @@
 <template>
-<div v-loading.fullscreen="isLoading" element-loading-text="Загрузка..."
-   element-loading-background="rgba(0, 0, 0, 0.8)">
-     <el-col class="search-recipes" v-if="receptAll.length" :span="20">
-           <h1 class="search-recipes__title">Поиск рецептов</h1>
+  <div
+    v-loading.fullscreen="isLoading"
+    element-loading-text="Загрузка..."
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
+    <el-col class="search-recipes" v-if="receptAll.length" :span="20">
+      <h1 class="search-recipes__title">Поиск рецептов</h1>
       <hr />
+
+      <div class="getDishType">
+        <h3 class="getDishType__title">Тип блюда:</h3>
+        <el-button
+          v-for="(btn, btnIndex) in dishTypeButtons"
+          :key="btnIndex"
+          class="getDishType__btn"
+          :class="{ getDishType__active: dishTypeActive === btn.dishTypeEn }"
+          @click="
+            getDishType(btn.dishTypeEn);
+            dishTypeActive = btn.dishTypeEn;
+          "
+          >{{ btn.dishTypeRus }}</el-button
+        >
+      </div>
+
       <el-row :gutter="10" v-for="(rank, externalIndex) in ranks" :key="externalIndex">
         <el-col :span="6" v-for="(item, index) in rank" :key="index">
           <div class="recipe-card">
@@ -15,11 +34,12 @@
 
             <div class="recipe-card__description">
               <div class="recipe-card__ingredients">
-                <el-collapse accordion v-model="autoСlose">
+                <el-collapse accordion v-model="autoClosed">
                   <el-collapse-item title="Ингредиенты">
                     <div
                       class="recipe-card__ingredients-item"
-                      v-for="(ingredientLine, ingredientIndex) in item.recipe.ingredientLines" :key="`${index}_${ingredientIndex}`"
+                      v-for="(ingredientLine, ingredientIndex) in item.recipe.ingredientLines"
+                      :key="`${index}_${ingredientIndex}`"
                     >
                       <div v-if="item.recipe.ingredients[ingredientIndex]">
                         <img
@@ -33,10 +53,11 @@
                           class="recipe-card__ingredients-logo"
                         />
                       </div>
-                          <img v-if="!item.recipe.ingredients[ingredientIndex]"
-                          src="../assets/img/No_image_available.png"
-                          class="recipe-card__ingredients-logo"
-                        />
+                      <img
+                        v-if="!item.recipe.ingredients[ingredientIndex]"
+                        src="../assets/img/No_image_available.png"
+                        class="recipe-card__ingredients-logo"
+                      />
                       <span class="recipe-card__ingredients-text">
                         {{ ingredientLine }}
                       </span>
@@ -84,9 +105,7 @@
                     </el-collapse-item>
                   </div>
 
-                  <el-collapse-item
-                    title="Этикетки здоровья"
-                  >
+                  <el-collapse-item title="Этикетки здоровья">
                     <el-tag
                       type="success"
                       style="margin-right: 10px; margin-bottom: 10px"
@@ -135,8 +154,7 @@
         @current-change="setPage"
       ></el-pagination>
     </el-col>
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -149,7 +167,62 @@ export default {
       isLoading: true,
       page: 1,
       pageSize: 20,
-      autoСlose: [],
+      autoClosed: [],
+      dishTypeActive: null,
+      dishTypeButtons: [
+        {
+          dishTypeRus: 'Печенье',
+          dishTypeEn: 'cookie',
+        },
+        {
+          dishTypeRus: 'Хлеб',
+          dishTypeEn: 'bread',
+        },
+        {
+          dishTypeRus: 'Хлопья',
+          dishTypeEn: 'flakes',
+        },
+        {
+          dishTypeRus: 'Приправы и соусы',
+          dishTypeEn: 'condiments and sauces',
+        },
+        {
+          dishTypeRus: 'Десерты',
+          dishTypeEn: 'desserts',
+        },
+        {
+          dishTypeRus: 'Напитки',
+          dishTypeEn: 'beverages',
+        },
+        {
+          dishTypeRus: 'Основные блюда',
+          dishTypeEn: 'main dish',
+        },
+        {
+          dishTypeRus: 'Блины',
+          dishTypeEn: 'pancakes',
+        },
+        {
+          dishTypeRus: 'Салаты',
+          dishTypeEn: 'salads',
+        },
+        {
+          dishTypeRus: 'Бутерброды',
+          dishTypeEn: 'sandwiches',
+        },
+        {
+          dishTypeRus: 'Гарнир',
+          dishTypeEn: 'garnish',
+        },
+        {
+          dishTypeRus: 'Суп',
+          dishTypeEn: 'soup',
+        },
+        {
+          dishTypeRus: 'Сладости',
+          dishTypeEn: 'sweets',
+        },
+      ],
     };
   },
   created() {
@@ -202,7 +275,7 @@ export default {
         .catch((error) => console.error(error));
     },
     nullifyАutoСlose() {
-      this.autoСlose = [];
+      this.autoClosed = [];
     },
     isItemAdded(item) {
       return this.$store.getters.selectRecipes.some((elem) => elem.url === item.recipe.url);
@@ -230,6 +303,29 @@ export default {
       }
       return result;
     },
+    async getDishType(dishType) {
+      try {
+        this.isLoading = true;
+        this.receptAll = [];
+        const recept = await fetch(
+          `https://api.edamam.com/api/recipes/v2?type=public&q=${dishType}&app_id=52d453a9&app_key=%20ca99304a9de5bc6c29f01da311d0ba25`,
+        );
+        const result = await recept.json();
+        this.receptAll.push(...result.hits);
+        this.page = 1;
+        // eslint-disable-next-line no-underscore-dangle
+        this.linkToNext = result._links.next.href;
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        this.receptAll = [];
+        this.$message({
+          message: 'Слишком много запросов, попробуйте через 30 сек :(',
+          type: 'error',
+        });
+        console.error(error);
+      }
+    },
     async getRecept() {
       try {
         const recept = await fetch(
@@ -250,13 +346,23 @@ export default {
     },
     async addNewRecept() {
       try {
-        // eslint-disable-next-line no-underscore-dangle
-        const recept = await fetch(this.linkToNext);
-        const result = await recept.json();
-        this.receptAll.push(...result.hits);
-        // eslint-disable-next-line no-underscore-dangle
-        this.linkToNext = result._links.next.href;
+        if (this.receptAll.length) {
+          this.isLoading = true;
+          // eslint-disable-next-line no-underscore-dangle
+          const recept = await fetch(this.linkToNext);
+          const result = await recept.json();
+          this.receptAll.push(...result.hits);
+          // eslint-disable-next-line no-underscore-dangle
+          this.linkToNext = result._links.next.href;
+          this.isLoading = false;
+        }
       } catch (error) {
+        this.isLoading = false;
+        this.receptAll = [];
+        this.$message({
+          message: 'Слишком много запросов, попробуйте через 30 сек :(',
+          type: 'error',
+        });
         console.error(error);
       }
     },
@@ -270,6 +376,32 @@ export default {
   &__title {
     @extend %title;
     color: white;
+  }
+
+  .getDishType {
+    border: 1px solid $color_6;
+    border-radius: 25px;
+    padding: 15px;
+    margin: 20px 0 20px 0;
+    &__title {
+      margin-bottom: 10px;
+      color: $color_6;
+    }
+    &__btn {
+      background-color: $color_10;
+      color: $color_6;
+      border: none;
+      border-radius: 25px;
+      transition: 0.7s ease;
+      &:hover {
+        background-color: $color_9;
+        color: $color_4;
+      }
+    }
+    &__active {
+      background-color: $color_9;
+      color: $color_4;
+    }
   }
 
   .recipe-card {
@@ -352,7 +484,6 @@ export default {
 </style>
 
 <style lang="scss">
-
 .el-collapse-item__header {
   background-color: transparent;
   color: white;

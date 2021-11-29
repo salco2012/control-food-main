@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <el-container>
-    <SideBar/>
+    <SideBar v-if="infoCurrentUser && isAuthenticated"/>
       <el-main>
         <vue-page-transition name="fade-in-down">
         <router-view />
@@ -18,6 +18,14 @@ export default {
   name: 'App',
   components: {
     SideBar,
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.UserAuth.user.isAuthenticated;
+    },
+    infoCurrentUser() {
+      return this.$store.state.UserInfoDatabase.infoCurrentUser;
+    },
   },
 };
 </script>

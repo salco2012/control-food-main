@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="4" v-if="infoCurrentUser && isAuthenticated">
+  <el-col :span="4">
     <el-menu
       default-active="1"
       class="sidebar-menu"
@@ -58,9 +58,9 @@
         index="index"
         v-for="(item, index) in menuItems"
         :key="index"
-        :class="{ 'active-item': currentIndex === index }"
+        :class="{ 'active-item': routeName === item.routeName }"
         @click="
-          currentIndex = index;
+          routeName = item.routeName;
           $router.push({ name: item.routeName }).catch(()=>{});
         "
       >
@@ -79,7 +79,7 @@
 export default {
   data() {
     return {
-      currentIndex: 0,
+      routeName: null,
       menuItems: [
         {
           src: 'goals.png',
@@ -109,18 +109,22 @@ export default {
       ],
     };
   },
+  created() {
+    console.log(this.routeName);
+    console.log(this.currentRoute);
+    this.routeName = this.currentRoute;
+  },
   methods: {
     exitProfile() {
       this.$router.push({ name: 'Home' }).catch(() => {});
       this.$store.commit('CLEAR_USER_UD'); // Очищаем UID
       this.$store.commit('CLEAR_INFO_USER'); // Очищаем информацию о пользователе
       this.$store.commit('CLEAR_SELECT_RECIPES'); // Очищаем рецепты в сторе.
-      this.currentIndex = 0;
     },
   },
   computed: {
-    isAuthenticated() {
-      return this.$store.state.UserAuth.user.isAuthenticated;
+    currentRoute() {
+      return this.$route.name;
     },
     infoCurrentUser() {
       return this.$store.state.UserInfoDatabase.infoCurrentUser;
