@@ -110,8 +110,6 @@ export default {
     };
   },
   created() {
-    console.log(this.routeName);
-    console.log(this.currentRoute);
     this.routeName = this.currentRoute;
   },
   methods: {

@@ -1,6 +1,9 @@
 <template>
-  <div v-loading.fullscreen="isLoading" element-loading-text="Загрузка..."
-   element-loading-background="rgba(0, 0, 0, 0.8)">
+  <div
+    v-loading.fullscreen="isLoading"
+    element-loading-text="Загрузка..."
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <div class="selected-recipes" v-if="selectedRecipes.length">
       <el-col :span="20">
         <h1 class="selected-recipes__title">Избранные рецепты</h1>
@@ -8,6 +11,13 @@
         <el-row :gutter="10" v-for="(rank, externalIndex) in ranks" :key="externalIndex">
           <el-col :span="6" v-for="(item, index) in rank" :key="index">
             <div class="select-card">
+              <span
+                style="font-size: 0.7em"
+                class="select-card__onClose"
+                @click="onCloseCard(index)"
+              >
+                <i class="fas fa-times"></i>
+              </span>
               <img v-if="item.image" class="select-card__img" :src="item.image" />
               <img v-else src="../assets/img/No_image_available.png" class="select-card__img" />
               <div class="select-card__title-wrapper">
@@ -147,6 +157,9 @@ export default {
   created() {
     this.getUserRecipes();
   },
+  updated() {
+    console.log(this.$store.getters.selectRecipes);
+  },
   methods: {
     getUserRecipes() {
       this.$store
@@ -168,6 +181,10 @@ export default {
           console.error(error);
         });
     },
+    onCloseCard(index) {
+      this.$store.commit('DELETE_SELECT_RECIPES', index);
+      this.$store.dispatch('setSelectedRecipes', JSON.stringify(this.$store.getters.selectRecipes));
+    },
   },
 };
 </script>
@@ -188,6 +205,16 @@ export default {
 .select-card {
   background-color: $color_2;
   margin-bottom: 10px;
+  position: relative;
+  &__onClose {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    color: $color_3;
+    text-shadow: -1px 0 $color_2, 0 1px $color_2, 1px 0 $color_2, 0 -1px $color_2;
+    color: $color_3;
+  }
   &__img {
     width: 100%;
     height: 250px;
@@ -249,8 +276,8 @@ export default {
 
 <style lang="scss">
 .el-loading-spinner .path,
-.el-loading-spinner .el-loading-text{
+.el-loading-spinner .el-loading-text {
   stroke: $color_3;
-    color: $color_3;
+  color: $color_3;
 }
 </style>
