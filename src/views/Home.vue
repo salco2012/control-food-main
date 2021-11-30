@@ -1,48 +1,52 @@
 <template>
-  <div class="home">
-    <div class="home__content">
-      <el-button class="home__content-button" round
-        >Сервис №1 по мнению журнала "Здоровье"</el-button
-      >
-      <h1 class="home__content-title">
-        <span class="home__content-title_color">Забудьте</span> про диеты. <br />
-        Ведь есть <br />FOOD ACCOUTING!
-      </h1>
+  <div>
+    <el-row class="home">
+      <el-col :span="12">
+        <div class="home__content">
+          <el-button class="home__content-button" round
+            >Сервис №1 по мнению журнала "Здоровье"</el-button
+          >
+          <h1 class="home__content-title">
+            <span class="home__content-title_color">Забудьте</span> про диеты. <br />
+            Ведь есть <br />FOOD ACCOUTING!
+          </h1>
 
-      <p class="home__content-description">
-        Не знаете что приготовить? <br />На нашем сервисе вы найдете массу оригинальных рецептов.
-        <br />А, так же сможете ввести детальный учет по съеденным каллориям.
-      </p>
-      <div class="home__content-buttons">
-        <el-button
-          class="home__content-btn"
-          @click="$router.push({ name: 'RegistrationForm' }).catch(() => {})"
-          >Регистрация</el-button
-        >
-        <el-button
-          class="home__content-btn"
-          @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
-          >Авторизация</el-button
-        >
-      </div>
-      <div class="home__content-statistics">
-        <div class="home__content-statistics_one">
-          <h2 class="home__content-statistics_title">1.000+</h2>
-          <p>Пользователей</p>
+          <p class="home__content-description">
+            Не знаете что приготовить? <br />На нашем сервисе вы найдете массу оригинальных
+            рецептов. <br />А, так же сможете ввести детальный учет по съеденным каллориям.
+          </p>
+          <div class="home__content-buttons">
+            <el-button
+              class="home__content-btn"
+              @click="$router.push({ name: 'RegistrationForm' }).catch(() => {})"
+              >Регистрация</el-button
+            >
+            <el-button
+              class="home__content-btn"
+              @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
+              >Авторизация</el-button
+            >
+          </div>
+          <div class="home__content-statistics">
+            <div class="home__content-statistics_one">
+              <h2 class="home__content-statistics_title">1.000+</h2>
+              <p>Пользователей</p>
+            </div>
+            <div class="home__content-statistics_two">
+              <h2 class="home__content-statistics_title">17.000+</h2>
+              <p>Рецептов</p>
+            </div>
+            <div class="home__content-statistics_three">
+              <h2 class="home__content-statistics_title">-38.000 кг</h2>
+              <p>Растопленного жира</p>
+            </div>
+          </div>
         </div>
-        <div class="home__content-statistics_two">
-          <h2 class="home__content-statistics_title">17.000+</h2>
-          <p>Рецептов</p>
-        </div>
-        <div class="home__content-statistics_three">
-          <h2 class="home__content-statistics_title">-38.000 кг</h2>
-          <p>Растопленного жира</p>
-        </div>
-      </div>
-    </div>
-    <div>
-      <img class="home__img-girl" src="@/assets/img/main-screen-girl.png" alt="girl" />
-    </div>
+      </el-col>
+      <el-col :span="12">
+        <img class="home__img-girl" src="@/assets/img/main-screen-girl.png" alt="girl" />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -139,7 +143,7 @@ export default {
   }
 
   &__img-girl {
-    max-height: 950px;
+    max-height: 900px;
   }
 }
 </style>

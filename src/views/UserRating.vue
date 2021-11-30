@@ -5,8 +5,7 @@
         <h1 class="user-rating__title">Рейтинг пользователей</h1>
         <hr />
 
-        <el-col :span="12"
-          >
+        <el-col :span="12">
           <el-button
             class="user-rating__tabs"
             :class="{ btnActive: tabsActive === 'excess' }"
@@ -14,8 +13,9 @@
               isExcessWeight = true;
               tabsActive = 'excess';
             "
-            >Сбрасывают вес</el-button>
-            </el-col>
+            >Сбрасывают вес</el-button
+          >
+        </el-col>
         <el-col :span="12">
           <el-button
             class="user-rating__tabs"
@@ -24,8 +24,9 @@
               isExcessWeight = false;
               tabsActive = 'deficit';
             "
-            >Набирают вес</el-button>
-            </el-col>
+            >Набирают вес</el-button
+          >
+        </el-col>
 
         <el-table
           v-if="isExcessWeight"
@@ -147,7 +148,6 @@
               <b> {{ `${scope.row.sumKg} кг.` }}</b>
             </template>
           </el-table-column>
-
         </el-table>
       </el-col>
     </el-row>
@@ -168,6 +168,11 @@ export default {
       tabsActive: 'excess',
     };
   },
+  async created() {
+    await this.$store.dispatch('getListAllUsers');
+    this.spreadOverTables();
+    this.totalCaloriesBurned();
+  },
   computed: {
     // Получаем всех пользователей.
     allUsers() {
@@ -179,6 +184,7 @@ export default {
     totalCaloriesBurned() {
       for (let i = 0; i < this.tableExcessWeight.length; i += 1) {
         const userСalories = Object.values(this.tableExcessWeight[i].userСalories);
+
         const sumCalories = userСalories.reduce((total, obj) => total + obj.differencePerDay, 0);
         this.tableExcessWeight[i].sumCalories = Math.abs(sumCalories);
         this.tableExcessWeight[i].sumKg = +Math.abs(sumCalories / 7700).toFixed(2);
@@ -196,7 +202,6 @@ export default {
     spreadOverTables() {
       // Получаем ключ всех пользователей
       const keysAllUsers = Object.keys(this.allUsers);
-
       // Сохраняем всех пользователей в массив.
       const allUsersArr = [];
       for (let i = 0; i < keysAllUsers.length; i += 1) {
@@ -224,11 +229,6 @@ export default {
         }
       }
     },
-  },
-  async created() {
-    await this.$store.dispatch('getListAllUsers');
-    this.spreadOverTables();
-    this.totalCaloriesBurned();
   },
   mounted() {
     // Сортируем массивы по значению sumKg

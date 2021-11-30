@@ -193,6 +193,7 @@ export default {
               message: 'Успешная регистрация, поздравляем!',
               type: 'success',
             });
+            this.$store.commit('LOADING_TRUE');
             this.$store.dispatch('setForm', this.formRegister);
             this.$store.dispatch('getForm');
           } else {

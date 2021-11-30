@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading.fullscreen="isLoading"
+    element-loading-text="Загрузка..."
+    element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-container>
     <SideBar v-if="infoCurrentUser && isAuthenticated"/>
       <el-main>
@@ -26,12 +28,17 @@ export default {
     infoCurrentUser() {
       return this.$store.state.UserInfoDatabase.infoCurrentUser;
     },
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import 'src/scss/reset.scss';
+
+[v-cloak] { visibility: hidden !important; }
 
 body {
   padding: 0;

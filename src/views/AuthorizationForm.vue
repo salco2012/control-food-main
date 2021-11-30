@@ -78,7 +78,7 @@ export default {
               message: 'Успешная авторизация!',
               type: 'success',
             });
-            // this.$store.dispatch('getForm');
+            this.$store.commit('LOADING_TRUE');
             this.$router.push({ name: 'MyGoals' }).catch(() => {});
           } else {
             this.$message({
@@ -86,6 +86,8 @@ export default {
               type: 'error',
             });
           }
+        }).catch((error) => {
+          console.error(error);
         });
     },
   },

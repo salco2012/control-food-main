@@ -1,10 +1,10 @@
 <template>
-  <el-col
-    class="my-goals"
-    :span="20"
-    v-loading.fullscreen="isLoading"
+    <el-col
+  v-loading.fullscreen="isLoading"
     element-loading-text="Загрузка..."
     element-loading-background="rgba(0, 0, 0, 0.8)"
+    class="my-goals"
+    :span="20"
     v-if="infoCurrentUser"
   >
     <h1 class="my-goals__title">Мои цели</h1>
@@ -352,6 +352,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
@@ -406,7 +407,6 @@ export default {
         const currentData = new Date().toLocaleString().slice(0, 10).split('.')
           .reverse()
           .join('.');
-
         // Возвращаю кол-во миллисекунд текущей даты
         const currentDataMseconds = Date.parse(currentData);
 
@@ -518,6 +518,9 @@ export default {
       localStorage.setItem('numKgReduce', this.numKgReduce);
     },
   },
+  beforeUpdate() {
+    this.$store.commit('LOADING_FALSE');
+  },
   created() {
     /* Диспатчим getForm, для получения и перезаписи
       информацию по калориям, подтягиваю обновленную
@@ -546,8 +549,8 @@ export default {
     // Актуальный текущий вес, с учетом сброшенных каллорий
     currentWeight() {
       const userWeight = this.infoCurrentUser.weight;
-      const result = userWeight - (this.caloriesBurned / 7700).toFixed(1);
-      return result;
+      const result = userWeight - (this.caloriesBurned / 7700);
+      return result.toFixed(1);
     },
     // Отвечает за индикацию прогресса
     userProgress() {
