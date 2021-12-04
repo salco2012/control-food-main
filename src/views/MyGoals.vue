@@ -1,16 +1,16 @@
 <template>
+<div class="my-goals">
     <el-col
   v-loading.fullscreen="isLoading"
     element-loading-text="Загрузка..."
     element-loading-background="rgba(0, 0, 0, 0.8)"
-    class="my-goals"
-    :span="20"
+    :span="24"
     v-if="infoCurrentUser"
   >
     <h1 class="my-goals__title">Мои цели</h1>
     <hr />
     <el-row :gutter="10">
-      <el-col :span="12">
+      <el-col :md="12" :lg="12">
         <div class="card">
           <template v-if="infoCurrentUser.gender === 'мужской'">
             <h3 class="card__title">
@@ -36,7 +36,7 @@
         </div>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :md="12" :lg="12">
         <div
           class="card"
           :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
@@ -87,7 +87,7 @@
     </el-row>
 
     <el-row :gutter="10">
-      <el-col :span="6">
+      <el-col :md="12" :lg="6">
         <div class="card card-orange">
           <!--Если у пользователя дифицит каллорий, отображаем вариант с набором каллорий -->
           <h3 class="card__title" v-if="weightDeviationisNormal">Хочу набрать:</h3>
@@ -108,7 +108,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :lg="6" :md="12">
         <div
           v-if="daysToTarget"
           class="card card-red"
@@ -133,7 +133,7 @@
         </div>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :md="24" :lg="12">
         <div class="card">
           <h3 class="card__title">До завершения цели {{ declinationRemainder }}:</h3>
           <div class="card__flex-block" v-if="daysToTarget">
@@ -150,7 +150,7 @@
       </el-col>
     </el-row>
     <el-row :gutter="10">
-      <el-col :span="12">
+      <el-col :md="12" :ld="12">
         <div class="card card-purple">
           <h3 class="card__title" v-if="weightDeviationisNormal">
             Необходим
@@ -176,7 +176,7 @@
         </div>
       </el-col>
 
-      <el-col :span="6">
+      <el-col :md="12" :lg="6">
         <div class="card">
           <h3 class="card__title">Текущая дата:</h3>
           <div class="card__flex-block">
@@ -186,7 +186,7 @@
         </div>
       </el-col>
 
-      <el-col :span="6">
+      <el-col :md="24" :lg="6">
         <div class="card">
           <h3 class="card__title">Окончание диеты:</h3>
           <div class="card__flex-block" style="flex-wrap: wrap">
@@ -237,24 +237,24 @@
     </el-row>
 
     <el-row :gutter="10">
-      <el-col :span="12">
+      <el-col :md="12" :lg="12">
         <div
-          class="card card__flex-block"
+          class="card card__flex-block calories-tracking"
           style="justify-content: space-around; align-items: flex-start; min-height: 235px"
         >
-          <img src="../assets/img/duet.png" alt="girl" width="250px" />
+          <img src="../assets/img/duet.png" class="img-duet" alt="girl" width="250px" />
           <div>
             <h3 class="card__title">Учет каллорий за сутки:</h3>
             <hr />
             <div>
-              <div class="card__flex-block" style="flex-direction: column">
+              <div class="card__flex-block normsPerDay" style="flex-direction: column">
                 <div class="mb10">
                   <p style="margin-bottom: 5px">Норма ккал. за день</p>
                   <p v-if="infoCurrentUser.gender === 'мужской'">{{ normСaloriesMan }} (ккал.)</p>
                   <p v-if="infoCurrentUser.gender === 'женский'">{{ normСaloriesWoman }} (ккал.)</p>
                 </div>
                 <p style="margin-bottom: 5px">Калорий съедено</p>
-                <div class="card__flex-block mb10">
+                <div class="card__flex-block mb10 edit-value" >
                   <p v-if="changedСountingInput === false" class="mr10">
                     {{ caloriesPerDay }} (ккал.)
                   </p>
@@ -297,7 +297,7 @@
         </div>
       </el-col>
 
-      <el-col :span="12">
+      <el-col :md="12" :lg="12">
         <div class="card total-burned" style="min-height: 235px" v-if="!weightDeviationisNormal">
           <div>
             <h3 class="card__title">Всего сожжено каллорий:</h3>
@@ -349,6 +349,7 @@
       </el-col>
     </el-row>
   </el-col>
+</div>
 </template>
 
 <script>
@@ -750,7 +751,7 @@ export default {
 
 <style lang="scss" scoped>
 .my-goals {
-  margin: 40px 0 40px 40px;
+  margin: 40px;
   &__title {
     @extend %title;
     color: white;
@@ -758,6 +759,7 @@ export default {
   .card {
     background-color: $color_2;
     padding: 15px;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -839,10 +841,15 @@ export default {
     }
   }
   .total-burned {
+    text-align: start;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
   }
+
+  .calories-tracking{
+  text-align: start;
+}
 }
 
 .mr10 {
@@ -871,6 +878,69 @@ export default {
 
 .el-row {
   margin-bottom: 10px;
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 1580px) {
+.my-goals {
+.calories-tracking{
+  flex-direction: column;
+  align-items: center !important;
+}
+.total-burned{
+    flex-direction: column-reverse;
+}
+.img-duet{
+  width: 160px;
+  margin-bottom: 10px;
+}
+  }
+
+}
+@media screen and (min-width: 1200px) and (max-width: 1271px){
+.card{
+  &__cursor-icon{
+   display: none;
+  }
+}
+}
+@media screen and (max-width: 1310px) {
+
+.card{
+  margin-bottom: 10px;
+  &__result36{
+    font-size: 30px !important;
+  }
+  #datepicker {
+    border: 5px solid red;
+    padding: 0 !important;
+  }
+}
+.el-row{
+  margin-bottom: 0;
+}
+}
+@media screen and (max-width: 767px) {
+.my-goals {
+  margin: 10px !important;
+  .calories-tracking{
+  text-align: center ;
+}
+.edit-value{
+flex-direction: column;
+    align-items: center;
+}
+.normsPerDay{
+  align-items: center;
+}
+}
+.card {
+    &__title{
+    font-size: 22px !important;
+    text-align: center;
+  }
+}
 }
 </style>
 

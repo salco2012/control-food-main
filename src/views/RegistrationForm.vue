@@ -1,8 +1,8 @@
 <template>
   <div class="registration">
     <el-row class="registration-wrapper">
-      <el-col class="registration-form" :span="12">
-        <el-col class="registration-form__auth-menu" :span="8">
+      <el-col class="registration-form" :xs="20" :sm="18" :md="16" :lg="20" :xl="16">
+        <el-col class="registration-form__auth-menu hidden-md-and-down" :span="8">
           <h3 class="registration-form__auth-menu-title">Есть аккаунт?</h3>
 
           <p class="registration-form__auth-menu-text">Пройдите авторизацию!</p>
@@ -13,7 +13,7 @@
             >Авторизация</el-button
           >
         </el-col>
-        <el-col class="registration-form__register" :span="16">
+        <el-col class="registration-form__register" :xs="24" :sm="24" :md="24" :lg="16" :xl="16">
           <el-form>
             <h2 class="registration-form__title">Регистрация</h2>
             <form-wrapper :validator="$v.formRegister">
@@ -135,6 +135,11 @@
               :disabled="$v.formRegister.$invalid"
               >Создать аккаунт</el-button
             >
+            <el-button
+            class="registration-form__auth-menu-btn hidden-lg-and-up"
+            @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
+            >Авторизация</el-button
+          >
             <div class="registration__notification">
               * - поля являются обязательными и необходимыми для точного расчета дальнейших
               показателей!
@@ -260,6 +265,7 @@ export default {
   background-position: center center;
   background-size: cover;
   &-wrapper {
+    padding: 20px 0;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -421,6 +427,41 @@ export default {
 .el-input__inner:focus {
   border-color: $color_3;
 }
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 575px) {
+ .registration-form {
+     &__title{
+       font-size: 26px;
+       margin-bottom: 20px;
+     }
+     &__submit-btn{
+       min-width: 200px;
+       margin: 0 10px 10px 0;
+     }
+     &__gender{
+       flex-direction: column;
+       align-items: flex-start;
+     }
+     &__auth-menu-btn{
+       min-width: 200px;
+       margin: 0;
+     }
+ }
+}
+@media screen and (max-width: 991px){
+ .registration-form {
+     &__submit-btn{
+       min-width: 200px;
+       margin: 0 10px 10px 0;
+     }
+     &__auth-menu-btn{
+       min-width: 200px;
+       margin: 0;
+     }
+ }
+}
 </style>
 
 // Переопределяем стили библиотеки element.io
@@ -446,5 +487,11 @@ export default {
 
 .el-input__inner:focus {
   border-color: $color_3;
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 767px) {
+
 }
 </style>

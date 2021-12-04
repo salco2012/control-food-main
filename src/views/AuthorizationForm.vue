@@ -1,17 +1,17 @@
 <template>
   <div class="authorization">
     <el-row class="authorization-wrapper">
-      <el-col class="authorization-form" :span="12">
-        <el-col class="recover-password" :span="8">
+      <el-col class="authorization-form" :xs="20" :sm="20" :md="20" :lg="16" :xl="11">
+        <el-col class="recover-password hidden-xs-only" :span="8">
           <h3 class="recover-password__title">Забыли пароль?</h3>
           <p class="recover-password__text">Установите новый!</p>
           <el-button
             class="recover-password__btn"
-            @click="$router.push({ name: 'PasswordRecovery' }).catch(()=>{})"
+            @click="$router.push({ name: 'PasswordRecovery' }).catch(() => {})"
             >Восстановить пароль</el-button
           >
         </el-col>
-        <el-col class="authorization-form__auth" :span="16">
+        <el-col class="authorization-form__auth" :span="16" :xs="24">
           <el-form>
             <h2 class="authorization-form__title">Авторизация</h2>
 
@@ -45,6 +45,11 @@
               type="submit"
               @click.prevent="authorization"
               >Войти в кабинет</el-button
+            >
+            <el-button
+              class="recover-password__btn hidden-sm-and-up"
+              @click="$router.push({ name: 'PasswordRecovery' }).catch(() => {})"
+              >Восстановить пароль</el-button
             >
           </el-form>
         </el-col>
@@ -86,7 +91,8 @@ export default {
               type: 'error',
             });
           }
-        }).catch((error) => {
+        })
+        .catch((error) => {
           console.error(error);
         });
     },
@@ -139,7 +145,7 @@ export default {
       margin-bottom: 15px;
     }
     &__text {
-  font-family: 'MontserratRegular';
+      font-family: 'MontserratRegular';
       font-size: 14px;
       margin-bottom: 15px;
     }
@@ -176,6 +182,42 @@ export default {
       margin: 30px 0 30px 0;
       padding: 0 25px;
     }
+  }
+}
+
+//media
+// 0-575px || 576-767px || 768-991px || 992-1199px || 1200px+
+@media screen and (max-width: 991px) {
+  .authorization {
+  .recover-password__btn {
+    padding: 0px;
+    font-size: 16px;
+    min-width: 200px ;
+  }
+  }
+}
+@media screen and (max-width: 767px) {
+    .authorization{
+  .authorization-form__auth {
+    padding: 10px;
+  }
+  .authorization-form__title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  .authorization-form__submit-btn {
+    height: 40px;
+    padding: 0;
+    max-width: 200px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  .recover-password__btn {
+    height: 40px;
+    min-width: 250px;
+    margin: 0;
+    margin-top: 10px;
+  }
   }
 }
 </style>

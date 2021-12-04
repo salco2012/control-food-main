@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-row class="home">
-      <el-col :span="12">
+    <el-row class="home hidden-md-and-down">
+      <el-col span="12">
         <div class="home__content">
           <el-button class="home__content-button" round
             >Сервис №1 по мнению журнала "Здоровье"</el-button
@@ -43,10 +43,59 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col span="12">
         <img class="home__img-girl" src="@/assets/img/main-screen-girl.png" alt="girl" />
       </el-col>
     </el-row>
+
+    <el-row class="home hidden-lg-and-up">
+        <div class="home__content">
+
+        <img class="home__img-girl" src="@/assets/img/main-screen-girl-mobile.png" alt="girl" />
+
+          <h1 class="home__content-title">
+            <span class="home__content-title_color">Забудьте</span> про диеты. <br />
+            Ведь есть <br />FOOD ACCOUTING!
+          </h1>
+
+          <el-button class="home__content-button" round
+            >Сервис №1 по мнению журнала "Здоровье"</el-button
+          >
+
+          <p class="home__content-description">
+            Не знаете что приготовить? <br />На нашем сервисе вы найдете массу оригинальных
+            рецептов. <br />А, так же сможете ввести детальный учет по съеденным каллориям.
+          </p>
+
+          <div class="home__content-buttons">
+            <el-button
+              class="home__content-btn"
+              @click="$router.push({ name: 'RegistrationForm' }).catch(() => {})"
+              >Регистрация</el-button
+            >
+            <el-button
+              class="home__content-btn"
+              @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
+              >Авторизация</el-button
+            >
+          </div>
+          <div class="home__content-statistics">
+            <div class="home__content-statistics_one">
+              <h2 class="home__content-statistics_title">1.000+</h2>
+              <p>Пользователей</p>
+            </div>
+            <div class="home__content-statistics_two">
+              <h2 class="home__content-statistics_title">17.000+</h2>
+              <p>Рецептов</p>
+            </div>
+            <div class="home__content-statistics_three">
+              <h2 class="home__content-statistics_title">-38.000 кг</h2>
+              <p>Растопленного жира</p>
+            </div>
+          </div>
+        </div>
+    </el-row>
+
   </div>
 </template>
 
@@ -60,7 +109,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  padding: 25px 125px;
+  padding: 20px 80px;
   min-height: 100vh;
   background-color: $color_1;
   display: flex;
@@ -82,7 +131,7 @@ export default {
   &__content-title {
     font-family: 'MontserratSemiBold';
     font-size: 56px;
-    line-height: 125%;
+    line-height: 120%;
     text-align: start;
     margin-bottom: 10px;
     &_color {
@@ -113,9 +162,9 @@ export default {
     height: 60px;
     background-color: $color_3;
     color: white;
-    margin-right: 20px;
     border: none;
     transition: ease-out 0.5s;
+     margin: 0 10px 10px 0;
 
     &:hover {
       background-color: $color_6;
@@ -145,5 +194,100 @@ export default {
   &__img-girl {
     max-height: 900px;
   }
+}
+
+//media
+// 0-575px || 576-767px || 768-991px || 992-1199px || 1200px+
+@media screen and (min-width: 1200px) and (max-width: 1799px) {
+.home{
+    &__img-girl {
+    max-height: 600px;
+  }
+}
+}
+@media screen and (max-width: 1199px){
+.home {
+  &__img-girl{
+    max-height: 500px;
+  }
+  &__content-button{
+    margin-bottom: 10px;
+  }
+  &__content-btn{
+    margin-right: 10px;
+}
+}
+}
+@media screen and (max-width: 991px){
+.home{
+  &__img-girl{
+    max-height: 400px;
+  }
+&__content-title{
+  font-size: 42px;
+}
+&__content-btn{
+  min-width: 200px;
+}
+}
+}
+@media screen and (max-width: 767px){
+.home{
+  padding: 20px 60px;
+  &__img-girl{
+    max-height: 350px;
+  }
+&__content-title{
+  font-size: 32px;
+}
+&__content-description{
+  font-size: 18px;
+  margin-bottom: 20px;
+  max-width: 80%;
+}
+&__content-btn{
+  font-size: 16px;
+  min-width: 200px;
+}
+&__content-statistics{
+align-items: flex-start;
+}
+&__content-statistics_title{
+  font-size: 18px;
+}
+}
+}
+@media screen and (max-width: 575px){
+.home {
+  padding: 20px;
+  &__content-title{
+    font-size: 26px;
+  }
+  &__content-button{
+    display: none;
+  }
+  &__content-description{
+    margin-bottom: 10px;
+  }
+  &__content-buttons{
+    margin-bottom: 10px;
+  }
+  &__content-btn{
+  height: 50px;
+  margin: 0 10px 10px 0;
+}
+&__content-statistics{
+  flex-direction: column;
+  &_title{
+    margin-bottom: 0;
+  }
+  p {
+    margin-bottom: 10px;
+  }
+}
+  &__img-girl{
+    max-height: 280px;
+  }
+}
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div class="user-rating" v-if="tableExcessWeight.length && tableDeficitWeight.length">
-    <el-row>
-      <el-col :span="20">
+      <el-col :span="24">
         <h1 class="user-rating__title">Рейтинг пользователей</h1>
         <hr />
 
@@ -39,7 +38,7 @@
           style="width: 100%"
           height="100%"
         >
-          <el-table-column label="Аватарка">
+          <el-table-column label="Аватарка" width="140">
             <template slot-scope="scope">
               <img
                 v-if="scope.row.imageData"
@@ -150,7 +149,6 @@
           </el-table-column>
         </el-table>
       </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -240,8 +238,7 @@ export default {
 
 <style lang="scss" scoped>
 .user-rating {
-  margin-top: 40px;
-  margin-left: 40px;
+  margin: 40px;
   &__title {
     @extend %title;
     color: white;
@@ -269,10 +266,6 @@ export default {
 </style>
 
 <style lang="scss">
-// .el-table {
-//   height: auto !important;
-// }
-
 .el-table .cell {
   word-break: break-word;
 }
@@ -304,5 +297,38 @@ tr.table-header > th {
 
 .el-table .descending .sort-caret.descending {
   border-top-color: $color_4;
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 1199px){
+.user-rating {
+  margin: 10px !important;
+}
+}
+@media screen and (max-width: 991px){
+.cell {
+  font-size: 14px;
+}
+}
+@media screen and (max-width: 767px){
+.user-rating{
+  &__title{
+    font-size: 28px !important;
+  }
+}
+.el-table__cell {
+  display: block;
+  width: 767px;
+}
+}
+@media screen and (max-width: 360px){
+.user-rating {
+  &__tabs{
+    span {
+      font-size: 11px !important;
+    }
+  }
+}
 }
 </style>

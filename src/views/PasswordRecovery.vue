@@ -1,8 +1,8 @@
 <template>
   <div class="password-recovery">
     <el-row class="password-recovery-wrapper">
-      <el-col class="password-recovery__form" :span="12">
-        <el-col class="password-recovery__form-left" :span="8">
+      <el-col class="password-recovery__form" :xs="22" :sm="22" :md="22" :lg="18" :xl="12">
+        <el-col class="password-recovery__form-left hidden-sm-and-down" :span="8">
           <h3 class="password-recovery__form-left-title">Вспомнили пароль?</h3>
 
           <p class="password-recovery__form-left-text">Пройдите авторизацию прямо сейчас!</p>
@@ -13,7 +13,7 @@
             >Авторизация</el-button
           >
         </el-col>
-        <el-col class="password-recovery__form-right" :span="16">
+        <el-col class="password-recovery__form-right" :md="16" :xs="24">
           <el-form @submit.prevent>
             <h2 class="password-recovery__form-right-title">Восстановление пароля</h2>
             <form-wrapper :validator="$v.passwordRecowery">
@@ -38,6 +38,11 @@
               @click.prevent="resetPassword"
               :disabled="$v.passwordRecowery.$invalid"
               >Сбросить пароль</el-button
+            >
+            <el-button
+              class="password-recovery__form-left-btn hidden-md-and-up"
+              @click="$router.push({ name: 'AuthorizationForm' }).catch(() => {})"
+              >Авторизация</el-button
             >
           </el-form>
         </el-col>
@@ -70,8 +75,7 @@ export default {
               type: 'success',
             });
             setTimeout(() => {
-              this.$router.push({ name: 'AuthorizationForm' })
-                .catch(() => {});
+              this.$router.push({ name: 'AuthorizationForm' }).catch(() => {});
             }, 3000);
           } else {
             this.$message({
@@ -164,6 +168,23 @@ export default {
     background: rgba(31, 29, 43, 0.5);
     backdrop-filter: blur(5px);
     border-radius: 10px;
+  }
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 767px) {
+  .password-recovery {
+    &__form-right-title {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    &__form-right-btn {
+      margin: 0 10px 10px 0;
+    }
+    &__form-left-btn {
+      margin: 0;
+    }
   }
 }
 </style>

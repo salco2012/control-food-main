@@ -16,6 +16,7 @@ import store from './store';
 import RegistrationForm from './views/RegistrationForm.vue';
 import ElFormItemExtended from './components/ElFormItemExtended.vue';
 import AuthorizationForm from './views/AuthorizationForm.vue';
+import 'element-ui/lib/theme-chalk/display.css';
 
 // Initialize Firebase
 initializeApp(firebaseConfig);

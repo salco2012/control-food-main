@@ -3,8 +3,9 @@
     v-loading.fullscreen="isLoading"
     element-loading-text="Загрузка..."
     element-loading-background="rgba(0, 0, 0, 0.8)"
+    class="search-recipes"
   >
-    <el-col class="search-recipes" v-if="receptAll.length" :span="20">
+    <el-col v-if="receptAll.length" :span="24">
       <h1 class="search-recipes__title">Поиск рецептов</h1>
       <hr />
 
@@ -24,7 +25,9 @@
       </div>
 
       <el-row :gutter="10" v-for="(rank, externalIndex) in ranks" :key="externalIndex">
-        <el-col :span="6" v-for="(item, index) in rank" :key="index">
+        <el-col :xs="24"
+            :sm="12"
+            :lg="6" v-for="(item, index) in rank" :key="index">
           <div class="recipe-card">
             <img v-if="item.recipe.image" class="recipe-card__img" :src="item.recipe.image" />
             <img v-else src="../assets/img/No_image_available.png" class="recipe-card__img" />
@@ -372,7 +375,7 @@ export default {
 
 <style lang="scss" scoped>
 .search-recipes {
-  margin: 40px 0 40px 40px;
+  margin: 40px;
   &__title {
     @extend %title;
     color: white;
@@ -393,6 +396,7 @@ export default {
       border: none;
       border-radius: 25px;
       transition: 0.7s ease;
+      margin: 0 10px 10px 0;
       &:hover {
         background-color: $color_9;
         color: $color_4;
@@ -415,6 +419,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0 10px;
 
       &-wrapper {
         background-color: $color_3;
@@ -450,10 +455,6 @@ export default {
     }
   }
 
-  .el-row {
-    margin-bottom: 10px;
-  }
-
   &__source {
     color: $color_7;
     font-size: 14px;
@@ -480,6 +481,28 @@ export default {
   .isFavorites {
     color: $color_3;
   }
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 1919px) {
+.search-recipes{
+  &__to-recipe{
+    min-width: 180px;
+    font-size: 16px;
+  }
+}
+}
+@media screen and (max-width: 767px) {
+  .getDishType{
+    padding: 10px !important;
+  }
+.search-recipes{
+  margin: 10px;
+  &__title{
+    font-size: 28px;
+  }
+}
 }
 </style>
 

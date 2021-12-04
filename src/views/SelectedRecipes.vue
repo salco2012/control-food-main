@@ -5,11 +5,17 @@
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
     <div class="selected-recipes" v-if="selectedRecipes.length">
-      <el-col :span="20">
+      <el-col :md="24">
         <h1 class="selected-recipes__title">Избранные рецепты</h1>
         <hr />
         <el-row :gutter="10" v-for="(rank, externalIndex) in ranks" :key="externalIndex">
-          <el-col :span="6" v-for="(item, index) in rank" :key="index">
+          <el-col
+            :xs="24"
+            :sm="12"
+            :lg="6"
+            v-for="(item, index) in rank"
+            :key="index"
+          >
             <div class="select-card">
               <span
                 style="font-size: 0.7em"
@@ -138,6 +144,9 @@ export default {
       isLoading: true,
     };
   },
+  created() {
+    this.getUserRecipes();
+  },
   computed: {
     infoCurrentUser() {
       return this.$store.state.UserInfoDatabase.infoCurrentUser;
@@ -153,12 +162,6 @@ export default {
       });
       return ranks;
     },
-  },
-  created() {
-    this.getUserRecipes();
-  },
-  updated() {
-    console.log(this.$store.getters.selectRecipes);
   },
   methods: {
     getUserRecipes() {
@@ -191,8 +194,7 @@ export default {
 
 <style lang="scss" scoped>
 .selected-recipes {
-  margin-top: 40px;
-  margin-left: 40px;
+  margin: 40px;
   &__no-info {
     font-family: 'MontserratRegular';
     color: $color_7;
@@ -234,6 +236,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0 10px;
   }
 
   &__description {
@@ -270,6 +273,25 @@ export default {
     min-width: 250px;
     height: 40px;
     display: flex;
+  }
+}
+
+//media
+// xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
+@media screen and (max-width: 1919px) {
+  .search-recipes {
+    &__to-recipe {
+      min-width: 180px;
+      font-size: 16px;
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .selected-recipes {
+    margin: 10px;
+    &__title {
+      font-size: 28px;
+    }
   }
 }
 </style>
