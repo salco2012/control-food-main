@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="home hidden-md-and-down">
-      <el-col span="12">
+      <el-col :span="12">
         <div class="home__content">
           <el-button class="home__content-button" round
             >Сервис №1 по мнению журнала "Здоровье"</el-button
@@ -43,7 +43,7 @@
           </div>
         </div>
       </el-col>
-      <el-col span="12">
+      <el-col :span="12">
         <img class="home__img-girl" src="@/assets/img/main-screen-girl.png" alt="girl" />
       </el-col>
     </el-row>

@@ -1,8 +1,8 @@
 <template>
-<div>
-      <el-menu
+  <div>
+    <el-menu
       default-active="1"
-      class="sidebar-menu hidden-md-and-down"
+      class="sidebar-menu"
       background-color="#1f1d2b"
       text-color="#fff"
       active-text-color="#fff"
@@ -46,7 +46,7 @@
             </h3>
             <p class="profile-info__user-email">{{ infoCurrentUser.email }}</p>
             <button class="profile-info__user-exit" @click="exitProfile">
-              Выйти
+              <span class="profile-info__user-exit-text">Выйти</span>
               <span style="font-size: 1.3rem">
                 <i class="fa fa-sign-out-alt profile-info__user-exit-icon"></i>
               </span>
@@ -58,6 +58,7 @@
         index="index"
         v-for="(item, index) in menuItems"
         :key="index"
+        class="el-menu-item"
         :class="{ 'active-item': routeName === item.routeName }"
         @click="
           routeName = item.routeName;
@@ -72,67 +73,10 @@
         <span class="sidebar-menu__text">{{ item.text }}</span>
       </el-menu-item>
     </el-menu>
-
-          <el-menu
-      default-active="1"
-      class="sidebar-menu hidden-lg-and-up"
-      background-color="#1f1d2b"
-      text-color="#fff"
-      active-text-color="#fff"
-    >
-      <div class="profile-info">
-        <img
-          v-if="infoCurrentUser.imageData"
-          class="profile-info__avatar"
-          :src="infoCurrentUser.imageData"
-          alt="avatar"
-        />
-        <img
-          v-else-if="infoCurrentUser.gender === 'мужской'"
-          class="profile-info__avatar"
-          src="../assets/img/icons/avatar-man.jpg"
-          alt="avatar"
-        />
-        <img
-          v-else
-          class="profile-info__avatar"
-          src="../assets/img/icons/avatar-woman.jpg"
-          alt="avatar"
-        />
-
-        <div class="profile-info__user">
-          <template>
-            <button class="profile-info__user-exit" @click="exitProfile">
-              <span style="font-size: 1.3rem" title="Выйти">
-                <i class="fa fa-sign-out-alt profile-info__user-exit-icon"></i>
-              </span>
-            </button>
-          </template>
-        </div>
-      </div>
-      <el-menu-item
-        index="index"
-        v-for="(item, index) in menuItems"
-        :key="index"
-        :class="{ 'active-item': routeName === item.routeName }"
-        :title="item.text"
-        @click="
-          routeName = item.routeName;
-          $router.push({ name: item.routeName }).catch(() => {});
-        "
-      >
-        <img
-          class="sidebar-menu__icon"
-          :src="require(`../assets/img/icons/${item.src}`)"
-          :alt="item.alt"
-        />
-      </el-menu-item>
-    </el-menu>
-</div>
+  </div>
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -262,22 +206,41 @@ export default {
 
 //media
 // xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
-@media screen and (max-width: 1199px){
-.profile-info{
-  &__avatar{
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-  }
-  &__user-exit-icon{
-    margin: 0;
-  }
-}
-.sidebar-menu{
+@media screen and (max-width: 1199px) {
+.sidebar-menu {
   width: 60px;
-    &__icon {
+  &__icon{
     width: 40px;
     height: 40px;
+  }
+  &__text{
+    display: none;
+  }
+  .profile-info {
+    &__user {
+      margin: 5px 0 0 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    &__user-exit{
+      font-size: 12px;
+      &-text{
+        display: none;
+      }
+    }
+    &__avatar{
+      width: 40px;
+      height: 40px;
+    }
+    &__user-name{
+      font-size: 12px;
+    }
+    &__user-email{
+      display: none;
+    }
   }
 }
 }

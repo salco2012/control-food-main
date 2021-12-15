@@ -45,6 +45,7 @@
                   <i class="wrapper-input__icon fas fa-key"></i>
                   <el-input
                     placeholder="Пароль *"
+                    name="password"
                     type="password"
                     v-model.trim="formRegister.password"
                     @input="$v.formRegister.password.$touch()"
@@ -58,6 +59,7 @@
                   <el-input
                     placeholder="Повторите пароль *"
                     type="password"
+                    name="password"
                     v-model.trim="formRegister.repeatPassword"
                     @input="$v.formRegister.repeatPassword.$touch()"
                   ></el-input>
@@ -246,7 +248,7 @@ export default {
       },
       height: {
         required,
-        between: between(80, 240),
+        between: between(140, 240),
       },
       weight: {
         required,

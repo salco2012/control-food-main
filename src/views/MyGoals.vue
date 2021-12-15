@@ -1,358 +1,361 @@
 <template>
-<div class="my-goals">
+  <div class="my-goals">
     <el-col
-  v-loading.fullscreen="isLoading"
-    element-loading-text="Загрузка..."
-    element-loading-background="rgba(0, 0, 0, 0.8)"
-    :span="24"
-    v-if="infoCurrentUser"
-  >
-    <h1 class="my-goals__title">Мои цели</h1>
-    <hr />
-    <el-row :gutter="10">
-      <el-col :md="12" :lg="12">
-        <div class="card">
-          <template v-if="infoCurrentUser.gender === 'мужской'">
-            <h3 class="card__title">
-              <span style="text-decoration: underline" :title="hintForIdealWeight"
-                >Идеальный вес</span
-              >
-              для мужчины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
-            </h3>
-            <p class="card__result36">{{ idealWeightMan }}<span class="fz16"> (кг.)</span></p>
-          </template>
+      v-loading.fullscreen="isLoading"
+      element-loading-text="Загрузка..."
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :span="24"
+      v-if="infoCurrentUser"
+    >
+      <h1 class="my-goals__title">Мои цели</h1>
+      <hr />
+      <el-row :gutter="10">
+        <el-col :md="12" :lg="12">
+          <div class="card">
+            <template v-if="infoCurrentUser.gender === 'мужской'">
+              <h3 class="card__title">
+                <span style="text-decoration: underline" :title="hintForIdealWeight"
+                  >Идеальный вес</span
+                >
+                для мужчины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
+              </h3>
+              <p class="card__result36">{{ idealWeightMan }}<span class="fz16"> (кг.)</span></p>
+            </template>
 
-          <template v-if="infoCurrentUser.gender === 'женский'">
-            <h3 class="card__title">
-              <span style="text-decoration: underline" :title="hintForIdealWeight"
-                >Идеальный вес</span
-              >
-              для женщины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
-            </h3>
-            <p class="card__result36" style="fontsize: 36px">
-              {{ idealWeightWoman }}<span class="fz16"> (кг.)</span>
-            </p>
-          </template>
-        </div>
-      </el-col>
-
-      <el-col :md="12" :lg="12">
-        <div
-          class="card"
-          :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
-        >
-          <template v-if="infoCurrentUser.gender === 'мужской'">
-            <template v-if="excessWeightMan > 0">
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">Вам желательно сбросить:</h3>
-              <p class="card__result36" :title="hintForIdealWeight">
-                {{ excessWeightMan }} <span class="fz16"> (кг.)</span>
+            <template v-if="infoCurrentUser.gender === 'женский'">
+              <h3 class="card__title">
+                <span style="text-decoration: underline" :title="hintForIdealWeight"
+                  >Идеальный вес</span
+                >
+                для женщины с ростом {{ infoCurrentUser.height }}<span class="fz16"> (см.):</span>
+              </h3>
+              <p class="card__result36" style="fontsize: 36px">
+                {{ idealWeightWoman }}<span class="fz16"> (кг.)</span>
               </p>
             </template>
-            <template v-else-if="excessWeightMan < 0">
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">
-                Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
-                <span class="fz16"> (кг.)</span>
-              </h3>
-            </template>
-            <template v-else>
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">У вас нет лишнего веса!</h3>
-            </template>
-          </template>
+          </div>
+        </el-col>
 
-          <template v-if="infoCurrentUser.gender === 'женский'">
-            <template v-if="excessWeightWoman > 0">
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">Вам желательно сбросить:</h3>
-              <p class="card__result36" style="font-size: 36px" :title="hintForIdealWeight">
-                {{ excessWeightWoman }}<span class="fz16"> (кг.)</span>
-              </p>
+        <el-col :md="12" :lg="12">
+          <div
+            class="card"
+            :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
+          >
+            <template v-if="infoCurrentUser.gender === 'мужской'">
+              <template v-if="excessWeightMan > 0">
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">Вам желательно сбросить:</h3>
+                <p class="card__result36" :title="hintForIdealWeight">
+                  {{ excessWeightMan }} <span class="fz16"> (кг.)</span>
+                </p>
+              </template>
+              <template v-else-if="excessWeightMan < 0">
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">
+                  Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
+                  <span class="fz16"> (кг.)</span>
+                </h3>
+              </template>
+              <template v-else>
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">У вас нет лишнего веса!</h3>
+              </template>
             </template>
-            <template v-else-if="excessWeightWoman < 0">
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">
-                Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
-                <span class="fz16"> (кг.)</span>
-              </h3>
-            </template>
-            <template v-else>
-              <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
-              <h3 class="card__title">У вас нет лишнего веса!</h3>
-            </template>
-          </template>
-        </div>
-      </el-col>
-    </el-row>
 
-    <el-row :gutter="10">
-      <el-col :md="12" :lg="6">
-        <div class="card card-orange">
-          <!--Если у пользователя дифицит каллорий, отображаем вариант с набором каллорий -->
-          <h3 class="card__title" v-if="weightDeviationisNormal">Хочу набрать:</h3>
-          <h3 class="card__title" v-else>Хочу cбросить:</h3>
-          <div>
+            <template v-if="infoCurrentUser.gender === 'женский'">
+              <template v-if="excessWeightWoman > 0">
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">Вам желательно сбросить:</h3>
+                <p class="card__result36" style="font-size: 36px" :title="hintForIdealWeight">
+                  {{ excessWeightWoman }}<span class="fz16"> (кг.)</span>
+                </p>
+              </template>
+              <template v-else-if="excessWeightWoman < 0">
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">
+                  Отклонение от нормы на {{ Math.abs(excessWeightWoman) }}
+                  <span class="fz16"> (кг.)</span>
+                </h3>
+              </template>
+              <template v-else>
+                <h3 class="card__title">ИМТ: {{ IMTvalue }}</h3>
+                <h3 class="card__title">У вас нет лишнего веса!</h3>
+              </template>
+            </template>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="10">
+        <el-col :md="12" :lg="6">
+          <div class="card card-orange">
+            <!--Если у пользователя дифицит каллорий, отображаем вариант с набором каллорий -->
+            <h3 class="card__title" v-if="weightDeviationisNormal">Хочу набрать:</h3>
+            <h3 class="card__title" v-else>Хочу cбросить:</h3>
+            <div>
+              <div class="card__flex-block">
+                <span class="fas fa-weight mr10" style="font-size: 24px"></span>
+                <p class="card__result24">{{ numKgReduce }} <span class="mr10 fz16">(кг.)</span></p>
+                <el-button class="btn-minus" circle @click="numKgReduceMinus">-</el-button>
+                <el-button class="btn-plus" circle @click="numKgReducePlus">+</el-button>
+              </div>
+              <div class="card__flex-block" style="justify-content: start">
+                <span class="fas fa-fire mr10" style="font-size: 24px"></span>
+                <p class="card__result24">
+                  {{ numCaloriesReduce }} <span class="fz16">(ккал.)</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :lg="6" :md="12">
+          <div
+            v-if="daysToTarget"
+            class="card card-red"
+            :class="{ 'card-green': comparisonFutureWeightIdeal }"
+          >
+            <h3 class="card__title">{{ `Вес через ${daysToTarget} ${declinationDays}` }}:</h3>
             <div class="card__flex-block">
               <span class="fas fa-weight mr10" style="font-size: 24px"></span>
-              <p class="card__result24">{{ numKgReduce }} <span class="mr10 fz16">(кг.)</span></p>
-              <el-button class="btn-minus" circle @click="numKgReduceMinus">-</el-button>
-              <el-button class="btn-plus" circle @click="numKgReducePlus">+</el-button>
+              <p class="card__result24">{{ resultWeight }} <span class="fz16">(кг.)</span></p>
             </div>
-            <div class="card__flex-block" style="justify-content: start">
-              <span class="fas fa-fire mr10" style="font-size: 24px"></span>
-              <p class="card__result24">
-                {{ numCaloriesReduce }} <span class="fz16">(ккал.)</span>
+          </div>
+          <div
+            v-else
+            class="card"
+            :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
+          >
+            <h3 class="card__title">Текущий вес:</h3>
+            <div class="card__flex-block">
+              <span class="fas fa-weight mr10" style="font-size: 24px"></span>
+              <p class="card__result24">{{ currentWeight }} <span class="fz16">(кг.)</span></p>
+            </div>
+          </div>
+        </el-col>
+
+        <el-col :md="24" :lg="12">
+          <div class="card">
+            <h3 class="card__title">До завершения цели {{ declinationRemainder }}:</h3>
+            <div class="card__flex-block" v-if="daysToTarget">
+              <span class="fas fa-bullseye mr10" style="font-size: 32px"></span>
+              <p class="card__result36">
+                {{ daysToTarget }} <span class="fz16">{{ declinationDays }}</span>
               </p>
             </div>
-          </div>
-        </div>
-      </el-col>
-      <el-col :lg="6" :md="12">
-        <div
-          v-if="daysToTarget"
-          class="card card-red"
-          :class="{ 'card-green': comparisonFutureWeightIdeal }"
-        >
-          <h3 class="card__title">{{ `Вес через ${daysToTarget} ${declinationDays}` }}:</h3>
-          <div class="card__flex-block">
-            <span class="fas fa-weight mr10" style="font-size: 24px"></span>
-            <p class="card__result24">{{ resultWeight }} <span class="fz16">(кг.)</span></p>
-          </div>
-        </div>
-        <div
-          v-else
-          class="card"
-          :class="[excessWeightMan || excessWeightWoman > 0 ? 'card-red' : 'card-green']"
-        >
-          <h3 class="card__title">Текущий вес:</h3>
-          <div class="card__flex-block">
-            <span class="fas fa-weight mr10" style="font-size: 24px"></span>
-            <p class="card__result24">{{ currentWeight }} <span class="fz16">(кг.)</span></p>
-          </div>
-        </div>
-      </el-col>
-
-      <el-col :md="24" :lg="12">
-        <div class="card">
-          <h3 class="card__title">До завершения цели {{ declinationRemainder }}:</h3>
-          <div class="card__flex-block" v-if="daysToTarget">
-            <span class="fas fa-bullseye mr10" style="font-size: 32px"></span>
-            <p class="card__result36">
-              {{ daysToTarget }} <span class="fz16">{{ declinationDays }}</span>
+            <p v-else>
+              Для произведения расчета,
+              <span class="card-warning">необходимо установить дату окончания диеты.</span>
             </p>
           </div>
-          <p v-else>
-            Для произведения расчета,
-            <span class="card-warning">необходимо установить дату окончания диеты.</span>
-          </p>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :md="12" :ld="12">
-        <div class="card card-purple">
-          <h3 class="card__title" v-if="weightDeviationisNormal">
-            Необходим
-            <span :title="hintForUserSurplus" style="text-decoration: underline"
-              >профицит каллорий:</span
-            >
-          </h3>
-          <h3 class="card__title" v-else>
-            Необходим
-            <span :title="hintForUserDeficit" style="text-decoration: underline"
-              >дефицит каллорий:</span
-            >
-          </h3>
-          <div class="card__flex-block">
-            <template v-if="daysToTarget">
-              <span class="fas fa-fire mr10" style="font-size: 32px"> </span>
-              <p class="card__result36">
-                {{ reduceСaloriesDay }} <span class="fz16">(в сутки)</span>
-              </p>
-            </template>
-            <p v-else>Для произведения расчета, необходимо установить дату окончания диеты.</p>
-          </div>
-        </div>
-      </el-col>
-
-      <el-col :md="12" :lg="6">
-        <div class="card">
-          <h3 class="card__title">Текущая дата:</h3>
-          <div class="card__flex-block">
-            <p class="card__result36">{{ currentData.toLocaleString().slice(0, 10) }}</p>
-            <span class="fas fa-calendar-alt ml10" style="font-size: 32px"> </span>
-          </div>
-        </div>
-      </el-col>
-
-      <el-col :md="24" :lg="6">
-        <div class="card">
-          <h3 class="card__title">Окончание диеты:</h3>
-          <div class="card__flex-block" style="flex-wrap: wrap">
-            <template v-if="finishData">
-              <p class="card__result36">
-                {{ finishData.toLocaleString().slice(0, 10) }}
-              </p>
-              <span class="fas fa-flag-checkered ml10" style="font-size: 32px"></span>
-              <el-button
-                v-if="!IsVisibilityDatePicker"
-                class="card__change-date"
-                @click="IsVisibilityDatePicker = true"
-                ><i class="fas fa-pencil-alt mr10"></i>Поменять дату</el-button
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :md="12" :ld="12">
+          <div class="card card-purple">
+            <h3 class="card__title" v-if="weightDeviationisNormal">
+              Необходим
+              <span :title="hintForUserSurplus" style="text-decoration: underline"
+                >профицит каллорий:</span
               >
-              <el-date-picker
-                id="datepicker"
-                v-if="IsVisibilityDatePicker"
-                v-model="finishData"
-                format="dd-MM-yyyy"
-                :picker-options="datePickerOptions"
-                type="date"
-                placeholder="Выбор даты"
+            </h3>
+            <h3 class="card__title" v-else>
+              Необходим
+              <span :title="hintForUserDeficit" style="text-decoration: underline"
+                >дефицит каллорий:</span
               >
-              </el-date-picker>
-              <el-button
-                v-if="IsVisibilityDatePicker"
-                class="card__save-date"
-                @click="IsVisibilityDatePicker = false"
-                >Сохранить<i class="fas fa-save ml10"></i
-              ></el-button>
-            </template>
-            <div v-else class="card__flex-block mb10">
-              <p class="mr10 card-warning">Нужно установить</p>
-              <span class="fas fa-hand-pointer card__cursor-icon" style="font-size: 32px"></span>
+            </h3>
+            <div class="card__flex-block">
+              <template v-if="daysToTarget">
+                <span class="fas fa-fire mr10" style="font-size: 32px"> </span>
+                <p class="card__result36">
+                  {{ reduceСaloriesDay }} <span class="fz16">(в сутки)</span>
+                </p>
+              </template>
+              <p v-else>Для произведения расчета, необходимо установить дату окончания диеты.</p>
             </div>
           </div>
-          <el-date-picker
-            id="datepicker"
-            v-if="!finishData"
-            v-model="finishData"
-            :picker-options="datePickerOptions"
-            type="date"
-            placeholder="Выбор даты"
+        </el-col>
+
+        <el-col :md="12" :lg="6">
+          <div class="card">
+            <h3 class="card__title">Текущая дата:</h3>
+            <div class="card__flex-block">
+              <p class="card__result36">{{ currentData.toLocaleString().slice(0, 10) }}</p>
+              <span class="fas fa-calendar-alt ml10" style="font-size: 32px"> </span>
+            </div>
+          </div>
+        </el-col>
+
+        <el-col :md="24" :lg="6">
+          <div class="card">
+            <h3 class="card__title">Окончание диеты:</h3>
+            <div class="card__flex-block" style="flex-wrap: wrap">
+              <template v-if="finishData">
+                <p class="card__result36">
+                  {{ finishData.toLocaleString().slice(0, 10) }}
+                </p>
+                <span class="fas fa-flag-checkered ml10" style="font-size: 32px"></span>
+                <el-button
+                  v-if="!IsVisibilityDatePicker"
+                  class="card__change-date"
+                  @click="IsVisibilityDatePicker = true"
+                  ><i class="fas fa-pencil-alt mr10"></i>Поменять дату</el-button
+                >
+                <el-date-picker
+                  id="datepicker"
+                  v-if="IsVisibilityDatePicker"
+                  v-model="finishData"
+                  format="dd-MM-yyyy"
+                  :picker-options="datePickerOptions"
+                  type="date"
+                  placeholder="Выбор даты"
+                >
+                </el-date-picker>
+                <el-button
+                  v-if="IsVisibilityDatePicker"
+                  class="card__save-date"
+                  @click="IsVisibilityDatePicker = false"
+                  >Сохранить<i class="fas fa-save ml10"></i
+                ></el-button>
+              </template>
+              <div v-else class="card__flex-block mb10">
+                <p class="mr10 card-warning">Нужно установить</p>
+                <span class="fas fa-hand-pointer card__cursor-icon" style="font-size: 32px"></span>
+              </div>
+            </div>
+            <el-date-picker
+              id="datepicker"
+              v-if="!finishData"
+              v-model="finishData"
+              :picker-options="datePickerOptions"
+              type="date"
+              placeholder="Выбор даты"
+            >
+            </el-date-picker>
+          </div>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="10">
+        <el-col :md="12" :lg="12">
+          <div
+            class="card card__flex-block calories-tracking"
+            style="justify-content: space-around; align-items: flex-start; min-height: 235px"
           >
-          </el-date-picker>
-        </div>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="10">
-      <el-col :md="12" :lg="12">
-        <div
-          class="card card__flex-block calories-tracking"
-          style="justify-content: space-around; align-items: flex-start; min-height: 235px"
-        >
-          <img src="../assets/img/duet.png" class="img-duet" alt="girl" width="250px" />
-          <div>
-            <h3 class="card__title">Учет каллорий за сутки:</h3>
-            <hr />
+            <img src="../assets/img/duet.png" class="img-duet" alt="girl" width="250px" />
             <div>
-              <div class="card__flex-block normsPerDay" style="flex-direction: column">
-                <div class="mb10">
-                  <p style="margin-bottom: 5px">Норма ккал. за день</p>
-                  <p v-if="infoCurrentUser.gender === 'мужской'">{{ normСaloriesMan }} (ккал.)</p>
-                  <p v-if="infoCurrentUser.gender === 'женский'">{{ normСaloriesWoman }} (ккал.)</p>
-                </div>
-                <p style="margin-bottom: 5px">Калорий съедено</p>
-                <div class="card__flex-block mb10 edit-value" >
-                  <p v-if="changedСountingInput === false" class="mr10">
-                    {{ caloriesPerDay }} (ккал.)
-                  </p>
+              <h3 class="card__title">Учет каллорий за сутки:</h3>
+              <hr />
+              <div>
+                <div class="card__flex-block normsPerDay" style="flex-direction: column">
+                  <div class="mb10">
+                    <p style="margin-bottom: 5px">Норма ккал. за день</p>
+                    <p v-if="infoCurrentUser.gender === 'мужской'">{{ normСaloriesMan }} (ккал.)</p>
+                    <p v-if="infoCurrentUser.gender === 'женский'">
+                      {{ normСaloriesWoman }} (ккал.)
+                    </p>
+                  </div>
+                  <p style="margin-bottom: 5px">Калорий съедено</p>
+                  <div class="card__flex-block mb10 edit-value">
+                    <p v-if="changedСountingInput === false" class="mr10">
+                      {{ caloriesPerDay }} (ккал.)
+                    </p>
 
-                  <div class="card__flex-block">
-                    <!-- Отображаю блок с возможность
+                    <div class="card__flex-block">
+                      <!-- Отображаю блок с возможность
                       ввода нового значения при условии,
                       если пользователь нажал на
                       "изменить значение" флаг меняется на true -->
-                    <div v-if="changedСountingInput === true">
-                      <el-input class="ccalorieСountingInput" v-model="caloriesPerDay"></el-input>
-                      <el-button
-                        class="card__save-date"
-                        style="padding-left: 0"
-                        @click="
-                          setUserСalories();
-                          changedСountingInput = false;
-                        "
-                        >Сохранить<i class="fas fa-save ml10"></i
-                      ></el-button>
-                    </div>
-                    <div v-else>
-                      <el-button
-                        class="card__change-date"
-                        style="padding-left: 0"
-                        @click="changedСountingInput = true"
-                        ><i class="fas fa-pencil-alt mr10"></i>Изменить значение</el-button
-                      >
+                      <div v-if="changedСountingInput === true">
+                        <el-input class="ccalorieСountingInput" v-model="caloriesPerDay"></el-input>
+                        <el-button
+                          class="card__save-date"
+                          style="padding-left: 0"
+                          @click="
+                            setUserСalories();
+                            changedСountingInput = false;
+                          "
+                          >Сохранить<i class="fas fa-save ml10"></i
+                        ></el-button>
+                      </div>
+                      <div v-else>
+                        <el-button
+                          class="card__change-date"
+                          style="padding-left: 0"
+                          @click="changedСountingInput = true"
+                          ><i class="fas fa-pencil-alt mr10"></i>Изменить значение</el-button
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <el-progress
+                :text-inside="true"
+                :stroke-width="26"
+                :percentage="percentageСalories"
+              ></el-progress>
+            </div>
+          </div>
+        </el-col>
+
+        <el-col :md="12" :lg="12">
+          <div class="card total-burned" style="min-height: 235px" v-if="!weightDeviationisNormal">
+            <div>
+              <h3 class="card__title">Всего сожжено каллорий:</h3>
+              <hr />
+              <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
+              <p v-if="!caloriesLeftToBurn">
+                Осталось сжечь:
+                <span class="card-warning"> задайте параметры.</span>
+              </p>
+              <p v-else-if="caloriesLeftToBurn < 0">
+                <span class="card-goal-achieved"> Цель достигнута!</span>
+              </p>
+              <p v-else>
+                Осталось сжечь:
+                {{ caloriesLeftToBurn }} калл.
+              </p>
             </div>
             <el-progress
-              :text-inside="true"
-              :stroke-width="26"
-              :percentage="percentageСalories"
+              type="dashboard"
+              :stroke-width="10"
+              :percentage="userProgress"
+              :color="progressСolors"
             ></el-progress>
           </div>
-        </div>
-      </el-col>
-
-      <el-col :md="12" :lg="12">
-        <div class="card total-burned" style="min-height: 235px" v-if="!weightDeviationisNormal">
-          <div>
-            <h3 class="card__title">Всего сожжено каллорий:</h3>
-            <hr />
-            <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
-            <p v-if="!caloriesLeftToBurn">
-              Осталось сжечь:
-              <span class="card-warning"> задайте параметры.</span>
-            </p>
-            <p v-else-if="caloriesLeftToBurn < 0">
-              <span class="card-goal-achieved"> Цель достигнута!</span>
-            </p>
-            <p v-else>
-              Осталось сжечь:
-              {{ caloriesLeftToBurn }} калл.
-            </p>
+          <div class="card total-burned" style="min-height: 235px" v-else>
+            <div>
+              <h3 class="card__title">Всего набрано каллорий:</h3>
+              <hr />
+              <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
+              <p v-if="!caloriesLeftToBurn">
+                Осталось сжечь:
+                <span class="card-warning"> задайте параметры.</span>
+              </p>
+              <p v-else-if="caloriesLeftToBurn < 0">
+                <span class="card-goal-achieved"> Цель достигнута!</span>
+              </p>
+              <p v-else>
+                Осталось набрать:
+                {{ caloriesLeftToBurn }} калл.
+              </p>
+            </div>
+            <el-progress
+              type="dashboard"
+              :stroke-width="10"
+              :percentage="userProgress"
+              :color="progressСolors"
+            ></el-progress>
           </div>
-          <el-progress
-            type="dashboard"
-            :stroke-width="10"
-            :percentage="userProgress"
-            :color="progressСolors"
-          ></el-progress>
-        </div>
-                <div class="card total-burned" style="min-height: 235px" v-else>
-          <div>
-            <h3 class="card__title">Всего набрано каллорий:</h3>
-            <hr />
-            <p class="mb10">{{ caloriesBurned }} калл. из {{ numCaloriesReduce }} калл.</p>
-            <p v-if="!caloriesLeftToBurn">
-              Осталось сжечь:
-              <span class="card-warning"> задайте параметры.</span>
-            </p>
-            <p v-else-if="caloriesLeftToBurn < 0">
-              <span class="card-goal-achieved"> Цель достигнута!</span>
-            </p>
-            <p v-else>
-              Осталось набрать:
-              {{ caloriesLeftToBurn }} калл.
-            </p>
-          </div>
-          <el-progress
-            type="dashboard"
-            :stroke-width="10"
-            :percentage="userProgress"
-            :color="progressСolors"
-          ></el-progress>
-        </div>
-      </el-col>
-    </el-row>
-  </el-col>
-</div>
+        </el-col>
+      </el-row>
+    </el-col>
+  </div>
 </template>
 
 <script>
+import defText from '../helpers/defText';
 
 export default {
   data() {
@@ -651,35 +654,11 @@ export default {
     },
     // Корректно склоняет слово 'день'
     declinationDays() {
-      const sumDays = this.daysToTarget;
-      const remainderDays = sumDays % 10;
-      if (sumDays === 0) {
-        return '';
-      }
-      if (sumDays >= 11 && sumDays <= 20) {
-        return 'дней';
-      }
-      if (remainderDays === 1) {
-        return 'день';
-      }
-      if (remainderDays >= 2 && remainderDays <= 4) {
-        return 'дня';
-      }
-      if ((remainderDays >= 5 && remainderDays <= 9) || remainderDays === 0) {
-        return 'дней';
-      }
-      return '';
+      return defText(this.daysToTarget, ['день', 'дня', 'дней']);
     },
     // Корректно склоняет слово 'осталось'
     declinationRemainder() {
-      const sumDays = this.daysToTarget;
-      if (sumDays === 0) {
-        return '';
-      }
-      if (sumDays === 1) {
-        return 'остался';
-      }
-      return 'осталось';
+      return defText(this.daysToTarget, ['остался', 'осталось', 'осталось']);
     },
     // Рассчитываем каллории к килограммам
     numCaloriesReduce() {
@@ -687,9 +666,14 @@ export default {
     },
     // Вес который будет по окончанию диеты.
     resultWeight() {
-      return !this.weightDeviationisNormal // проверяем если не имеет дефицита
-        ? this.currentWeight - this.numKgReduce // высчитываем кг.
-        : +this.currentWeight + this.numKgReduce; // в противном случае, прибавляем кг.
+      // проверяем если не имеет дефицита
+      if (!this.weightDeviationisNormal) {
+        // высчитываем кг.
+        return (this.currentWeight - this.numKgReduce).toFixed(0);
+      }
+
+      // прибавляем кг.
+      return (+this.currentWeight + this.numKgReduce).toFixed(0);
     },
     // Получаем регистрационную информацию о пользователе.
     infoCurrentUser() {
@@ -847,9 +831,9 @@ export default {
     justify-content: space-around;
   }
 
-  .calories-tracking{
-  text-align: start;
-}
+  .calories-tracking {
+    text-align: start;
+  }
 }
 
 .mr10 {
@@ -883,64 +867,62 @@ export default {
 //media
 // xs 0-767px || sm 768px-991px || md 992px-1199px || lg 1200px - 1919px || xl 1920px +
 @media screen and (max-width: 1580px) {
-.my-goals {
-.calories-tracking{
-  flex-direction: column;
-  align-items: center !important;
-}
-.total-burned{
-    flex-direction: column-reverse;
-}
-.img-duet{
-  width: 160px;
-  margin-bottom: 10px;
-}
-  }
-
-}
-@media screen and (min-width: 1200px) and (max-width: 1271px){
-.card{
-  &__cursor-icon{
-   display: none;
+  .my-goals {
+    .calories-tracking {
+      flex-direction: column;
+      align-items: center !important;
+    }
+    .total-burned {
+      flex-direction: column-reverse;
+    }
+    .img-duet {
+      width: 160px;
+      margin-bottom: 10px;
+    }
   }
 }
+@media screen and (min-width: 1200px) and (max-width: 1271px) {
+  .card {
+    &__cursor-icon {
+      display: none;
+    }
+  }
 }
 @media screen and (max-width: 1310px) {
-
-.card{
-  margin-bottom: 10px;
-  &__result36{
-    font-size: 30px !important;
+  .card {
+    margin-bottom: 10px;
+    &__result36 {
+      font-size: 30px !important;
+    }
+    #datepicker {
+      border: 5px solid red;
+      padding: 0 !important;
+    }
   }
-  #datepicker {
-    border: 5px solid red;
-    padding: 0 !important;
+  .el-row {
+    margin-bottom: 0;
   }
-}
-.el-row{
-  margin-bottom: 0;
-}
 }
 @media screen and (max-width: 767px) {
-.my-goals {
-  margin: 10px !important;
-  .calories-tracking{
-  text-align: center ;
-}
-.edit-value{
-flex-direction: column;
-    align-items: center;
-}
-.normsPerDay{
-  align-items: center;
-}
-}
-.card {
-    &__title{
-    font-size: 22px !important;
-    text-align: center;
+  .my-goals {
+    margin: 10px !important;
+    .calories-tracking {
+      text-align: center;
+    }
+    .edit-value {
+      flex-direction: column;
+      align-items: center;
+    }
+    .normsPerDay {
+      align-items: center;
+    }
   }
-}
+  .card {
+    &__title {
+      font-size: 22px !important;
+      text-align: center;
+    }
+  }
 }
 </style>
 
@@ -949,7 +931,7 @@ flex-direction: column;
   background-color: $color_5;
 }
 
-.el-progress-bar__innerText{
+.el-progress-bar__innerText {
   color: $color_1;
   font-weight: bold;
 }

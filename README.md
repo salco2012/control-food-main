@@ -1,5 +1,4 @@
 # control-food-main
-
 ## Project setup
 ```
 npm install
@@ -22,3 +21,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+###
+The project is in the process of being finalized
