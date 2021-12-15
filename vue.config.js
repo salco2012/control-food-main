@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/control-food-main/',
   css: {
     loaderOptions: {
       scss: {
